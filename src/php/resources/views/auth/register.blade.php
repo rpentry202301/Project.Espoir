@@ -1,5 +1,3 @@
-@extends('layouts.app_only_content')
-
 @section('title')
     会員登録
 @endsection

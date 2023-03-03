@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('', [App\Http\Controllers\ItemsController::class, 'showItems'])->name('top');
 
-Route::get('/sell',[App\Http\Controllers\SellController::class, 'showSellForm'])->name('sell');
+Route::get('/sell', [App\Http\Controllers\SellController::class, 'showSellForm'])->name('sell');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/items/cart', [App\Http\Controllers\ItemsController::class, 'showCartItem'])->name('item.cart');

@@ -6,7 +6,12 @@ use Illuminate\Http\Request;
 
 class ItemsController extends Controller
 {
-    public function showItems(){
+    public function showItems()
+    {
         return view('top');
+    }
+
+    public function showCartItem()
+    {
     }
 }

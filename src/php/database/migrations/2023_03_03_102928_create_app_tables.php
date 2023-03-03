@@ -80,7 +80,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->integer('description');
+            $table->string('description');
             $table->foreign('secondary_category_id')->references('id')->on('secondary_categories');
             $table->integer('price');
             $table->string('image_file')->nullable();

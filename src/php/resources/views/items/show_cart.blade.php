@@ -24,22 +24,6 @@
         <input type="submit" value="カートに入れる">
     </form>
 
-    {{-- 何番目の注文商品なのかを知りたい（foreach）
-    @foreach ($orderItemList as $loop => $orderItems)
-        @foreach ($orderItems as $orderItem)
-            {{ $orderItem->name }}
-        @endforeach
-        <form action="{{ route('delete.item.cart') }}" method="post">
-            @csrf
-            <input type="submit" value="削除">
-            <input type="hidden" name="index" value="{{ $loop }}">
-        </form>
-    @endforeach
-    <form action="{{ route('add.item.cart') }}" method="post">
-        @csrf
-        <input type="submit" value="カートに入れる">
-    </form> --}}
-
     <div class="container">
         <div class="row">
             @foreach ($orderItemList as $orderItems)
@@ -55,8 +39,8 @@
                                     <span class="ml-1">{{ number_format($orderItem->price) }}</span>
                                 </div>
                                 <!-- <div class="position-absolute py-1 font-weight-bold d-flex justify-content-center align-items-end" style="left: 0; top: 0; color: white; background-color: #EA352C; transform: translate(-50%,-50%) rotate(-45deg); width: 125px; height: 125px; font-size: 20px;">
-                                                                                                                        <span>SOLD</span>
-                                                                                                                    </div> -->
+                                                                                                                            <span>SOLD</span>
+                                                                                                                        </div> -->
                             </div>
                             <div class="card-body">
                                 <small class="text-muted">PrimaryCategory / SecondaryCategory</small>

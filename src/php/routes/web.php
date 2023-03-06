@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\SellController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,3 +22,5 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/items/{item}',[\App\Http\Controllers\ItemsController::class, 'showDetail'])->name('item.showDetail');
+
+Route::get('sell',[App\Http\Controllers\SellController::class,'showSellForm'])->name('sell');

@@ -12,7 +12,7 @@ class ItemsController extends Controller
         return view('top')->with('items',$items);
     }
 
-    public function showDetail($item_id){
-        return view('items.item_detail');
+    public function showDetail(Item $item){
+        return view('items.item_detail')->with('item',$item);
     }
 }

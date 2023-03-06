@@ -27,8 +27,8 @@
                     {{-- 商品画像 --}}
                     <div>商品画像</div>
                     <span class="item-image-form image-picker">
-                        <input type="file" name="item-image" class="d-none" accept="image/png,image/jpeg,image/gif" id="item-image" />
-                        <label for="item-image" class="d-inline-block" role="button">
+                        <input type="file" name="item-image" class="d-none" accept="image/png,image/jpeg,image/gif" id="image_file" />
+                        <label for="image_file" class="d-inline-block" role="button">
                             <img src="/images/item-image-default.png" style="object-fit: cover; width: 300px; height: 300px;">
                         </label>
                     </span>
@@ -64,7 +64,13 @@
                     <div class="form-group mt-3">
                         <label for="category">カテゴリ</label>
                         <select name="category" class="custom-select form-control @error('category') is-invalid @enderror">
-                            {{-- 次のパートで実装します --}}
+                            @foreach($categories as $category)
+                                <optgroup label="{{$category->name}}">
+                                    @foreach($category->secondaryCategories as $secondary)
+                                        <option value="{{$secondary->id}}" {{old('category') == $secondary->id ? 'selected' : ''}}>{{$secondary->name}}</option>
+                                    @endforeach
+                                </optgroup>
+                            @endforeach
                         </select>
                         @error('category')
                         <span class="invalid-feedback" role="alert">
@@ -73,22 +79,9 @@
                         @enderror
                     </div>
 
-                    {{-- 商品の状態 --}}
-                    <div class="form-group mt-3">
-                        <label for="condition">商品の状態</label>
-                        <select name="condition" class="custom-select form-control @error('condition') is-invalid @enderror">
-                            {{-- 次のパートで実装します --}}
-                        </select>
-                        @error('condition')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-
                     {{-- 販売価格 --}}
                     <div class="form-group mt-3">
-                        <label for="price">販売価格</label>
+                        <label for="price">販売価格（税抜き）</label>
                         <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" required autocomplete="price" autofocus>
                         @error('price')
                         <span class="invalid-feedback" role="alert">
@@ -99,7 +92,7 @@
 
                     <div class="form-group mb-0 mt-3">
                         <button type="submit" class="btn btn-block btn-secondary">
-                            出品する
+                            登録する
                         </button>
                     </div>
                 </form>

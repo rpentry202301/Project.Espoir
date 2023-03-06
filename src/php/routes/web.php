@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\SellController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('', [App\Http\Controllers\ItemsController::class, 'showItems'])->name('top');
 
-Route::get('/sell',[App\Http\Controllers\SellController::class, 'showSellForm'])->name('sell');
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('', [App\Http\Controllers\ItemsController::class, 'showItems'])->name('top');
 Route::get('/items/{item}',[\App\Http\Controllers\ItemsController::class, 'showDetail'])->name('item.showDetail');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware('auth')->group(function(){
+  // 商品購入機能のパスはここに記述する
+});
+
+
+Route::middleware('judge_admin')->group(function(){
+  Route::get('/sell',[App\Http\Controllers\SellController::class,'showSellForm'])->name('sell');
+  Route::post('/sell',[App\Http\Controllers\SellController::class,'registerItem'])->name('sell');
+});

@@ -24,3 +24,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/items/{item}',[\App\Http\Controllers\ItemsController::class, 'showDetail'])->name('item.showDetail');
 
 Route::get('sell',[App\Http\Controllers\SellController::class,'showSellForm'])->name('sell');
+Route::post('sell',[App\Http\Controllers\SellController::class,'registerItem'])->name('sell');

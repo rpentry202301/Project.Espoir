@@ -38,6 +38,12 @@
                                                   document.getElementById('logout-form').submit();">
                                  <i class="fas fa-sign-out-alt text-left" style="width: 30px"></i>ログアウト
                              </a>
+
+                             <a class="dropdown-item" href="{{ route('sell') }}"
+                                onclick="event.preventDefault();
+                                                  document.getElementById('logout-form').submit();">
+                                 <i class="fas fa-camera text-left" style="width: 30px"></i>商品を出品する
+                             </a>
  
                              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                  @csrf

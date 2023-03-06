@@ -24,7 +24,7 @@
 
             <div class="row">
                 <div class="col-8 offset-2">
-                  <a href="#" class="btn btn-secondary btn-block">購入する</a>
+                  <a href="#" class="btn btn-secondary btn-block">カートに入れる</a>
                 </div>
             </div>
 

@@ -20,3 +20,4 @@ Route::get('/sell',[App\Http\Controllers\SellController::class, 'showSellForm'])
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/items/{item}',[\App\Http\Controllers\ItemsController::class, 'showDetail'])->name('item.showDetail');

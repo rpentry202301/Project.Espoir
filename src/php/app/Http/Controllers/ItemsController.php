@@ -11,4 +11,8 @@ class ItemsController extends Controller
         $items = Item::get();
         return view('top')->with('items',$items);
     }
+
+    public function showDetail($item_id){
+        return view('items.item_detail');
+    }
 }

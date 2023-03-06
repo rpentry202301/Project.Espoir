@@ -24,7 +24,7 @@
                         <small class="text-muted">PrimaryCategory / SecondaryCategory</small>
                         <h5 class="card-title">ItemName</h5>
                     </div>
-                    <a href="#" class="stretched-link"></a>
+                    <a href="{{route ('item.showDetail',[$item->id])}}" class="stretched-link"></a>
                 </div>
             </div>
         @endforeach

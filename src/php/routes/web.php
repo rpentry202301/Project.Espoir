@@ -21,6 +21,14 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+
+
+
+
+
+
+
 Route::get('/items/cart', [App\Http\Controllers\ItemsController::class, 'showCartItem'])->name('show.item.cart');
-Route::post('/items/cart', [App\Http\Controllers\ItemsController::class, 'addCartItem'])->name('add.item.cart');
-Route::post('/items/cart', [App\Http\Controllers\ItemsController::class, 'deleteCartItem'])->name('delete.item.cart');
+Route::post('/items/cart/add', [App\Http\Controllers\ItemsController::class, 'addCartItem'])->name('add.item.cart');
+Route::post('/items/cart/delete', [App\Http\Controllers\ItemsController::class, 'deleteCartItem'])->name('delete.item.cart');

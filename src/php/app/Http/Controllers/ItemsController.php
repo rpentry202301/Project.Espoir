@@ -4,42 +4,53 @@ namespace App\Http\Controllers;
 
 use App\Models\OrderItem as ModelsOrderItem;
 use Illuminate\Http\Request;
-use src\php\app\Models\OrderItem;
-use src\php\app\Models\Item;
+use App\Models\OrderItem;
+use App\Models\Item;
 
 class ItemsController extends Controller
 {
     public function showItems()
     {
-        return view('top');
+        $items = Item::get();
+        return view('top')->with('items', $items);
+    }
+
+    public function showDetail(Item $item)
+    {
+        return view('items.item_detail')->with('item', $item);
     }
 
     public function showCartItem()
     {
+        // 既にカートに商品が存在しているかどうか判別。一旦SESSIONは考えずに作成する。
+        session_start();
+        if (isset($_SESSION['orderItemList'])) {
+            var_dump('not else');
+            $orderItemList = $_SESSION['orderItemList'];
+        } else {
+            var_dump('else');
+            $orderItemList = array();
+        }
+
         //一旦、カートに商品ID:1が入るように設定
         $query = Item::query();
-        // $orderItem = new OrderItem();
-        $orderItem = $query->where('id', 1)->get();
+        $orderItems = new OrderItem(); //Itemを継承したOrderItemはプロパティにItemのプロパティを持つ。
+        $orderItems = $query->where('id', 1)->get();
+        $orderItemList[] = $orderItems;
 
-        // //既にカートに商品が存在しているかどうか判別
-        // session_start();
-        // if (isset($_POST['orderItems'])) {
-        //     $orderItems = $_POST['orderItems'];
-        // } else {
-        //     $orderItems = [];
-        // }
-
-        return view('items.show_cart', ['orderItem' => $orderItem]);
+        return view('items.show_cart', ['orderItemList' => $orderItemList]);
     }
 
     public function addCartItem(Request $request)
     {
-        //既にカートに商品が存在しているかどうか判別
+        // 既にカートに商品が存在しているかどうか判別。一旦SESSIONは考えずに作成する。
         session_start();
-        if (isset($_POST['orderItems'])) {
-            $orderItems = $_POST['orderItems'];
+        if (isset($_SESSION['orderItemList'])) {
+            var_dump('not else');
+            $orderItemList = $_SESSION['orderItemList'];
         } else {
-            $orderItems = [];
+            var_dump('else');
+            $orderItemList = array();
         }
 
         //一旦idの1が入るように設定
@@ -50,8 +61,8 @@ class ItemsController extends Controller
         $orderItem = new OrderItem();
         $orderItem = $query->where('id', $request->id)->get();
 
-        $orderItems[] = $orderItem;
-        $_SESSION['orderItems'] = $orderItems;
+        $orderItemList[] = $orderItem;
+        $_SESSION['orderItemList'] = $orderItemList;
 
         //直前の画面に戻る
         return redirect()->back();
@@ -59,7 +70,7 @@ class ItemsController extends Controller
 
     public function deleteCartItem(Request $request)
     {
-        $orderItems = '';
+
         return redirect()->back();
     }
 }

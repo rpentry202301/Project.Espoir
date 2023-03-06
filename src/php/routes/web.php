@@ -20,15 +20,7 @@ Route::get('/sell', [App\Http\Controllers\SellController::class, 'showSellForm']
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-
-
-
-
-
-
-
 Route::get('/items/cart', [App\Http\Controllers\ItemsController::class, 'showCartItem'])->name('show.item.cart');
 Route::post('/items/cart/add', [App\Http\Controllers\ItemsController::class, 'addCartItem'])->name('add.item.cart');
 Route::post('/items/cart/delete', [App\Http\Controllers\ItemsController::class, 'deleteCartItem'])->name('delete.item.cart');
+Route::get('/items/{item}', [App\Http\Controllers\ItemsController::class, 'showDetail'])->name('item.showDetail');

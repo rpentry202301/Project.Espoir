@@ -32,11 +32,11 @@ class ItemsController extends Controller
             $orderItemList = array();
         }
 
-        //一旦、カートに商品ID:1が入るように設定
-        $query = Item::query();
-        $orderItems = new OrderItem(); //Itemを継承したOrderItemはプロパティにItemのプロパティを持つ。
-        $orderItems = $query->where('id', 1)->get();
-        $orderItemList[] = $orderItems;
+        // //一旦、カートに商品ID:1が入るように設定
+        // $query = Item::query();
+        // $orderItems = new OrderItem(); //Itemを継承したOrderItemはプロパティにItemのプロパティを持つ。
+        // $orderItems = $query->where('id', 1)->get();
+        // $orderItemList[] = $orderItems;
 
         return view('items.show_cart', ['orderItemList' => $orderItemList]);
     }
@@ -70,6 +70,17 @@ class ItemsController extends Controller
 
     public function deleteCartItem(Request $request)
     {
+        session_start();
+        //配列の添え字をリクエストで持ってくる。
+        $index = $request->index;
+        $orderItemList = $_SESSION['orderItemList'];
+
+        //削除実行
+        unset($orderItemList[$index]);
+
+        //indexを詰める
+        $orderItemList = array_values($orderItemList);
+        $_SESSION['orderItemList'] = $orderItemList;
 
         return redirect()->back();
     }

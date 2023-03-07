@@ -6,15 +6,14 @@
 
 @section('content')
     <h2 class="text-center border-bottom border-top py-2">カート一覧</h2>
+    <br>
     {{-- カートの枠 --}}
-    <table class="table caption-top mx-auto table-striped table-hover w-75 p-3 table-bordered">
+    <table class="table mx-auto table-striped table-hover w-75 p-3 table-bordered">
         <thead>
             <tr>
-
                 <th colspan="2">商品名</th>
                 <th>数量</th>
                 <th>価格</th>
-
             </tr>
         </thead>
         <tbody>
@@ -121,8 +120,8 @@
                                     <span class="ml-1">{{ number_format($orderItem->price) }}</span>
                                 </div>
                                 <!-- <div class="position-absolute py-1 font-weight-bold d-flex justify-content-center align-items-end" style="left: 0; top: 0; color: white; background-color: #EA352C; transform: translate(-50%,-50%) rotate(-45deg); width: 125px; height: 125px; font-size: 20px;">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span>SOLD</span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span>SOLD</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
                             </div>
                             <div class="card-body">
                                 <small class="text-muted">PrimaryCategory / SecondaryCategory</small>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\SellController;
+use App\Http\Controllers\MyPage\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,3 +38,11 @@ Route::middleware('judge_admin')->group(function () {
     Route::get('/sell', [App\Http\Controllers\SellController::class, 'showSellForm'])->name('sell');
     Route::post('/sell', [App\Http\Controllers\SellController::class, 'registerItem'])->name('sell');
 });
+
+Route::prefix('mypage')
+    ->namespace('MyPage')
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('/edit-profile', [App\Http\Controllers\MyPage\ProfileController::class, 'showProfileEditForm'])->name('mypage.edit-profile');
+        Route::post('/edit-profile', [App\Http\Controllers\MyPage\ProfileController::class, 'editProfile'])->name('mypage.edit-profile');
+    });

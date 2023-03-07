@@ -9,7 +9,7 @@
     <div class="search-wrapper">
       <div class="user-search-form d-flex justify-content-between col-12">
         <input class="form-control shadow col-9" type="text" name="search-name" id="search_name" placeholder="商品をキーワードで検索する">
-        <button class="col-2" type="button"><i class="fa fa-search" aria-hidden="true"></i>検索</button>
+        <button class="col-2 btn search-icon" type="button"><i class="fa fa-search" aria-hidden="true"></i>検索</button>
       </div>
     </div>
     

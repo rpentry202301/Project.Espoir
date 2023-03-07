@@ -48,9 +48,6 @@ class CartController extends Controller
             $orderItemList = array();
         }
 
-        #TODO 一旦idの1が入るように設定。後でRequestで送られてくるItemのIDを取得するように編集予定
-        $request->id = 1;
-
         //カートに追加する商品を追加する
         $query = Item::query();
         $orderItem = new OrderItem();

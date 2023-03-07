@@ -19,12 +19,7 @@
                      <li class="nav-item dropdown ml-2">
                          {{-- ログイン情報 --}}
                          <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                             @if (!empty($user->avatar_file_name))
-                                 <img src="/images/avatar-default.svg" class="rounded-circle" style="object-fit: cover; width: 35px; height: 35px;">
-                             @else
-                                 <img src="/images/avatar-default.svg" class="rounded-circle" style="object-fit: cover; width: 35px; height: 35px;">
-                             @endif
-                             {{ $user->name }} <span class="caret"></span>
+                             {{ $user->name }} さん<span class="caret"></span>
                          </a>
 
                          {{-- ドロップダウンメニュー --}}

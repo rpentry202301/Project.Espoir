@@ -6,13 +6,6 @@
 
 @section('content')
 <div class="container">
-    <div class="search-wrapper">
-      <div class="user-search-form d-flex justify-content-between col-12">
-        <input class="form-control shadow col-9" type="text" name="search-name" id="search_name" placeholder="商品をキーワードで検索する">
-        <button class="col-2 btn search-icon" type="button"><i class="fa fa-search" aria-hidden="true"></i>検索</button>
-      </div>
-    </div>
-    
     <div class="row">
         @foreach($items as $item)
             <div class="col-3 mb-3">
@@ -41,7 +34,7 @@
 
 @if(Auth::check())
     @if($user->admin_flag === 1)
-    <a href="{{route(sell)}}"
+    <a href="{{route('sell')}}"
     class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
     role="button"
     style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;"

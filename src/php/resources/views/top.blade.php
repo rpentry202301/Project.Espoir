@@ -16,9 +16,6 @@
                             <i class="fas fa-yen-sign"></i>
                             <span class="ml-1">{{number_format($item->price)}}</span>
                         </div>
-                            <!-- <div class="position-absolute py-1 font-weight-bold d-flex justify-content-center align-items-end" style="left: 0; top: 0; color: white; background-color: #EA352C; transform: translate(-50%,-50%) rotate(-45deg); width: 125px; height: 125px; font-size: 20px;">
-                                <span>SOLD</span>
-                            </div> -->
                     </div>
                     <div class="card-body">
                         <small class="text-muted">PrimaryCategory / SecondaryCategory</small>
@@ -29,11 +26,15 @@
             </div>
         @endforeach
     </div>
+
+    <div class="d-flex justify-content-center">
+         {{ $items->withQueryString()->links() }}
+    </div>
 </div>
 
 @if(Auth::check())
     @if($user->admin_flag === 1)
-    <a href=""
+    <a href="{{route(sell)}}"
     class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
     role="button"
     style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;"

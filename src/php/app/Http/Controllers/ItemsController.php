@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class ItemsController extends Controller
 {
     public function showItems(){
-        $items = Item::get();
+        $items = Item::paginate(2);
         $user = Auth::user();
         return view('top')->with([
             'items' => $items,

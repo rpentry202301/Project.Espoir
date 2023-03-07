@@ -40,6 +40,9 @@
                             保存
                         </button>
                     </div>
+                    <div class="mt-1">
+                        パスワードを変更の方は<a href="{{ route('password.request') }}">こちら</a>
+                    </div>
                 </form>
             </div>
         </div>

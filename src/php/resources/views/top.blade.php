@@ -25,6 +25,10 @@
                 </div>
             </div>
         @endforeach
+        @if(count($items) == 0)
+        <p>該当の商品はありません</p>
+        @endif
+        
     </div>
 
     <div class="d-flex justify-content-center">

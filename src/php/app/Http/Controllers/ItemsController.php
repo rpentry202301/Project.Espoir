@@ -37,15 +37,17 @@ class ItemsController extends Controller
         $items = $query->orderBy('id', 'DESC')
            ->paginate(2);
         $user = Auth::user();
-        return view('top')->with([
-            'items' => $items,
-            'user' => $user,
-        ]
+        return view('top')->with(
+            [
+                'items' => $items,
+                'user' => $user,
+            ]
         );
     }
 
-    public function showDetail(Item $item){
-        return view('items.item_detail')->with('item',$item);
+    public function showDetail(Item $item)
+    {
+        return view('items.item_detail')->with('item', $item);
     }
 
     public function searchItems($keyword){

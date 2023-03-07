@@ -8,7 +8,7 @@
     <div class="container">
         <div class="card" style="width: 500px">
             <div class="card-body">
-                <div class="font-weight-bold text-center border-bottom pb-3" style="font-size: 24px">パスワードをお忘れの方</div>
+                <div class="font-weight-bold text-center border-bottom pb-3" style="font-size: 24px">パスワード変更</div>
 
                 <form method="POST" action="{{ route('password.email') }}" class="p-5">
                     @if (session('status'))

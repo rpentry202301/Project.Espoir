@@ -18,8 +18,8 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <small class="text-muted">PrimaryCategory / SecondaryCategory</small>
-                        <h5 class="card-title">ItemName</h5>
+                    <small class="text-muted">{{$item->secondaryCategory->primaryCategory->name}} / {{$item->secondaryCategory->name}}</small>
+                    <h5 class="card-title">{{$item->name}}</h5>
                     </div>
                     <a href="{{route ('item.showDetail',[$item->id])}}" class="stretched-link"></a>
                 </div>

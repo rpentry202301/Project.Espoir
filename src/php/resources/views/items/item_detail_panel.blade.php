@@ -19,7 +19,7 @@
             </tr>
             <tr>
                 <th>カテゴリー</th>
-                <td>primaryCategory->name / secondaryCategory->name </td>
+                <td>{{$item->secondaryCategory->primaryCategory->name}} / {{$item->secondaryCategory->name}}</td>
             </tr>
             <tr>
                 <th>値段（税抜き）</th>

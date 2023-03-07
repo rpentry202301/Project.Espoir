@@ -27,6 +27,11 @@ Route::post('/items/cart/delete-Item', [App\Http\Controllers\CartController::cla
 Route::post('/items/cart/add-Topping', [App\Http\Controllers\CartController::class, 'addCartTopping'])->name('add.topping.cart');
 //ここまで
 
+//購入機能のルート
+Route::get('/buy-form', [App\Http\Controllers\BuyController::class, 'showBuyForm'])->name('buy.form');
+
+//ここまで
+
 Route::get('/items/{item}', [\App\Http\Controllers\ItemsController::class, 'showDetail'])->name('item.showDetail');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

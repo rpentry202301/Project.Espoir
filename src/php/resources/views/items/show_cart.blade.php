@@ -5,6 +5,62 @@
 @endsection
 
 @section('content')
+    <h2 class="text-center border-bottom border-top py-2">カート一覧</h2>
+    {{-- カートの枠 --}}
+    <table class="table caption-top mx-auto table-striped table-hover w-75 p-3 table-bordered">
+        <thead>
+            <tr>
+
+                <th colspan="2">商品名</th>
+                <th>数量</th>
+                <th>価格</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>コーヒー(S)</td>
+                <td>ここに追加されているトッピングがあれば表示させたい</td>
+                <td>1</td>
+                <td>100円</td>
+            </tr>
+            <tr>
+                <td>コーヒー(M)</td>
+                <td>ここに追加されているトッピングがあれば表示させたい</td>
+                <td>2</td>
+                <td>200円</td>
+            </tr>
+            <tr>
+                <td>コーヒー(L)</td>
+                <td>ここに追加されているトッピングがあれば表示させたい</td>
+                <td>1</td>
+                <td>300円</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="text-right font-weight-bold">合計金額 : <span class="text-danger">1,000円</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    {{-- 購入確認画面に遷移するボタンの枠 --}}
+    <a href="{{ route('buy.form') }}"
+        class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
+        role="button" style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;">
+        <div style="font-size: 24px;">購入確認画面へ</div>
+        <div>
+            <i class="fas fa-camera" style="font-size: 30px;"></i>
+        </div>
+    </a>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <hr>
+
+
     {{-- 何番目の注文商品なのかを知りたい（for） --}}
     @for ($i = 0; $i < count($orderItemList); $i++)
         {{-- OrderItemの反復処理⑴ --}}
@@ -65,8 +121,8 @@
                                     <span class="ml-1">{{ number_format($orderItem->price) }}</span>
                                 </div>
                                 <!-- <div class="position-absolute py-1 font-weight-bold d-flex justify-content-center align-items-end" style="left: 0; top: 0; color: white; background-color: #EA352C; transform: translate(-50%,-50%) rotate(-45deg); width: 125px; height: 125px; font-size: 20px;">
-                                                                                                                                                                                                                                                        <span>SOLD</span>
-                                                                                                                                                                                                                                                    </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span>SOLD</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
                             </div>
                             <div class="card-body">
                                 <small class="text-muted">PrimaryCategory / SecondaryCategory</small>

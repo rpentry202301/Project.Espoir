@@ -20,9 +20,10 @@ Auth::routes();
 Route::get('', [App\Http\Controllers\ItemsController::class, 'showItems'])->name('top');
 
 //カート機能のルート
-Route::get('/items/cart', [App\Http\Controllers\ItemsController::class, 'showCartItem'])->name('show.item.cart');
-Route::post('/items/cart/add', [App\Http\Controllers\ItemsController::class, 'addCartItem'])->name('add.item.cart');
-Route::post('/items/cart/delete', [App\Http\Controllers\ItemsController::class, 'deleteCartItem'])->name('delete.item.cart');
+Route::get('/items/cart', [App\Http\Controllers\CartController::class, 'showCartItem'])->name('show.item.cart');
+Route::post('/items/cart/add-Item', [App\Http\Controllers\CartController::class, 'addCartItem'])->name('add.item.cart');
+Route::post('/items/cart/delete-Item', [App\Http\Controllers\CartController::class, 'deleteCartItem'])->name('delete.item.cart');
+Route::post('/items/cart/add-Topping', [App\Http\Controllers\CartController::class, 'addCartTopping'])->name('add.topping.cart');
 //ここまで
 
 Route::get('/items/{item}', [\App\Http\Controllers\ItemsController::class, 'showDetail'])->name('item.showDetail');

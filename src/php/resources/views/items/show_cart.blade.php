@@ -12,6 +12,16 @@
             {{-- 反復処理⑵ --}}
             {{ $orderItemList[$i][$j]->name }}<br>
             {{ $i }}
+            <form action="{{ route('add.topping.cart') }}" method="POST">
+                @csrf
+                <select name="topping[]" id="" multiple>
+                    <option value="">--</option>
+                    @foreach ($toppings as $topping)
+                        <option value="{{ $topping->id }}">{{ $topping->name }} / {{ $topping->price }}円</option>
+                    @endforeach
+                </select>
+                <input type="submit" value="トッピングを追加">
+            </form>
             <form action="{{ route('delete.item.cart') }}" method="post">
                 @csrf
                 <input type="submit" value="削除">
@@ -19,6 +29,11 @@
             </form>
         @endfor
     @endfor
+
+    <br>
+    <hr>
+    <br>
+
     <form action="{{ route('add.item.cart') }}" method="post">
         @csrf
         <input type="submit" value="カートに入れる">
@@ -39,8 +54,8 @@
                                     <span class="ml-1">{{ number_format($orderItem->price) }}</span>
                                 </div>
                                 <!-- <div class="position-absolute py-1 font-weight-bold d-flex justify-content-center align-items-end" style="left: 0; top: 0; color: white; background-color: #EA352C; transform: translate(-50%,-50%) rotate(-45deg); width: 125px; height: 125px; font-size: 20px;">
-                                                                                                                            <span>SOLD</span>
-                                                                                                                        </div> -->
+                                                                                                                                                        <span>SOLD</span>
+                                                                                                                                                    </div> -->
                             </div>
                             <div class="card-body">
                                 <small class="text-muted">PrimaryCategory / SecondaryCategory</small>

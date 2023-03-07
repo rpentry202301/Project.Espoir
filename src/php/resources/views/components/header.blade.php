@@ -39,9 +39,14 @@
                                  <i class="fas fa-sign-out-alt text-left" style="width: 30px"></i>ログアウト
                              </a>
 
-                             <a class="dropdown-item" href="{{route('sell')}}">
-                                <i class="fas fa-camera text-left" style="width:30px;"></i>商品を出品する
-                            </a>
+                             @if(Auth::check())
+                                @if($user->admin_flag === 1)
+                                <a class="dropdown-item" href="{{route('sell')}}">
+                                    <i class="fas fa-box text-left" style="width:30px;"></i>商品を出品する
+                                </a>
+                                @endif
+                            @endif
+
  
                              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                  @csrf

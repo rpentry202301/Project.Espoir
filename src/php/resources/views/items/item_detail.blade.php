@@ -20,8 +20,9 @@
 
                 @include('items.item_detail_panel', [
                     'item' => $item,
-                ])
-
+                    ])
+                    
+                <div class="my-3 text-center">{!! nl2br(e($item->description)) !!}</div>
                 <div class="row">
                     <div class="col-8 offset-2">
                         <form action="{{ route('add.item.cart') }}" method="post" class="btn btn-secondary btn-block">
@@ -32,7 +33,6 @@
                     </div>
                 </div>
 
-                <div class="my-3 text-center">{!! nl2br(e($item->description)) !!}</div>
             </div>
         </div>
     </div>
@@ -41,9 +41,9 @@
         class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
         role="button"
         style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;">
-        <div style="font-size: 24px;">カートへ</div>
+        <div style="font-size: 24px;">カート一覧へ</div>
         <div>
-            <i class="fas fa-camera" style="font-size: 30px;"></i>
+            <i class="fas fa-shopping-cart" style="font-size: 30px;"></i>
         </div>
     </a>
 @endsection

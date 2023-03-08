@@ -34,8 +34,8 @@ class ItemsController extends Controller
         }
         
 
-        $items = $query->orderBy('id', 'DESC')
-           ->simplePaginate(2);
+        $items = $query->orderBy('secondary_category_id', 'ASC')
+           ->simplePaginate(8);
         $user = Auth::user();
         return view('top')->with(
             [

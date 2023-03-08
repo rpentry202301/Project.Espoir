@@ -10,7 +10,7 @@
         @foreach ($items as $item)
             <div class="col-3 mb-3">
                 <div class="card">
-                    <div class="position-relative overflow-hidden">
+                    <div class="position-relative overflow-hidden esp-item-image">
                         <img class="card-img-top" src="/storage/item-images/{{$item->image_file}}" alt="商品画像">
                         <div class="position-absolute py-2 px-3" style="left: 0; bottom: 20px; color: white; background-color: rgba(0, 0, 0, 0.70)">
                             <i class="fas fa-yen-sign"></i>

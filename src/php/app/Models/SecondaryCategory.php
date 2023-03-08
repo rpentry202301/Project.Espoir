@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SecondaryCategory extends Model
 {
     use HasFactory;
+    public function primaryCategory(){
+        return $this->belongsTo(PrimaryCategory::class);
+    }
 }

@@ -50,16 +50,6 @@ class ItemsController extends Controller
         return view('items.item_detail')->with('item', $item);
     }
 
-    // public function searchItems($keyword){
-    //     $user = Auth::user();
-    //     if(!$keyword){
-    //         $items = Item::paginate(2);
-    //     } else {
-    //         $items = Item::where('name', 'like', '%'. $keyword .'%')->paginate(2);
-    //     }
-    //     return response()->json($items);
-    // }
-
     private function escape(string $value)
     {
         return str_replace(
@@ -69,3 +59,4 @@ class ItemsController extends Controller
         );
     }
 }
+

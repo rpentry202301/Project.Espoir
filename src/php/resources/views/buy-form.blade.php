@@ -112,9 +112,9 @@
                             {{-- telephone --}}
                             <div class="form-group mx-auto">
                                 <label for="input-telephone">電話番号</label>
-                                <input type="text" class="form-control" name="telephone" id="input-telephone"
-                                    oninput="value = value.replace(/[^0-9]+/i,'');" aria-describedby="telephone-help"
-                                    placeholder="電話番号">
+                                <input type="text" class="form-control" maxlength="9" name="telephone"
+                                    id="input-telephone" oninput="value = value.replace(/[^0-9]+/i,'');"
+                                    aria-describedby="telephone-help" placeholder="電話番号">
                                 <small id="telephone-help" class="form-text text-muted">全角を自動的に半角にしてくれたらうれしい</small>
                             </div>
 

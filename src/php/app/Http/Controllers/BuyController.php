@@ -10,6 +10,7 @@ use App\Models\OrderTopping;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class BuyController extends Controller
 {
@@ -20,18 +21,14 @@ class BuyController extends Controller
         //     abort(404);
         // }
 
+        unset($_SESSION["orderItemList"]);
+        unset($_SESSION["orderToppingList"]);
+
         return view('buy-form');
     }
 
     public function buyOrderItems(Request $request)
     {
-
-        //order_toppingをテーブルにinsert
-        $orderTopping = new OrderTopping();
-        $orderTopping->order_item_id = 1; #TODO order_itemsのidをもってくる
-
-        //order_itemをテーブルにinsert
-        $orderItem = new OrderItem();
 
         //orderをテーブルにinsert
         $order = new Order();
@@ -45,6 +42,24 @@ class BuyController extends Controller
         $order->telephone = $request->telephone;
         $order->payment_method = $request->payment_method;
         $order->save();
+
+        //order_itemをテーブルにinsert。orderItemListを1回回している中に、orderToppingListをn回回す必要があると思う。
+        $orderItem = new OrderItem();
+        $orderItem->item_id = $request->item_id;
+        $orderItem->order_id = DB::table('orders')->latest('id')->value('id');
+        $orderItem->customed_price = $request->customed_price;
+        $orderItem->quantity = $request->quantity;
+        $orderItem->save();
+
+        //order_toppingをテーブルにinsert
+        $orderTopping = new OrderTopping();
+        $orderTopping->order_item_id = DB::table('order_items')->latest('id')->value('id');
+        $orderTopping->topping_id = $request->topping_id;
+        $orderTopping->save();
+
+        //セッションを切って、カートの中を空にする
+        // unset($_SESSION["orderItemList"]);
+        // unset($_SESSION["orderToppingList"]);
 
         return redirect()->back()->with('status', '購入完了しました');
     }

@@ -56,7 +56,7 @@ class CartController extends Controller
         $_SESSION['orderItemList'] = $orderItemList;
 
         //直前の画面に戻る
-        return redirect()->back();
+        return redirect()->back()->with('status', 'カートに追加しました');
     }
 
     public function deleteCartItem(Request $request)
@@ -64,7 +64,6 @@ class CartController extends Controller
         session_start();
         //配列の添え字をリクエストで持ってくる。
         $index = $request->index;
-        var_dump($index);
         $orderItemList = $_SESSION['orderItemList'];
         $orderToppingList = $_SESSION['orderToppingList'];
 
@@ -83,7 +82,7 @@ class CartController extends Controller
         $_SESSION['orderItemList'] = $orderItemList;
         $_SESSION['orderToppingList'] = $orderToppingList;
 
-        return redirect()->back();
+        return redirect()->back()->with('status', 'カートから削除しました');;
     }
 
     public function addCartTopping(Request $request)
@@ -110,6 +109,6 @@ class CartController extends Controller
 
         $_SESSION['orderToppingList'] = $orderToppingList;
 
-        return redirect()->back()->with('orderToppingList', $orderToppingList);
+        return redirect()->back()->with(['orderToppingList' => $orderToppingList, 'status' => 'トッピングを追加しました']);
     }
 }

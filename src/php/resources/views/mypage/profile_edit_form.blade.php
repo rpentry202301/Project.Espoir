@@ -24,9 +24,9 @@
                 <form method="POST" action="{{ route('mypage.edit-profile') }}" class="p-5" enctype="multipart/form-data">
                     @csrf
 
-                    {{-- ニックネーム --}}
+                    {{-- ユーザ名 --}}
                     <div class="form-group mt-3">
-                        <label for="name">ニックネーム</label>
+                        <label for="name">ユーザー名</label>
                         <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" required autocomplete="name" autofocus>
                         @error('name')
                         <span class="invalid-feedback" role="alert">

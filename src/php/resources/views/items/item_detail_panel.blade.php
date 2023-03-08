@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-4 offset-1">
-        <img class="card-img-top" src="/storage/item-images/{{$item->image_file_name}}" alt="商品画像">
+        <img class="card-img-top" src="/storage/item-images/{{$item->image_file}}" alt="商品画像">
     </div>
     <div class="col-6">
         <table class="table table-bordered">

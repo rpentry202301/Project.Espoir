@@ -81,7 +81,7 @@ class ItemSeeder extends Seeder
                     'description'           => '栗が濃厚なモンブランです。',
                     'secondary_category_id' => '5',
                     'price'                 => '350',
-                    'image_file'            => 'setts_sample2.jpg'
+                    'image_file'            => 'sweets_sample2.jpg'
                 ], [
                     'id'                    => '10',
                     'name'                  => 'シュークリーム',

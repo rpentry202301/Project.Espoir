@@ -33,9 +33,11 @@ class ItemsController extends Controller
             });
         }
         
-
+        
         $items = $query->orderBy('secondary_category_id', 'ASC')
-           ->simplePaginate(8);
+        ->simplePaginate(8)
+        ->withQueryString();
+        
         $user = Auth::user();
         return view('top')->with(
             [

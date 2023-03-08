@@ -5,6 +5,20 @@
 @endsection
 
 @section('content')
+
+    <div class="col-3 offset-2 mx-auto">
+        @if (session('message'))
+            <div class="alert alert-{{ session('type', 'success') }}" role="alert">
+                {{ session('message') }}
+            </div>
+        @endif
+        @if (session('status'))
+            <div class="alert alert-success text-center" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
+    </div>
+
     <h2 class="text-center border-bottom border-top py-2">カート一覧</h2>
     <br>
     {{-- カートの枠 --}}
@@ -44,7 +58,8 @@
     {{-- 購入確認画面に遷移するボタンの枠 --}}
     <a href="{{ route('buy.form') }}"
         class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
-        role="button" style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;">
+        role="button"
+        style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;">
         <div style="font-size: 24px;">購入確認画面へ</div>
         <div>
             <i class="fas fa-camera" style="font-size: 30px;"></i>
@@ -101,6 +116,7 @@
 
     <form action="{{ route('add.item.cart') }}" method="post">
         @csrf
+        <input type="hidden" value="1" name="id">
         <input type="submit" value="カートに入れる">
     </form>
 
@@ -120,8 +136,8 @@
                                     <span class="ml-1">{{ number_format($orderItem->price) }}</span>
                                 </div>
                                 <!-- <div class="position-absolute py-1 font-weight-bold d-flex justify-content-center align-items-end" style="left: 0; top: 0; color: white; background-color: #EA352C; transform: translate(-50%,-50%) rotate(-45deg); width: 125px; height: 125px; font-size: 20px;">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span>SOLD</span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span>SOLD</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
                             </div>
                             <div class="card-body">
                                 <small class="text-muted">PrimaryCategory / SecondaryCategory</small>

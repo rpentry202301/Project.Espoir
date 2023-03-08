@@ -5,6 +5,12 @@
 @endsection
 
 @section('content')
+    @if (session('status'))
+        <div class="alert alert-success text-center col-2 mx-auto" role="alert">
+            {{ session('status') }}
+        </div>
+    @endif
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-8 offset-2 bg-white">
@@ -13,11 +19,6 @@
                         @if (session('message'))
                             <div class="alert alert-{{ session('type', 'success') }}" role="alert">
                                 {{ session('message') }}
-                            </div>
-                        @endif
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
                             </div>
                         @endif
                     </div>

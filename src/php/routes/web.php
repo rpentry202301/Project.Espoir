@@ -29,7 +29,7 @@ Route::post('/items/cart/add-Topping', [App\Http\Controllers\CartController::cla
 
 //購入機能のルート
 Route::get('/buy-form', [App\Http\Controllers\BuyController::class, 'showBuyForm'])->name('buy.form');
-
+Route::post('/buy-form', [App\Http\Controllers\BuyController::class, 'buyOrderItems'])->name('buy.form');
 //ここまで
 
 Route::get('/items/{item}', [\App\Http\Controllers\ItemsController::class, 'showDetail'])->name('item.showDetail');

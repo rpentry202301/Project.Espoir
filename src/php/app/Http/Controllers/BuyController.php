@@ -21,8 +21,8 @@ class BuyController extends Controller
         //     abort(404);
         // }
 
-        unset($_SESSION["orderItemList"]);
-        unset($_SESSION["orderToppingList"]);
+        // unset($_SESSION["orderItemList"]);
+        // unset($_SESSION["orderToppingList"]);
 
         return view('buy-form');
     }

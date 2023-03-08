@@ -32,7 +32,21 @@ Route::get('/buy-form', [App\Http\Controllers\BuyController::class, 'showBuyForm
 Route::post('/buy-form', [App\Http\Controllers\BuyController::class, 'buyOrderItems'])->name('buy.form');
 //ここまで
 
-Route::get('/items/{item}', [\App\Http\Controllers\ItemsController::class, 'showDetail'])->name('item.showDetail');
+Route::controller(ItemsController::class)->group(function(){
+    Route::prefix('items')
+        ->middleware('auth')
+        ->group(function(){
+            Route::get('/{item}', 'showDetail')->name('item.showDetail');
+        });
+    Route::prefix('items')
+        ->middleware('judge_admin')
+        ->group(function(){
+            Route::get('/{item}/edit', 'editItem')->name('item.edit');
+            Route::get('/{item}/stop', 'stopSelling')->name('item.stopSelling');
+            Route::get('/{item}/restart', 'restartSelling')->name('item.restartSelling');
+        });
+});
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {

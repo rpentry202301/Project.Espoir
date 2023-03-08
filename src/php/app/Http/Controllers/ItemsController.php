@@ -49,7 +49,13 @@ class ItemsController extends Controller
 
     public function showDetail(Item $item)
     {
-        return view('items.item_detail')->with('item', $item);
+        $user = Auth::user();
+        return view('items.item_detail')->with(
+            [
+                'item' => $item,
+                'user' => $user,
+            ]
+        );
     }
 
     private function escape(string $value)

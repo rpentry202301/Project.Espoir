@@ -37,6 +37,43 @@
         </div>
     </div>
 
+    @if(Auth::check())
+        @if($user->admin_flag === 1)
+        <a href="{{route('item.edit')}}"
+        class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
+        role="button"
+        style="position: fixed; bottom: 30px; right: 200px; width: 150px; height: 150px; border-radius: 75px;"
+        >
+        <div style="font-size: 24px;">編集</div>
+        <div>
+            <i class="fas fa-edit" style="font-size: 30px;"></i>
+        </div>
+        </a>
+
+        <a href="{{route('item.stopSelling')}}"
+        class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
+        role="button"
+        style="position: fixed; bottom: 30px; right: 370px; width: 150px; height: 150px; border-radius: 75px;"
+        >
+        <div style="font-size: 24px;">販売停止</div>
+        <div>
+            <i class="fas fa-hand-paper" style="font-size: 30px;"></i>
+        </div>
+        </a>
+
+        <a href="{{route('item.restartSelling')}}"
+        class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
+        role="button"
+        style="position: fixed; bottom: 30px; right: 540px; width: 150px; height: 150px; border-radius: 75px;"
+        >
+        <div style="font-size: 24px;">販売再開</div>
+        <div>
+            <i class="fas fa-check" style="font-size: 30px;"></i>
+        </div>
+        </a>
+        @endif
+    @endif
+
     <a href="{{ route('show.item.cart') }}"
         class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
         role="button"

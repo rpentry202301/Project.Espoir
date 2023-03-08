@@ -34,6 +34,17 @@
                         </span>
                         @enderror
                     </div>
+
+                    {{-- メールアドレス --}}
+                    <div class="form-group mt-3">
+                        <label for="email">メールアドレス</label>
+                        <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" required autocomplete="email" autofocus>
+                        @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
                     
                     {{-- 配送先名 --}}
                     <div class="form-group mt-3">

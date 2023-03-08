@@ -8,9 +8,34 @@ use Illuminate\Support\Facades\Auth;
 
 class ItemsController extends Controller
 {
-    public function showItems()
-    {
-        $items = Item::get();
+    public function showItems(Request $request){
+        $query = Item::query();
+ 
+        // カテゴリで絞り込み
+        if ($request->filled('category')) {
+            list($categoryType, $categoryID) = explode(':', $request->input('category'));
+
+            if ($categoryType === 'primary') {
+                $query->whereHas('secondaryCategory', function ($query) use ($categoryID) {
+                    $query->where('primary_category_id', $categoryID);
+                });
+            } else if ($categoryType === 'secondary') {
+                $query->where('secondary_category_id', $categoryID);
+            }
+        }
+
+        // キーワードで絞り込み
+        if ($request->filled('keyword')) {
+            $keyword = '%' . $this->escape($request->input('keyword')) . '%';
+            $query->where(function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', $keyword);
+                $query->orWhere('description', 'LIKE', $keyword);
+            });
+        }
+        
+
+        $items = $query->orderBy('id', 'DESC')
+           ->simplePaginate(2);
         $user = Auth::user();
         return view('top')->with(
             [
@@ -24,4 +49,14 @@ class ItemsController extends Controller
     {
         return view('items.item_detail')->with('item', $item);
     }
+
+    private function escape(string $value)
+    {
+        return str_replace(
+            ['\\', '%', '_'],
+            ['\\\\', '\\%', '\\_'],
+            $value
+        );
+    }
 }
+

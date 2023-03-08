@@ -17,9 +17,8 @@ class SellController extends Controller
 {
     public function showSellForm(){
         $user = Auth::user();
-
-   
         $categories = PrimaryCategory::orderBy('id')->get();
+        
         return view('sell')->with('categories',$categories);
     }
 

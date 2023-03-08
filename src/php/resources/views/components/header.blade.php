@@ -6,6 +6,27 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
              <ul class="navbar-nav ml-auto">
+             <form class="form-inline" method="GET" action="{{ route('top') }}">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <select class="custom-select" name="category">
+                            <option value="">全て</option>
+                            @foreach ($categories as $category)
+                                <option value="primary:{{$category->id}}" class="font-weight-bold">{{$category->name}}</option>
+                                @foreach ($category->secondaryCategories as $secondary)
+                                    <option value="secondary:{{$secondary->id}}">  {{$secondary->name}}</option>
+                                @endforeach
+                            @endforeach
+                        </select>
+                    </div>
+                    <input type="text" name="keyword" class="form-control" aria-label="Text input with dropdown button" placeholder="キーワード検索">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-outline-dark">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+             </form>
                  @guest
                      {{-- 非ログイン --}}
                      <li class="nav-item">
@@ -34,11 +55,14 @@
                                  <i class="fas fa-sign-out-alt text-left" style="width: 30px"></i>ログアウト
                              </a>
 
-                             <a class="dropdown-item" href="{{ route('sell') }}"
-                                onclick="event.preventDefault();
-                                                  document.getElementById('logout-form').submit();">
-                                 <i class="fas fa-camera text-left" style="width: 30px"></i>商品を出品する
-                             </a>
+                             @if(Auth::check())
+                                @if($user->admin_flag === 1)
+                                <a class="dropdown-item" href="{{route('sell')}}">
+                                    <i class="fas fa-box text-left" style="width:30px;"></i>商品を出品する
+                                </a>
+                                @endif
+                            @endif
+
  
                              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                  @csrf

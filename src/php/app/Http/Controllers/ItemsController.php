@@ -35,7 +35,7 @@ class ItemsController extends Controller
         
 
         $items = $query->orderBy('id', 'DESC')
-           ->paginate(2);
+           ->simplePaginate(2);
         $user = Auth::user();
         return view('top')->with(
             [
@@ -50,15 +50,15 @@ class ItemsController extends Controller
         return view('items.item_detail')->with('item', $item);
     }
 
-    public function searchItems($keyword){
-        $user = Auth::user();
-        if(!$keyword){
-            $items = Item::paginate(2);
-        } else {
-            $items = Item::where('name', 'like', '%'. $keyword .'%')->paginate(2);
-        }
-        return response()->json($items);
-    }
+    // public function searchItems($keyword){
+    //     $user = Auth::user();
+    //     if(!$keyword){
+    //         $items = Item::paginate(2);
+    //     } else {
+    //         $items = Item::where('name', 'like', '%'. $keyword .'%')->paginate(2);
+    //     }
+    //     return response()->json($items);
+    // }
 
     private function escape(string $value)
     {

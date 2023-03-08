@@ -7,7 +7,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        @foreach($items as $item)
+        @foreach ($items as $item)
             <div class="col-3 mb-3">
                 <div class="card">
                     <div class="position-relative overflow-hidden">
@@ -18,38 +18,36 @@
                         </div>
                     </div>
                     <div class="card-body">
-                    <small class="text-muted">{{$item->secondaryCategory->primaryCategory->name}} / {{$item->secondaryCategory->name}}</small>
-                    <h5 class="card-title">{{$item->name}}</h5>
+                        <small class="text-muted">{{$item->secondaryCategory->primaryCategory->name}} / {{$item->secondaryCategory->name}}</small>
+                        <h5 class="card-title">{{$item->name}}</h5>
                     </div>
                     <a href="{{route ('item.showDetail',[$item->id])}}" class="stretched-link"></a>
                 </div>
             </div>
         @endforeach
+    </div>
+
         @if(count($items) == 0)
         <p>該当の商品はありません</p>
         @endif
         
-    </div>
 
     <div class="d-flex justify-content-center">
-         {{ $items->withQueryString()->links() }}
+        {{$items->links()}}
     </div>
 </div>
-
-@if(Auth::check())
-    @if($user->admin_flag === 1)
-    <a href="{{route('sell')}}"
-    class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
-    role="button"
-    style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;"
-    >
-    <div style="font-size: 24px;">出品</div>
-    <div>
-        <i class="fas fa-camera" style="font-size: 30px;"></i>
-    </div>
-    </a>
+    @if(Auth::check())
+        @if($user->admin_flag === 1)
+        <a href="{{route('sell')}}"
+        class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
+        role="button"
+        style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;"
+        >
+        <div style="font-size: 24px;">出品</div>
+        <div>
+            <i class="fas fa-camera" style="font-size: 30px;"></i>
+        </div>
+        </a>
+        @endif
     @endif
-@endif
 @endsection
-
-

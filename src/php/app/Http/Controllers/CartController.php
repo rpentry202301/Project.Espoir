@@ -19,14 +19,21 @@ class CartController extends Controller
         // unset($_SESSION["orderItemList"]);
         // unset($_SESSION["orderToppingList"]);
 
+        $priceIncludeTax = 0;
         if (isset($_SESSION['orderItemList'])) {
             $orderItemList = $_SESSION['orderItemList'];
+            foreach ($orderItemList as $orderItem) {
+                $priceIncludeTax += $orderItem->price;
+            }
         } else {
             $orderItemList = array();
         }
 
         if (isset($_SESSION['orderToppingList'])) {
             $orderToppingList = $_SESSION['orderToppingList'];
+            foreach ($orderToppingList as $orderTopping) {
+                $priceIncludeTax += $orderTopping->price;
+            }
         } else {
             $orderToppingList = array();
         }
@@ -35,7 +42,7 @@ class CartController extends Controller
         $query = Topping::query();
         $toppings = $query->get();
 
-        return view('items.show_cart', ['orderItemList' => $orderItemList, 'toppings' => $toppings, 'orderToppingList' => $orderToppingList]);
+        return view('items.show_cart', ['orderItemList' => $orderItemList, 'toppings' => $toppings, 'orderToppingList' => $orderToppingList, 'priceIncludeTax' => $priceIncludeTax]);
     }
 
     public function addCartItem(Request $request)
@@ -52,6 +59,7 @@ class CartController extends Controller
         $query = Item::query();
         $orderItem = new OrderItem();
         $orderItem = $query->where('id', $request->id)->first();
+        $orderItem->customed_price = $orderItem->price;
         $orderItemList[] = $orderItem;
         $_SESSION['orderItemList'] = $orderItemList;
 
@@ -89,6 +97,18 @@ class CartController extends Controller
         return redirect()->back()->with('status', 'カートから削除しました');;
     }
 
+    public function customedPriceCalc(int $price, int $index)
+    {
+        $orderItemList = $_SESSION['orderItemList'];
+        foreach ($orderItemList as $key => $orderItem) {
+            if ($key == $index) {
+                $orderItem->customed_price += $price;
+            }
+        }
+        $_SESSION['orderItemList'] = $orderItemList;
+        return;
+    }
+
     public function addCartTopping(Request $request)
     {
         session_start();
@@ -107,12 +127,16 @@ class CartController extends Controller
         foreach ($request->topping as $toppingId) {
             $query = Topping::query();
             $orderTopping = $query->where('id', $toppingId)->first();
-            $orderTopping->order_item_id = $request->index; //ここでorder_toppingsテーブルのorder_item_idを仮置きする。購入時点で実際のorder_itemのIDを入れる。
+            $orderTopping->order_item_id = $request->index; //ここでorder_toppingsテーブルのorder_item_idを仮置きする。
+            $this->customedPriceCalc($orderTopping->price, $request->index);
             $orderToppingList[] = $orderTopping;
         }
 
+        #TODO トッピングの削除
+        //
+
         $_SESSION['orderToppingList'] = $orderToppingList;
 
-        return redirect()->back()->with(['orderToppingList' => $orderToppingList, 'status' => 'トッピングを追加しました']);
+        return redirect()->back()->with(['status' => 'トッピングを追加しました']);
     }
 }

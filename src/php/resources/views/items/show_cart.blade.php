@@ -86,7 +86,7 @@
                                 <option value="9">9</option>
                             </select>
                         </span></td>
-                    <td>¥{{ $orderItem->price }}</td>
+                    <td>¥{{ $orderItem->customed_price }}</td>
                     <td>
                         <button type="submit" class="btn btn-primary mb-2" form="add-topping">確定</button>
                         <form action="{{ route('delete.item.cart') }}" method="post">
@@ -98,7 +98,8 @@
                 </tr>
             @endforeach
             <tr>
-                <td colspan="5" class="text-right font-weight-bold">合計金額 : <span class="text-danger">1,000円</span>
+                <td colspan="5" class="text-right font-weight-bold">合計金額 : <span
+                        class="text-danger">¥{{ $priceIncludeTax }}</span>
                 </td>
             </tr>
         </tbody>

@@ -11,24 +11,22 @@
 
     <link rel="shortcut icon" href="../images/icon_coffee_beans.png">
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
-         <x-header></x-header>
-         <div class="h-100 d-flex justify-content-center align-items-center">
-         <main class="py-4">
-             @yield('content')
-         </main>
-     </div>
-     </div>
+        <x-header></x-header>
+        <div class="h-100 d-flex justify-content-center align-items-center">
+        <main class="py-4">
+            @yield('content')
+        </main>
+    </div>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
 </body>
 </html>

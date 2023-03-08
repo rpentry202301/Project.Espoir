@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\PrimaryCategory;
 use Illuminate\View\Component;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,6 +26,11 @@ class Header extends Component
     public function render()
     {
         $user = Auth::user();
-        return view('components.header')->with('user', $user);
+        $categories = PrimaryCategory::orderBy('id')->get();
+
+        return view('components.header')->with([
+            'user' => $user,
+            'categories' => $categories
+        ]);
     }
 }

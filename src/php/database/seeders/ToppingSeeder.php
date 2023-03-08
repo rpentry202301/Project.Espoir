@@ -24,13 +24,43 @@ class ToppingSeeder extends Seeder
                     'name'                  => 'ちょこちっぷ',
                     'description'           => 'サクサクの甘いチョコチップです',
                     'price'                 => '50',
-                    'image_file'            => 'チョコチップ.png'
+                    'image_file'            => 'topping_sample1.jpg'
                 ], [
                     'id'                    => '2',
                     'name'                  => 'きゃらめる',
                     'description'           => 'あま～いキャラメルです',
                     'price'                 => '80',
-                    'image_file'            => 'キャラメル.png'
+                    'image_file'            => 'topping_sample2.jpg'
+                ], [
+                    'id'                    => '3',
+                    'name'                  => 'レモンシロップ',
+                    'description'           => '自家製シロップです',
+                    'price'                 => '80',
+                    'image_file'            => 'topping_sample.jpg'
+                ], [
+                    'id'                    => '4',
+                    'name'                  => '黒蜜',
+                    'description'           => '甘いのがお好きな方におすすめです',
+                    'price'                 => '80',
+                    'image_file'            => 'topping_sample4.jpg'
+                ],[
+                    'id'                    => '5',
+                    'name'                  => 'ラテアートに変更',
+                    'description'           => 'ラテアートありに変更できます。',
+                    'price'                 => '80',
+                    'image_file'            => 'topping_sample5.jpg'
+                ], [
+                    'id'                    => '6',
+                    'name'                  => '生クリーム',
+                    'description'           => '甘すぎず、滑らかな生クリームです',
+                    'price'                 => '100',
+                    'image_file'            => 'topping_sample6.jpg'
+                ], [
+                    'id'                    => '7',
+                    'name'                  => 'はちみつ',
+                    'description'           => 'どんな飲み物にも合います',
+                    'price'                 => '80',
+                    'image_file'            => 'topping_sample7.jpg'
                 ]
             ]
         );

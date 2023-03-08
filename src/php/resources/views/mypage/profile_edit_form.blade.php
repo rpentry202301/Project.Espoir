@@ -27,7 +27,7 @@
                     {{-- ユーザ名 --}}
                     <div class="form-group mt-3">
                         <label for="name">ユーザー名</label>
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" required autocomplete="name" autofocus>
+                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                         @error('name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -38,7 +38,7 @@
                     {{-- メールアドレス --}}
                     <div class="form-group mt-3">
                         <label for="email">メールアドレス</label>
-                        <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" required autocomplete="email" autofocus>
+                        <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                         @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -49,7 +49,7 @@
                     {{-- お届け先 --}}
                     <div class="form-group mt-3">
                         <label for="delivery_destination_name">お届け先</label>
-                        <input id="delivery_destination_name" type="text" class="form-control @error('delivery_destination_name') is-invalid @enderror" name="delivery_destination_name"  required autocomplete="delivery_destination_name" autofocus>
+                        <input id="delivery_destination_name" type="text" class="form-control @error('delivery_destination_name') is-invalid @enderror" name="delivery_destination_name" value="{{ old('delivery_destination_name') }}" required autocomplete="delivery_destination_name" autofocus>
                         @error('delivery_destination_name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -60,7 +60,7 @@
                     {{-- 郵便番号 --}}
                     <div class="form-group mt-3">
                         <label for="zipcode">郵便番号</label>
-                        <input id="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" required autocomplete="zipcode" autofocus>
+                        <input id="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}" required autocomplete="zipcode" autofocus>
                         @error('zipcode')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -71,7 +71,7 @@
                     {{-- 住所 --}}
                     <div class="form-group mt-3">
                         <label for="address">住所</label>
-                        <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" required autocomplete="address" autofocus>
+                        <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required autocomplete="address" autofocus>
                         @error('address')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -82,7 +82,7 @@
                     {{-- 電話番号 --}}
                     <div class="form-group mt-3">
                         <label for="telephone">電話番号</label>
-                        <input id="telephone" type="text" class="form-control @error('telephone') is-invalid @enderror" name="telephone"  required autocomplete="telephone" autofocus>
+                        <input id="telephone" type="text" class="form-control @error('telephone') is-invalid @enderror" name="telephone" value="{{ old('telephone') }}" required autocomplete="telephone" autofocus>
                         @error('telephone')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

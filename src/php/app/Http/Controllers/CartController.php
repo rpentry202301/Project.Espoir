@@ -51,7 +51,7 @@ class CartController extends Controller
         //カートに追加する商品を追加する
         $query = Item::query();
         $orderItem = new OrderItem();
-        $orderItem = $query->where('id', $request->id)->get();
+        $orderItem = $query->where('id', $request->id)->first();
         $orderItemList[] = $orderItem;
         $_SESSION['orderItemList'] = $orderItemList;
 
@@ -65,9 +65,13 @@ class CartController extends Controller
         //配列の添え字をリクエストで持ってくる。
         $index = $request->index;
         $orderItemList = $_SESSION['orderItemList'];
-        $orderToppingList = $_SESSION['orderToppingList'];
+        if (isset($_SESSION['orderToppingList'])) {
+            $orderToppingList = $_SESSION['orderToppingList'];
+        } else {
+            $orderToppingList = array();
+        }
 
-        //削除実行
+        #TODO 削除実行。トッピングが追加されている連続した商品を、数字が小さい商品を消すと、2番目のトッピングが残ってしまう問題。
         for ($i = 0; $i < count($orderToppingList); $i++) {
             if ($orderToppingList[$i]->order_item_id == $index) {
                 unset($orderToppingList[$i]);
@@ -76,8 +80,8 @@ class CartController extends Controller
         unset($orderItemList[$index]);
 
         //indexを詰める
-        $orderItemList = array_values($orderItemList);
         $orderToppingList = array_values($orderToppingList);
+        $orderItemList = array_values($orderItemList);
 
         $_SESSION['orderItemList'] = $orderItemList;
         $_SESSION['orderToppingList'] = $orderToppingList;
@@ -102,7 +106,7 @@ class CartController extends Controller
         $orderTopping = new OrderTopping();
         foreach ($request->topping as $toppingId) {
             $query = Topping::query();
-            $orderTopping = $query->where('id', $toppingId)->get();
+            $orderTopping = $query->where('id', $toppingId)->first();
             $orderTopping->order_item_id = $request->index; //ここでorder_toppingsテーブルのorder_item_idを仮置きする。購入時点で実際のorder_itemのIDを入れる。
             $orderToppingList[] = $orderTopping;
         }

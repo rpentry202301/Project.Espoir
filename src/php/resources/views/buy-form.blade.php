@@ -74,10 +74,6 @@
                         </tbody>
                     </table>
 
-                    {{-- @include('items.item_detail_panel', [
-                    'item' => $item,
-                ]) --}}
-
                     {{-- Formの枠  --}}
 
                     <div class="row">

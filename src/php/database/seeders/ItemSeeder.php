@@ -30,14 +30,14 @@ class ItemSeeder extends Seeder
                     'id'                    => '2',
                     'name'                  => 'こぉひぃ（M）',
                     'description'           => '苦みと酸味のバランスが素晴らしいコーヒーです。（Mサイズ）',
-                    'secondary_category_id' => '1',
+                    'secondary_category_id' => '2',
                     'price'                 => '300',
                     'image_file'            => 'drink_sample2.jpg'
                 ], [
                     'id'                    => '3',
                     'name'                  => 'こぉひぃ（L）',
                     'description'           => '苦みと酸味のバランスが素晴らしいコーヒーです。（Lサイズ）',
-                    'secondary_category_id' => '1',
+                    'secondary_category_id' => '3',
                     'price'                 => '400',
                     'image_file'            => 'drink_sample3.jpg'
                 ], [
@@ -86,14 +86,14 @@ class ItemSeeder extends Seeder
                     'id'                    => '10',
                     'name'                  => 'シュークリーム',
                     'description'           => '自家製のクリームをたっぷり使ったシュークリームです。',
-                    'secondary_category_id' => '6',
+                    'secondary_category_id' => '5',
                     'price'                 => '500',
                     'image_file'            => 'sweets_sample3.jpg'
                 ], [
                     'id'                    => '11',
                     'name'                  => 'ショートケーキ',
                     'description'           => 'イチゴが乗った、シンプル＆王道の人気NO.1商品です。',
-                    'secondary_category_id' => '6',
+                    'secondary_category_id' => '5',
                     'price'                 => '400',
                     'image_file'            => 'sweets_sample4.jpg'
                 ]

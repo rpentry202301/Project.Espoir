@@ -56,6 +56,7 @@ return new class extends Migration
             $table->foreign('secondary_category_id')->references('id')->on('secondary_categories');
             $table->integer('price');
             $table->string('image_file')->nullable();
+            $table->boolean('is_selling')->default(1);
 
             $table->timestamps();
         });

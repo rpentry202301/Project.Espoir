@@ -41,7 +41,7 @@ Route::controller(ItemsController::class)->group(function(){
     Route::prefix('items')
         ->middleware('judge_admin')
         ->group(function(){
-            Route::get('/{item}/edit', 'editItem')->name('item.edit');
+            Route::get('/{item}/edit', 'showEditForm')->name('item.showEditForm');
             Route::get('/{item}/stop', 'stopSelling')->name('item.stopSelling');
             Route::get('/{item}/restart', 'restartSelling')->name('item.restartSelling');
         });
@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('judge_admin')->group(function () {
     Route::get('/sell', [App\Http\Controllers\SellController::class, 'showSellForm'])->name('sell');
     Route::post('/sell', [App\Http\Controllers\SellController::class, 'registerItem'])->name('sell');
+    Route::post('/sell/update', [App\Http\Controllers\SellController::class, 'updateSellInformation'])->name('sell.updateSellInformation');
 });
 
 Route::prefix('mypage')

@@ -26,7 +26,6 @@ class ProfileController extends Controller
         $delivery_destination_name = $request->input('delivery_destination_name');
 
         $deliverydestination = DeliveryDestination::where('delivery_destination_name', $delivery_destination_name)->first();
-        // dd($deliverydestination);
         if ($deliverydestination == null) {
             $deliverydestination = new DeliveryDestination();
         }

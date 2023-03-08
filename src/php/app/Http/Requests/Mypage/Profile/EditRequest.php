@@ -25,6 +25,13 @@ class EditRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:1', 'max:30'],
+            'email' => ['required', 'string', 'email', 'min:6', 'max:254', 'unique:users'],
+            // 半角ハイフンなし文字数制限
+            'zipcode' => ['required', 'string', 'min:1', 'max:30'],
+            // 半角ハイフンなし文字数制限（マンション名とかもあるしなー）
+            'address' => ['required', 'string', 'min:1', 'max:30'],
+            // 半角ハイフンなし文字数制限
+            'telephone' => ['required', 'string', 'min:1', 'max:30'],
         ];
     }
 }

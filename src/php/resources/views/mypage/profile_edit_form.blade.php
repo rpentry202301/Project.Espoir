@@ -46,9 +46,9 @@
                         @enderror
                     </div>
                     
-                    {{-- 配送先名 --}}
+                    {{-- お届け先 --}}
                     <div class="form-group mt-3">
-                        <label for="delivery_destination_name">配送先名</label>
+                        <label for="delivery_destination_name">お届け先</label>
                         <input id="delivery_destination_name" type="text" class="form-control @error('delivery_destination_name') is-invalid @enderror" name="delivery_destination_name"  required autocomplete="delivery_destination_name" autofocus>
                         @error('delivery_destination_name')
                         <span class="invalid-feedback" role="alert">

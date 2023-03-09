@@ -11,6 +11,9 @@
             {{ session('status') }}
         </div>
     @endif
+    @if (count($orderItemList) == 0)
+        <h3 class="text-center py-2 text-danger">カートに商品が入っていません</h3>
+    @endif
     </div>
     <div class="container">
         <div class="row">
@@ -36,42 +39,41 @@
                             <tr>
 
                                 <th colspan="2">商品名</th>
-                                <th>数量</th>
                                 <th>価格</th>
-
+                                <th>数量</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($orderItemList as $itemKey => $orderItem)
+                                <tr>
+                                    <td>{{ $itemKey }} / {{ $orderItem->name }}<br>
+                                        <input type="hidden" name="order_item_id" value="{{ $orderItem->id }}">
+                                        <input type="hidden" name="item_id" value="{{ $orderItem->item_id }}">
+                                        @foreach ($orderToppingList as $toppingKey => $orderTopping)
+                                            @if ($orderTopping->order_item_id == $itemKey)
+                                                <small
+                                                    class="text-muted">{{ $orderTopping->name }}/{{ $orderTopping->price }}円</small><br>
+                                                <input type="hidden" name="topping_id"
+                                                    value="{{ $orderTopping->topping_id }}">
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                    <td>本当はここに追加されているトッピングがあれば表示させたい
+                                    </td>
+                                    <td>¥{{ $orderItem->customed_price }}/個
+                                        <input type="hidden" name="customed_price"
+                                            value="{{ $orderItem->customed_price }}">
+                                    </td>
+                                    <td><span>{{ $orderItem->quantity }}
+                                            <input type="hidden" name="quantity" value="{{ $orderItem->quantity }}">
+                                        </span></td>
+                                </tr>
+                            @endforeach
                             <tr>
-                                <td>コーヒー(S)
-                                    <input type="hidden" name="item_id" value="1">
-                                    <input type="hidden" name="order_item_id" value="1">
+                                <td colspan="5" class="text-right font-weight-bold">合計金額 : <span
+                                        class="text-danger">¥{{ $priceIncludeTax }}</span>
                                 </td>
-                                <td>ここに追加されているトッピングがあれば表示させたい
-                                    <input type="hidden" name="topping_id" value="1">
-                                </td>
-                                <td>1
-                                    <input type="hidden" name="quantity" value="1">
-                                </td>
-                                <td>100円</td>
-                            </tr>
-                            <tr>
-                                <td>コーヒー(M)</td>
-                                <td>ここに追加されているトッピングがあれば表示させたい</td>
-                                <td>2</td>
-                                <td>200円</td>
-                            </tr>
-                            <tr>
-                                <td>コーヒー(L)</td>
-                                <td>ここに追加されているトッピングがあれば表示させたい</td>
-                                <td>1</td>
-                                <td>300円</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" class="text-right font-weight-bold">合計金額 : <span class="text-danger">
-                                        <input type="hidden" name="customed_price" value="100"><input type="hidden"
-                                            name="price_include_tax" value="110">1,000円(
-                                        +税 )</span></td>
+                                <input type="hidden" name="price_include_tax" value="{{ $priceIncludeTax }}">
                             </tr>
                         </tbody>
                     </table>

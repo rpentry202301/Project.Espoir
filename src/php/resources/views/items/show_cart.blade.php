@@ -63,7 +63,6 @@
                                                 style="transform: scale(0.5,0.5)">
                                         </td>
                                     @endforeach
-                                    {{-- </form> --}}
                             </tr>
                             <tr>
                                 <td colspan="{{ count($toppings) }}"><small id="topping-help" class="form-text text-muted"

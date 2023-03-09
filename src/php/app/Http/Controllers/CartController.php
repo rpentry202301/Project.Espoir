@@ -59,6 +59,7 @@ class CartController extends Controller
         $query = Item::query();
         $orderItem = new OrderItem();
         $orderItem = $query->where('id', $request->id)->first();
+        $orderItem->item_id = $query->where('id', $request->id)->value('id');
         $orderItem->customed_price = $orderItem->price;
         $orderItem->quantity = 1;
         $orderItemList[] = $orderItem;
@@ -122,9 +123,25 @@ class CartController extends Controller
         return;
     }
 
+    public function updateTopping(object $request, int $index, array $orderToppingList)
+    {
+        $orderTopping = new OrderTopping();
+        foreach ($request->topping as $toppingId) {
+            $query = Topping::query();
+            $orderTopping = $query->where('id', $toppingId)->first();
+            $orderTopping->order_item_id = $request->index; //ここでorder_toppingsテーブルのorder_item_idを仮置きする。
+            $orderTopping->topping_id = $query->where('id', $toppingId)->value('id');
+            $this->customedPriceCalc($orderTopping->price, $request->index);
+            $orderToppingList[] = $orderTopping;
+        }
+        $_SESSION['orderToppingList'] = $orderToppingList;
+        return;
+    }
+
     public function addCartTopping(Request $request)
     {
         session_start();
+
 
         if (isset($_SESSION['orderToppingList'])) {
             $orderToppingList = $_SESSION['orderToppingList'];
@@ -141,22 +158,19 @@ class CartController extends Controller
             $this->updateQuantity($request->quantity, $request->index);
             return redirect()->back()->with(['status' => '数量を変更しました']);
         }
+        if (!$request->topping == null && $request->quantity == "") {
+            $this->updateTopping($request, $request->index, $orderToppingList);
+            return redirect()->back()->with(['status' => 'トッピングを変更しました']);
+        }
+
         $this->updateQuantity($request->quantity, $request->index);
+        $this->updateTopping($request, $request->index, $orderToppingList);
 
         # TODO トッピングの重複処理
-        $orderTopping = new OrderTopping();
-        foreach ($request->topping as $toppingId) {
-            $query = Topping::query();
-            $orderTopping = $query->where('id', $toppingId)->first();
-            $orderTopping->order_item_id = $request->index; //ここでorder_toppingsテーブルのorder_item_idを仮置きする。
-            $this->customedPriceCalc($orderTopping->price, $request->index);
-            $orderToppingList[] = $orderTopping;
-        }
+        //
 
         #TODO トッピングの削除
         //
-
-        $_SESSION['orderToppingList'] = $orderToppingList;
 
         return redirect()->back()->with(['status' => 'トッピングと数量を変更しました']);
     }

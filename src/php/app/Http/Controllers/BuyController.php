@@ -18,10 +18,31 @@ class BuyController extends Controller
 {
     public function showBuyForm()
     {
+        // 既にカートに商品が存在しているかどうか判別。
+        session_start();
+        //セッションを切りたくなったら
         // unset($_SESSION["orderItemList"]);
         // unset($_SESSION["orderToppingList"]);
 
-        return view('buy-form');
+        $priceIncludeTax = 0;
+        if (isset($_SESSION['orderItemList'])) {
+            $orderItemList = $_SESSION['orderItemList'];
+            foreach ($orderItemList as $orderItem) {
+                $priceIncludeTax += $orderItem->customed_price * $orderItem->quantity;
+            }
+        } else {
+            $orderItemList = array();
+        }
+
+        if (isset($_SESSION['orderToppingList'])) {
+            $orderToppingList = $_SESSION['orderToppingList'];
+            foreach ($orderToppingList as $orderTopping) {
+            }
+        } else {
+            $orderToppingList = array();
+        }
+
+        return view('buy-form', ['orderItemList' => $orderItemList, 'orderToppingList' => $orderToppingList, 'priceIncludeTax' => $priceIncludeTax]);
     }
 
     public function buyOrderItems(Request $request)
@@ -80,6 +101,7 @@ class BuyController extends Controller
             }
 
             //セッションを切って、カートの中を空にする
+            session_start();
             unset($_SESSION["orderItemList"]);
             unset($_SESSION["orderToppingList"]);
         } catch (\Exception $e) {

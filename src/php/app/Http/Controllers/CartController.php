@@ -8,7 +8,6 @@ use App\Models\Item;
 use App\Models\Topping;
 use App\Models\OrderTopping;
 
-
 class CartController extends Controller
 {
     public function showCartItem()
@@ -31,9 +30,6 @@ class CartController extends Controller
 
         if (isset($_SESSION['orderToppingList'])) {
             $orderToppingList = $_SESSION['orderToppingList'];
-            foreach ($orderToppingList as $orderTopping) {
-                // $priceIncludeTax += $orderTopping->price;
-            }
         } else {
             $orderToppingList = array();
         }
@@ -55,6 +51,13 @@ class CartController extends Controller
             $orderItemList = array();
         }
 
+        if (isset($_SESSION['itemIdList'])) {
+            $itemIdList = $_SESSION['itemIdList'];
+        } else {
+            $itemIdList = array();
+        }
+
+
         //カートに追加する商品を追加する
         $query = Item::query();
         $orderItem = new OrderItem();
@@ -65,6 +68,10 @@ class CartController extends Controller
         $orderItemList[] = $orderItem;
         $_SESSION['orderItemList'] = $orderItemList;
 
+        //Itemのidが要素の配列をセッションに入れる
+        $itemIdList[] = $query->where('id', $request->id)->value('id');
+        $_SESSION['itemIdList'] = $itemIdList;
+
         //直前の画面に戻る
         return redirect()->back()->with('status', 'カートに追加しました');
     }
@@ -72,6 +79,7 @@ class CartController extends Controller
     public function deleteCartItem(Request $request)
     {
         session_start();
+
         //配列の添え字をリクエストで持ってくる。
         $index = $request->index;
         $orderItemList = $_SESSION['orderItemList'];
@@ -141,19 +149,20 @@ class CartController extends Controller
     public function addCartTopping(Request $request)
     {
         session_start();
-
-
         if (isset($_SESSION['orderToppingList'])) {
             $orderToppingList = $_SESSION['orderToppingList'];
         } else {
             $orderToppingList = array();
         }
 
+        //送られてくるindexと変更したいトッピング/数量を紐づける処理
+        $orderItemList = $_SESSION['orderItemList'];
+        // foreach($orderItemList)
+
         //変更内容がnullの場合の条件分岐
         if ($request->topping == null && $request->quantity == "") {
             return redirect()->back()->with(['status' => '変更内容を選択してください']);
         }
-
         if ($request->topping == null && !$request->quantity == "") {
             $this->updateQuantity($request->quantity, $request->index);
             return redirect()->back()->with(['status' => '数量を変更しました']);
@@ -169,7 +178,7 @@ class CartController extends Controller
         # TODO トッピングの重複処理
         //
 
-        #TODO トッピングの削除
+        # TODO トッピングの削除
         //
 
         return redirect()->back()->with(['status' => 'トッピングと数量を変更しました']);

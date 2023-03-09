@@ -12,8 +12,15 @@ class ProfileController extends Controller
 {
     public function showProfileEditForm()
     {
-        return view('mypage.profile_edit_form');
-        // ->with('user', Auth::user());
+        // $user = Auth::user();
+        // $user_id = Auth::id();
+        $deliverydestinations = DeliveryDestination::where('user_id', Auth::id())->get();
+
+        return view('mypage.profile_edit_form')->with([
+            // 'user' => $user,
+            // 'user_id' => $user_id,
+            'deliverydestinations' => $deliverydestinations
+        ]);
     }
 
     public function editProfile(EditRequest $request)
@@ -23,9 +30,7 @@ class ProfileController extends Controller
         $user->email = $request->input('email');
         $user->save();
 
-        $user_id = Auth::id();
         $delivery_destination_name = $request->input('delivery_destination_name');
-
         $deliverydestination = DeliveryDestination::where('delivery_destination_name', $delivery_destination_name)->first();
         if ($deliverydestination == null) {
             $deliverydestination = new DeliveryDestination();

@@ -49,7 +49,12 @@
                     {{-- お届け先 --}}
                     <div class="form-group mt-3">
                         <label for="delivery_destination_name">お届け先</label>
-                        <input id="delivery_destination_name" type="text" class="form-control @error('delivery_destination_name') is-invalid @enderror" name="delivery_destination_name" value="{{ old('delivery_destination_name') }}" required autocomplete="delivery_destination_name" autofocus>
+                        <select id="delivery_destination_name" type="text" class="form-control @error('delivery_destination_name') is-invalid @enderror" name="delivery_destination_name" value="{{ old('delivery_destination_name') }}" required autocomplete="delivery_destination_name" autofocus>
+                            <option value="new">新規作成</option>
+                            @foreach ($deliverydestinations as $deliverydestination)
+                                <option value="{{ $deliverydestination->id }}">{{ $deliverydestination->delivery_destination_name }}</option>
+                            @endforeach     
+                        </select>                   
                         @error('delivery_destination_name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

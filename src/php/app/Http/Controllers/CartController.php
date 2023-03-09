@@ -23,7 +23,7 @@ class CartController extends Controller
         if (isset($_SESSION['orderItemList'])) {
             $orderItemList = $_SESSION['orderItemList'];
             foreach ($orderItemList as $orderItem) {
-                $priceIncludeTax += $orderItem->price;
+                $priceIncludeTax += $orderItem->customed_price * $orderItem->quantity;
             }
         } else {
             $orderItemList = array();
@@ -32,7 +32,7 @@ class CartController extends Controller
         if (isset($_SESSION['orderToppingList'])) {
             $orderToppingList = $_SESSION['orderToppingList'];
             foreach ($orderToppingList as $orderTopping) {
-                $priceIncludeTax += $orderTopping->price;
+                // $priceIncludeTax += $orderTopping->price;
             }
         } else {
             $orderToppingList = array();
@@ -60,6 +60,7 @@ class CartController extends Controller
         $orderItem = new OrderItem();
         $orderItem = $query->where('id', $request->id)->first();
         $orderItem->customed_price = $orderItem->price;
+        $orderItem->quantity = 1;
         $orderItemList[] = $orderItem;
         $_SESSION['orderItemList'] = $orderItemList;
 
@@ -109,6 +110,18 @@ class CartController extends Controller
         return;
     }
 
+    public function updateQuantity(int $quantity, int $index)
+    {
+        $orderItemList = $_SESSION['orderItemList'];
+        foreach ($orderItemList as $key => $orderItem) {
+            if ($key == $index) {
+                $orderItem->quantity = $quantity;
+            }
+        }
+        $_SESSION['orderItemList'] = $orderItemList;
+        return;
+    }
+
     public function addCartTopping(Request $request)
     {
         session_start();
@@ -119,8 +132,16 @@ class CartController extends Controller
             $orderToppingList = array();
         }
 
-        #TODO バリデーション：トッピングが何も選択されていない状態で「トッピングを追加」を押したとき
-        //案：引数にOrderToppingRequestのフォームを作成し、nullを許容しない設定にする。
+        //変更内容がnullの場合の条件分岐
+        if ($request->topping == null && $request->quantity == "") {
+            return redirect()->back()->with(['status' => '変更内容を選択してください']);
+        }
+
+        if ($request->topping == null && !$request->quantity == "") {
+            $this->updateQuantity($request->quantity, $request->index);
+            return redirect()->back()->with(['status' => '数量を変更しました']);
+        }
+        $this->updateQuantity($request->quantity, $request->index);
 
         # TODO トッピングの重複処理
         $orderTopping = new OrderTopping();
@@ -137,6 +158,6 @@ class CartController extends Controller
 
         $_SESSION['orderToppingList'] = $orderToppingList;
 
-        return redirect()->back()->with(['status' => 'トッピングを追加しました']);
+        return redirect()->back()->with(['status' => 'トッピングと数量を変更しました']);
     }
 }

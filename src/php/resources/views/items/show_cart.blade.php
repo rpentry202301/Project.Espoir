@@ -28,8 +28,8 @@
         <thead>
             <tr>
                 <th colspan="2">商品名</th>
-                <th>数量</th>
                 <th>価格</th>
+                <th>数量</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -51,7 +51,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <form action="{{ route('add.topping.cart') }}" method="POST" id="add-topping">
+                                <form action="{{ route('add.topping.cart') }}" method="POST" id="item-update">
                                     @csrf
                                     <input type="hidden" name="index" value="{{ $itemKey }}">
                                     @foreach ($toppings as $topping)
@@ -63,7 +63,7 @@
                                                 style="transform: scale(0.5,0.5)">
                                         </td>
                                     @endforeach
-                                </form>
+                                    {{-- </form> --}}
                             </tr>
                             <tr>
                                 <td colspan="{{ count($toppings) }}"><small id="topping-help" class="form-text text-muted"
@@ -73,8 +73,12 @@
 
 
                     </td>
-                    <td><span class="form-group">
+                    <td>¥{{ $orderItem->customed_price }}/個</td>
+                    <td>{{ $orderItem->quantity }}<span class="form-group">
+                            {{-- <form action="{{ route('add.topping.cart') }}" method="POST" id="item-update"> --}}
+                            @csrf
                             <select id="quantity" name="quantity" class="form-control col-8">
+                                <option value="">--</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -85,10 +89,10 @@
                                 <option value="8">8</option>
                                 <option value="9">9</option>
                             </select>
+                            </form>
                         </span></td>
-                    <td>¥{{ $orderItem->customed_price }}</td>
                     <td>
-                        <button type="submit" class="btn btn-primary mb-2" form="add-topping">確定</button>
+                        <button type="submit" class="btn btn-primary mb-2" form="item-update">更新</button>
                         <form action="{{ route('delete.item.cart') }}" method="post">
                             @csrf
                             <button type="submit" class="btn btn-danger mb-2">削除</button>

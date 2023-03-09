@@ -5,6 +5,15 @@
 @endsection
 
 @section('content')
+<!--/slider-->
+<ul class="slider">
+    <li><img src="/storage/item-images/drink_sample1.jpg" alt=""></li>
+    <li><img src="/storage/item-images/drink_sample2.jpg" alt=""></li>
+    <li><img src="/storage/item-images/drink_sample3.jpg" alt=""></li>
+    <li><img src="/storage/item-images/drink_sample4.jpg" alt=""></li>
+    <li><img src="/storage/item-images/drink_sample5.jpg" alt=""></li>
+</ul>
+<!--/slider-->
 <div class="container">
     <div class="row">
         @foreach ($items as $item)

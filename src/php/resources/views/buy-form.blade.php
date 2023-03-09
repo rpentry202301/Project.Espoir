@@ -49,12 +49,12 @@
                                 <tr>
                                     <td>{{ $itemKey }} / {{ $orderItem->name }}<br>
                                         <input type="hidden" name="order_item_id" value="{{ $orderItem->id }}">
-                                        <input type="hidden" name="item_id" value="{{ $orderItem->item_id }}">
+                                        <input type="hidden" name="item_id[]" value="{{ $orderItem->item_id }}">
                                         @foreach ($orderToppingList as $toppingKey => $orderTopping)
                                             @if ($orderTopping->order_item_id == $itemKey)
                                                 <small
                                                     class="text-muted">{{ $orderTopping->name }}/{{ $orderTopping->price }}円</small><br>
-                                                <input type="hidden" name="topping_id"
+                                                <input type="hidden" name="topping_id[]"
                                                     value="{{ $orderTopping->topping_id }}">
                                             @endif
                                         @endforeach
@@ -62,11 +62,11 @@
                                     <td>本当はここに追加されているトッピングがあれば表示させたい
                                     </td>
                                     <td>¥{{ $orderItem->customed_price }}/個
-                                        <input type="hidden" name="customed_price"
+                                        <input type="hidden" name="customed_price[]"
                                             value="{{ $orderItem->customed_price }}">
                                     </td>
                                     <td><span>{{ $orderItem->quantity }}
-                                            <input type="hidden" name="quantity" value="{{ $orderItem->quantity }}">
+                                            <input type="hidden" name="quantity[]" value="{{ $orderItem->quantity }}">
                                         </span></td>
                                 </tr>
                             @endforeach
@@ -160,8 +160,11 @@
                 <button class="btn btn-secondary btn-block" onclick="onSubmit(event)">購入</button>
             </div>
         </div>
+        <br>
     </div>
     </div>
+    <br>
+    <br>
     </div>
     <script>
         var payjp = Payjp('{{ config('payjp.public_key') }}')

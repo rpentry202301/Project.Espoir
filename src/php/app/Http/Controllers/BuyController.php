@@ -78,18 +78,24 @@ class BuyController extends Controller
             $order->save();
 
             //order_itemをテーブルにinsert。orderItemListを1回回している中に、orderToppingListをn回回す必要があると思う。
-            $orderItem = new OrderItem();
-            $orderItem->item_id = $request->item_id;
-            $orderItem->order_id = DB::table('orders')->latest('id')->value('id');
-            $orderItem->customed_price = $request->customed_price;
-            $orderItem->quantity = $request->quantity;
-            $orderItem->save();
+            for ($i = 0; $i < count($request->item_id); $i++) {
+                $orderItem = new OrderItem();
+                $orderItem->item_id = $request->item_id[$i];
+                $orderItem->order_id = DB::table('orders')->latest('id')->value('id');
+                $orderItem->customed_price = $request->customed_price[$i];
+                $orderItem->quantity = $request->quantity[$i];
+                $orderItem->save();
 
-            //order_toppingをテーブルにinsert
-            $orderTopping = new OrderTopping();
-            $orderTopping->order_item_id = DB::table('order_items')->latest('id')->value('id');
-            $orderTopping->topping_id = $request->topping_id;
-            $orderTopping->save();
+                //order_toppingをテーブルにinsert
+                if (!$request->topping_id == null) {
+                    for ($i = 0; $i < count($request->topping_id); $i++) {
+                        $orderTopping = new OrderTopping();
+                        $orderTopping->order_item_id = DB::table('order_items')->latest('id')->value('id');
+                        $orderTopping->topping_id = $request->topping_id[$i];
+                        $orderTopping->save();
+                    }
+                }
+            }
 
             $charge = Charge::create([
                 'card'     => $token,

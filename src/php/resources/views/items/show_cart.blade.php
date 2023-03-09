@@ -6,6 +6,7 @@
 
 @section('content')
     <div class="col-3 offset-2 mx-auto">
+        <br>
         @if (session('message'))
             <div class="alert alert-{{ session('type', 'success') }}" role="alert">
                 {{ session('message') }}

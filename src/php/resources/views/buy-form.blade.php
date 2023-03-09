@@ -6,6 +6,7 @@
 
 @section('content')
     <script src="https://js.pay.jp/v2/pay.js"></script>
+    <br>
     @if (session('status'))
         <div class="alert alert-success text-center col-2 mx-auto" role="alert">
             {{ session('status') }}

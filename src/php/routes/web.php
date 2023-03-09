@@ -25,22 +25,16 @@ Route::get('/items/cart', [App\Http\Controllers\CartController::class, 'showCart
 Route::post('/items/cart/add-Item', [App\Http\Controllers\CartController::class, 'addCartItem'])->name('add.item.cart');
 Route::post('/items/cart/delete-Item', [App\Http\Controllers\CartController::class, 'deleteCartItem'])->name('delete.item.cart');
 Route::post('/items/cart/add-Topping', [App\Http\Controllers\CartController::class, 'addCartTopping'])->name('add.topping.cart');
-//ここまで
 
-//購入機能のルート
-Route::get('/buy-form', [App\Http\Controllers\BuyController::class, 'showBuyForm'])->name('buy.form');
-Route::post('/buy-form', [App\Http\Controllers\BuyController::class, 'buyOrderItems'])->name('buy.form');
-//ここまで
-
-Route::controller(ItemsController::class)->group(function(){
+Route::controller(ItemsController::class)->group(function () {
     Route::prefix('items')
         ->middleware('auth')
-        ->group(function(){
+        ->group(function () {
             Route::get('/{item}', 'showDetail')->name('item.showDetail');
         });
     Route::prefix('items')
         ->middleware('judge_admin')
-        ->group(function(){
+        ->group(function () {
             Route::get('/{item}/edit', 'showEditForm')->name('item.showEditForm');
             Route::get('/{item}/stop', 'stopSelling')->name('item.stopSelling');
             Route::get('/{item}/restart', 'restartSelling')->name('item.restartSelling');
@@ -51,6 +45,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware('auth')->group(function () {
     // 商品購入機能のパスはここに記述する
+    Route::get('/buy-form', [App\Http\Controllers\BuyController::class, 'showBuyForm'])->name('buy.form');
+    Route::post('/buy-form', [App\Http\Controllers\BuyController::class, 'buyOrderItems'])->name('buy.form');
 });
 
 Route::middleware('judge_admin')->group(function () {

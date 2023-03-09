@@ -20,12 +20,13 @@
 
     <!-- Styles -->
     <link href="{{ ('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
          <x-header></x-header>
          <div class="h-100 d-flex justify-content-center align-items-center">
-         <main class="py-4">
+         <main class="pb-4  pt-6">
              @yield('content')
          </main>
      </div>

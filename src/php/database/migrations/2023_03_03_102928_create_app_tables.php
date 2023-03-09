@@ -57,6 +57,7 @@ return new class extends Migration
             $table->integer('price');
             $table->string('image_file')->nullable();
             $table->boolean('is_selling')->default(1);
+            $table->boolean('is_recommend')->default(0);
 
             $table->timestamps();
         });

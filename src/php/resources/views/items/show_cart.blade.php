@@ -6,6 +6,7 @@
 
 @section('content')
     <div class="col-3 offset-2 mx-auto">
+        <br>
         @if (session('message'))
             <div class="alert alert-{{ session('type', 'success') }}" role="alert">
                 {{ session('message') }}
@@ -74,7 +75,6 @@
                     </td>
                     <td>¥{{ $orderItem->customed_price }}/個</td>
                     <td>{{ $orderItem->quantity }}<span class="form-group">
-                            {{-- <form action="{{ route('add.topping.cart') }}" method="POST" id="item-update"> --}}
                             @csrf
                             <select id="quantity" name="quantity" class="form-control col-8">
                                 <option value="">--</option>
@@ -126,6 +126,11 @@
     <form action="{{ route('add.item.cart') }}" method="post">
         @csrf
         <input type="hidden" value="1" name="id">
-        <input type="submit" value="カートに入れる">
+        <input type="submit" value="カートに入れる（1）">
+    </form>
+    <form action="{{ route('add.item.cart') }}" method="post">
+        @csrf
+        <input type="hidden" value="2" name="id">
+        <input type="submit" value="カートに入れる（2）">
     </form>
 @endsection

@@ -5,12 +5,21 @@
 @endsection
 
 @section('content')
+<!--/slider-->
+<ul class="slider col-10">
+    <li><img src="/storage/item-images/drink_sample1.jpg" alt=""></li>
+    <li><img src="/storage/item-images/drink_sample2.jpg" alt=""></li>
+    <li><img src="/storage/item-images/drink_sample3.jpg" alt=""></li>
+    <li><img src="/storage/item-images/drink_sample4.jpg" alt=""></li>
+    <li><img src="/storage/item-images/drink_sample5.jpg" alt=""></li>
+</ul>
+<!--/slider-->
 <div class="container">
     <div class="row">
         @foreach ($items as $item)
             <div class="col-3 mb-3">
                 <div class="card">
-                    <div class="position-relative overflow-hidden">
+                    <div class="position-relative overflow-hidden esp-item-image">
                         <img class="card-img-top" src="/storage/item-images/{{$item->image_file}}" alt="商品画像">
                         <div class="position-absolute py-2 px-3" style="left: 0; bottom: 20px; color: white; background-color: rgba(0, 0, 0, 0.70)">
                             <i class="fas fa-yen-sign"></i>

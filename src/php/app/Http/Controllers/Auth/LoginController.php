@@ -37,4 +37,12 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function loggedout()
+    {
+        session_start();
+        unset($_SESSION["orderItemList"]);
+        unset($_SESSION["orderToppingList"]);
+        return redirect()->back();
+    }
 }

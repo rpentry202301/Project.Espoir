@@ -9,7 +9,7 @@
 
     <title>@yield('title') | 喫茶えすぽわぁる</title>
 
-    <link rel="shortcut icon" href="../images/icon_coffee_beans.png">
+    <link rel="shortcut icon" href="/images/icon_coffee_beans.png">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -19,13 +19,14 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ ('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
          <x-header></x-header>
          <div class="h-100 d-flex justify-content-center align-items-center">
-         <main class="py-4">
+         <main class="pb-4  pt-6">
              @yield('content')
          </main>
      </div>

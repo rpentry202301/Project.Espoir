@@ -37,6 +37,30 @@ class SellController extends Controller
 
         return redirect()->back()->with('status','商品を登録しました。');
     }
+    
+    public function updateSellInformation(SellRequest $request){
+        $user = Auth::user();
+        $itemId = $request->input('itemId');
+        $item = Item::where('id',$itemId)->first();
+        $imageName = $this->saveImage($request->file('item-image'));
+        $item->image_file = $imageName;
+        $item->name = $request->input('name');
+        $item->description = $request->input('description');
+        $item->secondary_category_id = $request->input('category');
+        $item->price = $request->input('price');
+        $test = $request->input('is_recommend');
+
+        if($test == "true"){
+            $item->is_recommend = 1;
+        } else {
+            $item->is_recommend = 0;
+        };
+        
+        
+        $item->save();
+
+        return redirect()->back()->with('status','商品の情報を更新しました。');
+    }
 
     /**
      * 商品画像をリサイズして保存する

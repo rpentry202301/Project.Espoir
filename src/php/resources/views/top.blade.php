@@ -6,7 +6,7 @@
 
 @section('content')
 <!--/slider-->
-<ul class="slider">
+<ul class="slider col-10">
     <li><img src="/storage/item-images/drink_sample1.jpg" alt=""></li>
     <li><img src="/storage/item-images/drink_sample2.jpg" alt=""></li>
     <li><img src="/storage/item-images/drink_sample3.jpg" alt=""></li>

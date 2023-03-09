@@ -92,6 +92,25 @@
                         @enderror
                     </div>
 
+                    {{-- おすすめのON/OFF --}}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="flexRadioDefault1" name="is_recommend" value="true" {{ $item->is_recommend == '1' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            おすすめ
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="flexRadioDefault2" name="is_recommend" value="false" {{ $item->is_recommend == '0' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            そんなことはない
+                        </label>
+                    </div>
+
+                    <!-- <div class="custom-control custom-switch text-center">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch1" name="is_recommend" value="1"  {{ $item->is_recommend == '1' ? 'checked' : '' }}>
+                        <label class="custom-control-label" for="customSwitch1">おすすめ！</label>
+                    </div> -->
+
                     <div class="form-group mb-0 mt-3">
                         <button type="submit" class="btn btn-block btn-secondary">
                             更新する

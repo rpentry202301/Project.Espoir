@@ -9,7 +9,7 @@
 
     <title>@yield('title') | 喫茶えすぽわぁる</title>
 
-    <link rel="shortcut icon" href="../images/icon_coffee_beans.png">
+    <link rel="shortcut icon" href="/images/icon_coffee_beans.png">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

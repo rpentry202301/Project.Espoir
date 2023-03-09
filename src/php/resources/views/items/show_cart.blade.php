@@ -35,8 +35,37 @@
             </tr>
         </thead>
         <tbody>
+
+        <script>
+            window.onload = function(){
+                calc_total();
+            }
+        function calc_total(){
+            console.log('onclickイベントの動作確認');
+            var totalPrice =0;
+            var goukei = document.getElementById('goukei');
+            var formElements = document.forms;//ブラウザのすべてのフォームを取得（6こ）
+            for(i=0; i<formElements.length-3; i++){//商品フォーム以外の3つのフォームを除外
+                console.log(i+'番目のセッション（フォーム）が呼ばれている');
+                var form_row = formElements[i+1];//i+1番目のフォーム情報を取得
+                var item_price = Number(form_row.elements['itemPrice'].getAttribute('value'));//i+1番目の商品の値段を取得
+                var kingaku = 0;
+                var radioNodeList = Number(form_row.elements['toppingPrice']);
+                for(j=1; j<form_row.length-1; j++){
+                    var toppingPrice = Number(form_row.elements[j].value);
+                    if(form_row.elements[j].checked){
+                        item_price +=toppingPrice;
+                    }
+                }
+                form_row.elements['customedPrice'].value = item_price;
+                totalPrice += item_price;
+                goukei.value = totalPrice;
+            }
+        }
+        </script>
+        
             @foreach ($orderItemList as $index => $orderItem)
-                <form action="{{ route('add.topping.cart') }}" method="POST" id="item-update">
+                <form action="{{ route('delete.item.cart') }}" method="POST" id="item-update" name="orderForm">
                     @csrf
                     <tr>
                         <td>
@@ -50,20 +79,20 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <input type="hidden" name="index" value="{{ $index }}">
+                                    <!-- <input type="hidden" name="index" value="{{ $index }}"> -->
                                     @foreach ($toppings as $topping)
                                         <td>
                                             <span class="small" style="font-size: 5px">{{ $topping->name }} /
                                                 ¥{{ $topping->price }}</span>
-                                            <input type="checkbox" class="form-control small" name="topping[]"
-                                                value="{{ $topping->id }}" aria-describedby="topping-help"
-                                                style="transform: scale(0.5,0.5)">
+                                            <input id="toppingPrice" type="checkbox" class="form-control small" name="toppingPrice"
+                                                value="{{ $topping->price }}" aria-describedby="topping-help"
+                                                style="transform: scale(0.5,0.5)" onclick="calc_total()">
                                         </td>
                                     @endforeach
                                 </tr>
                             </table>
                         </td>
-                        <td>¥{{ $orderItem->price }}/個</td>
+                        <td><span id="itemPrice" value="{{ $orderItem->price }}"> ¥<input name="customedPrice" class="customedPrice w-50" value="{{ $orderItem->price }}" readonly>/個<input type="hidden" value="{{$orderItem->price}}" name="itemPrice"></span></td>
                         <td>
                             <span class="form-group">
                                 <select id="quantity" name="quantity" class="form-control col-8">
@@ -81,14 +110,14 @@
                             </span>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary mb-2">更新</button>
-                            <button type="button" class="btn btn-danger mb-2">削除</button>
+                            <!-- <button type="button" class="btn btn-primary mb-2">更新</button> -->
+                            <button type="submit" class="btn btn-danger mb-2">削除</button>
                         </td>
                     </tr>
                 </form>
             @endforeach
             <tr>
-                <td colspan="5" class="text-right font-weight-bold">合計金額 : <span class="text-danger">¥100</span>
+                <td colspan="5" class="text-right font-weight-bold">合計金額 : <input id="goukei" name="goukei" class="text-danger" value="" readonly>円
                 </td>
             </tr>
         </tbody>

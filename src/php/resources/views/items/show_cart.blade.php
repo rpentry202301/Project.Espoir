@@ -35,26 +35,22 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($orderItemList as $itemKey => $orderItem)
-                <tr>
-                    <td>{{ $itemKey }} / {{ $orderItem->name }}<br>
-                        @foreach ($orderToppingList as $toppingKey => $orderTopping)
-                            @if ($orderTopping->order_item_id == $itemKey)
-                                <small class="text-muted">{{ $orderTopping->name }}/{{ $orderTopping->price }}円</small><br>
-                            @endif
-                        @endforeach
-                    </td>
-                    <td>
-                        <table>
-                            <tr>
-                                <td colspan="{{ count($toppings) }}"><span class="form-group form-check-inline">
-                                        <label for="select-topping" style="font-size: 8px">トッピング</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <form action="{{ route('add.topping.cart') }}" method="POST" id="item-update">
-                                    @csrf
-                                    <input type="hidden" name="index" value="{{ $itemKey }}">
+            @foreach ($orderItemList as $index => $orderItem)
+                <form action="{{ route('add.topping.cart') }}" method="POST" id="item-update">
+                    @csrf
+                    <tr>
+                        <td>
+                            {{ $index }} / {{ $orderItem->name }}
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td colspan="{{ count($toppings) }}"><span class="form-group form-check-inline">
+                                            <label for="select-topping" style="font-size: 8px">トッピング</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <input type="hidden" name="index" value="{{ $index }}">
                                     @foreach ($toppings as $topping)
                                         <td>
                                             <span class="small" style="font-size: 5px">{{ $topping->name }} /
@@ -64,45 +60,35 @@
                                                 style="transform: scale(0.5,0.5)">
                                         </td>
                                     @endforeach
-                            </tr>
-                            <tr>
-                                <td colspan="{{ count($toppings) }}"><small id="topping-help" class="form-text text-muted"
-                                        style="font-size: 8px">ポップアップで表示したい</small></td>
-                            </tr>
-                        </table>
-
-
-                    </td>
-                    <td>¥{{ $orderItem->customed_price }}/個</td>
-                    <td>{{ $orderItem->quantity }}<span class="form-group">
-                            @csrf
-                            <select id="quantity" name="quantity" class="form-control col-8">
-                                <option value="">--</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                            </select>
-                            </form>
-                        </span></td>
-                    <td>
-                        <button type="submit" class="btn btn-primary mb-2" form="item-update">更新</button>
-                        <form action="{{ route('delete.item.cart') }}" method="post">
-                            @csrf
-                            <button type="submit" class="btn btn-danger mb-2">削除</button>
-                            <input type="hidden" name="index" value="{{ $itemKey }}">
-                        </form>
-                    </td>
-                </tr>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>¥{{ $orderItem->price }}/個</td>
+                        <td>
+                            <span class="form-group">
+                                <select id="quantity" name="quantity" class="form-control col-8">
+                                    <option value="">--</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                </select>
+                            </span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary mb-2">更新</button>
+                            <button type="button" class="btn btn-danger mb-2">削除</button>
+                        </td>
+                    </tr>
+                </form>
             @endforeach
             <tr>
-                <td colspan="5" class="text-right font-weight-bold">合計金額 : <span
-                        class="text-danger">¥{{ $priceIncludeTax }}</span>
+                <td colspan="5" class="text-right font-weight-bold">合計金額 : <span class="text-danger">¥100</span>
                 </td>
             </tr>
         </tbody>

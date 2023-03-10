@@ -30,7 +30,7 @@
             <tr>
                 <th colspan="2">商品名</th>
                 <th>価格</th>
-                <th>数量</th>
+                <th class="w-25">数量</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -59,6 +59,8 @@
                     console.log('商品価格は'+item_price);
                     var kingaku = 0;
                     var NumberOfToppings = form_row.elements['toppingPrice'].length;
+                    var quantity = form_row.elements['quantity'].value;
+                    // console.log('数量は'+form_row.elements['quantity'].value);
                     for(j=1; j<=NumberOfToppings; j++){
                         var toppingPrice = Number(form_row.elements[j].value);
                         console.log('トッピングの値段は'+toppingPrice);
@@ -69,7 +71,7 @@
                         }
                     }
                     form_row.elements['customedPrice'].value = item_price;
-                    totalPrice += item_price;
+                    totalPrice += item_price * quantity ;
                     console.log('合計金額は'+ totalPrice);
                     goukei.value = totalPrice;
                 }
@@ -108,7 +110,7 @@
                         <td><span id="itemPrice" value="{{ $orderItem->price }}"> ¥<input name="customedPrice" class="customedPrice w-50" value="{{ $orderItem->price }}" readonly>/個<input type="hidden" value="{{$orderItem->price}}" name="itemPrice"></span></td>
                         <td>
                             <span class="form-group">
-                                <select id="quantity" name="quantity" class="form-control col-8">
+                                <select id="quantity" name="quantity" class="form-control col-8" onchange="calc_total()">
                                     <option value="">--</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>

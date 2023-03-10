@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="col-3 offset-2 mx-auto">
+    <div class="col-3 offset-2 mx-auto">
         <br>
         @if (session('status'))
             <div class="alert alert-success text-center" role="alert">
@@ -28,8 +28,8 @@
 
                 @include('items.item_detail_panel', [
                     'item' => $item,
-                    ])
-                    
+                ])
+
                 <div class="my-3 text-center">{!! nl2br(e($item->description)) !!}</div>
                 <div class="row">
                     <div class="col-8 offset-2">
@@ -40,23 +40,22 @@
                         </form>
                     </div>
                 </div>
-
+                <br>
             </div>
         </div>
     </div>
 
-    @if(Auth::check())
-        @if($user->admin_flag === 1)
-        <a href="{{route('item.showEditForm',$item)}}"
-        class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
-        role="button"
-        style="position: fixed; bottom: 30px; right: 200px; width: 150px; height: 150px; border-radius: 75px;"
-        >
-        <div style="font-size: 24px;">編集</div>
-        <div>
-            <i class="fas fa-edit" style="font-size: 30px;"></i>
-        </div>
-        </a>
+    @if (Auth::check())
+        @if ($user->admin_flag === 1)
+            <a href="{{ route('item.showEditForm', $item) }}"
+                class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
+                role="button"
+                style="position: fixed; bottom: 30px; right: 200px; width: 150px; height: 150px; border-radius: 75px;">
+                <div style="font-size: 24px;">編集</div>
+                <div>
+                    <i class="fas fa-edit" style="font-size: 30px;"></i>
+                </div>
+            </a>
         @endif
     @endif
 

@@ -21,7 +21,7 @@ class OrderSeeder extends Seeder
                 [
                     'id'                        => '1',
                     'user_id'                   => '1',
-                    'price_include_tax'         => '200',
+                    'price_include_tax'         => '1000',
                     'order_date'                =>  Carbon::now(),
                     'delivery_destination_name' => '自宅',
                     'zipcode'                   => '1000001',
@@ -32,7 +32,7 @@ class OrderSeeder extends Seeder
                 [
                     'id'                        => '2',
                     'user_id'                   => '1',
-                    'price_include_tax'         => '300',
+                    'price_include_tax'         => '500',
                     'order_date'                => '2020-03-09',
                     'delivery_destination_name' => '職場',
                     'zipcode'                   => '1600022',

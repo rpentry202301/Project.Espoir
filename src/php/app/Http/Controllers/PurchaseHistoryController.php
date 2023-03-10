@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class PurchaseHistoryController extends Controller
 {
@@ -29,6 +28,36 @@ class PurchaseHistoryController extends Controller
                 }
             }
         }
-        return view('purchase-history')->with(['orders' => $orders]);
+
+        $orderItems = DB::table('order_items')->get();
+        $items = DB::table('items')->get();
+        foreach ($orderItems as $orderItem) {
+            foreach ($items as $item) {
+                if ($orderItem->item_id == $item->id) {
+                    $orderItem->name = $item->name;
+                }
+            }
+        }
+
+        $orderToppings = DB::table('order_toppings')->get();
+        $toppings = DB::table('toppings')->get();
+        foreach ($orderToppings as $orderTopping) {
+            foreach ($toppings as $topping) {
+                if ($orderTopping->topping_id == $topping->id) {
+                    $orderTopping->name = $topping->name;
+                }
+            }
+        }
+
+        foreach ($orderItems as $orderItem) {
+            foreach ($orderToppings as $orderTopping) {
+                if ($orderItem->id == $orderTopping->order_item_id) {
+                }
+            }
+        }
+
+        // dd($orderItems);
+
+        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings]);
     }
 }

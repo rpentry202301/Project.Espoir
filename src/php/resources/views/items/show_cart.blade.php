@@ -44,28 +44,41 @@
             console.log('onclickイベントの動作確認');
             var totalPrice =0;
             var goukei = document.getElementById('goukei');
-            var formElements = document.forms;//ブラウザのすべてのフォームを取得（6こ）
-            for(i=0; i<formElements.length-3; i++){//商品フォーム以外の3つのフォームを除外
-                console.log(i+'番目のセッション（フォーム）が呼ばれている');
-                var form_row = formElements[i+1];//i+1番目のフォーム情報を取得
-                var item_price = Number(form_row.elements['itemPrice'].getAttribute('value'));//i+1番目の商品の値段を取得
-                var kingaku = 0;
-                var radioNodeList = Number(form_row.elements['toppingPrice']);
-                for(j=1; j<form_row.length-1; j++){
-                    var toppingPrice = Number(form_row.elements[j].value);
-                    if(form_row.elements[j].checked){
-                        item_price +=toppingPrice;
+            var formElements = document.forms;//ブラウザのすべてのフォームを取得（4こ）
+            console.log(formElements);
+            // console.log(formElements[0]);
+            // console.log(formElements[2]);
+            // console.log(formElements[4]);
+            // console.log(formElements[6]);
+            console.log(formElements.length);
+            for(i=2; i<formElements.length-1; i++){//商品フォームは2番目～.length-1番目となる
+                if(i % 2 == 0){
+                    console.log(i+'番目のセッション（フォーム）が呼ばれている');
+                    var form_row = formElements[i];//i+1番目のフォーム情報を取得
+                    var item_price = Number(form_row.elements['itemPrice'].getAttribute('value'));//i+1番目の商品の値段を取得
+                    console.log('商品価格は'+item_price);
+                    var kingaku = 0;
+                    var NumberOfToppings = form_row.elements['toppingPrice'].length;
+                    for(j=1; j<=NumberOfToppings; j++){
+                        var toppingPrice = Number(form_row.elements[j].value);
+                        console.log('トッピングの値段は'+toppingPrice);
+                        // console.log(form_row.elements[j]);
+                        if(form_row.elements[j].checked){
+                            item_price +=toppingPrice;
+                            console.log('if文の動作確認');
+                        }
                     }
+                    form_row.elements['customedPrice'].value = item_price;
+                    totalPrice += item_price;
+                    console.log('合計金額は'+ totalPrice);
+                    goukei.value = totalPrice;
                 }
-                form_row.elements['customedPrice'].value = item_price;
-                totalPrice += item_price;
-                goukei.value = totalPrice;
             }
         }
         </script>
         
             @foreach ($orderItemList as $index => $orderItem)
-                <form action="{{ route('delete.item.cart') }}" method="POST" id="item-update" name="orderForm">
+                <form action="{{ route('add.topping.cart') }}" method="post" id="item-update" name="orderForm">
                     @csrf
                     <tr>
                         <td>
@@ -108,13 +121,17 @@
                                     <option value="9">9</option>
                                 </select>
                             </span>
+                    </form>
                         </td>
                         <td>
-                            <!-- <button type="button" class="btn btn-primary mb-2">更新</button> -->
-                            <button type="submit" class="btn btn-danger mb-2">削除</button>
+                            <button type="submit" class="btn btn-primary mb-2" form="item-update">更新</button>
+                            <form action="{{ route('delete.item.cart') }}" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-danger mb-2">削除</button>
+                                <input type="hidden" name="index" value="{{ $index }}">
+                            </form>
                         </td>
                     </tr>
-                </form>
             @endforeach
             <tr>
                 <td colspan="5" class="text-right font-weight-bold">合計金額 : <input id="goukei" name="goukei" class="text-danger" value="" readonly>円
@@ -138,7 +155,7 @@
     <br>
     <hr>
     <br>
-    <form action="{{ route('add.item.cart') }}" method="post">
+    <!-- <form action="{{ route('add.item.cart') }}" method="post">
         @csrf
         <input type="hidden" value="1" name="id">
         <input type="submit" value="カートに入れる（1）">
@@ -147,5 +164,5 @@
         @csrf
         <input type="hidden" value="2" name="id">
         <input type="submit" value="カートに入れる（2）">
-    </form>
+    </form> -->
 @endsection

@@ -25,6 +25,21 @@ class EditRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:1', 'max:30'],
+            'email' => ['required', 'string', 'email', 'min:6', 'max:254', 'unique:users'],
+            'zipcode' => ['required', 'numeric', 'digits:7'],
+            'address' => ['required', 'string', 'min:1', 'max:30'],
+            'telephone' => ['required', 'numeric', 'digits_between:10,14'],
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'name' => 'ユーザー名',
+            'email' => 'メールアドレス',
+            'zipcode' => '郵便番号',
+            'address' => '住所',
+            'telephone' => '電話番号',
         ];
     }
 }

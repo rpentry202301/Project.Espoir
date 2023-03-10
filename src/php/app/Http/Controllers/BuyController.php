@@ -23,7 +23,6 @@ class BuyController extends Controller
         //セッションを切りたくなったら
         // unset($_SESSION["orderItemList"]);
         // unset($_SESSION["orderToppingList"]);
-
         $priceIncludeTax = 0;
         if (isset($_SESSION['orderItemList'])) {
             $orderItemList = $_SESSION['orderItemList'];

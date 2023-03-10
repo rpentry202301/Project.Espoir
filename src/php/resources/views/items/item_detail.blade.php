@@ -5,6 +5,14 @@
 @endsection
 
 @section('content')
+<div class="col-3 offset-2 mx-auto">
+        <br>
+        @if (session('status'))
+            <div class="alert alert-success text-center" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-8 offset-2 bg-white">

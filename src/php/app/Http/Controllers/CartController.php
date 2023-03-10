@@ -158,7 +158,7 @@ class CartController extends Controller
         //送られてくるindexと変更したいトッピング/数量を紐づける処理
         $orderItemList = $_SESSION['orderItemList'];
         // foreach($orderItemList)
-
+        dd($request);
         //変更内容がnullの場合の条件分岐
         if ($request->topping == null && $request->quantity == "") {
             return redirect()->back()->with(['status' => '変更内容を選択してください']);

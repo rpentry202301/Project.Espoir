@@ -58,18 +58,28 @@
                     var item_price = Number(form_row.elements['itemPrice'].getAttribute('value'));//i+1番目の商品の値段を取得
                     console.log('商品価格は'+item_price);
                     var kingaku = 0;
-                    var NumberOfToppings = form_row.elements['toppingPrice'].length;
+                    // var NumberOfToppings = form_row.elements['toppingPrice'].length;//トッピングス配列の要素数を取得
                     var quantity = form_row.elements['quantity'].value;
-                    // console.log('数量は'+form_row.elements['quantity'].value);
-                    for(j=1; j<=NumberOfToppings; j++){
-                        var toppingPrice = Number(form_row.elements[j].value);
-                        console.log('トッピングの値段は'+toppingPrice);
-                        // console.log(form_row.elements[j]);
-                        if(form_row.elements[j].checked){
+                    for(j=1;j<=7;j++){
+                        if(form_row.elements['toppingPrice'+j].checked){
+                            var toppingPrice = Number(form_row.elements['toppingPrice'+1].value);
                             item_price +=toppingPrice;
                             console.log('if文の動作確認');
                         }
                     }
+
+
+
+                    // console.log('数量は'+form_row.elements['quantity'].value);
+                    // for(j=1; j<=NumberOfToppings; j++){
+                    //     var toppingPrice = Number(form_row.elements[j].value);
+                    //     console.log('トッピングの値段は'+toppingPrice);
+                    //     // console.log(form_row.elements[j]);
+                    //     if(form_row.elements[j].checked){
+                    //         item_price +=toppingPrice;
+                    //         console.log('if文の動作確認');
+                    //     }
+                    // }
                     form_row.elements['customedPrice'].value = item_price;
                     totalPrice += item_price * quantity ;
                     console.log('合計金額は'+ totalPrice);
@@ -99,7 +109,7 @@
                                         <td>
                                             <span class="small" style="font-size: 5px">{{ $topping->name }} /
                                                 ¥{{ $topping->price }}</span>
-                                            <input id="toppingPrice" type="checkbox" class="form-control small" name="toppingPrice"
+                                            <input id="toppingPrice" type="checkbox" class="form-control small" name="toppingPrice{{$topping->id}}"
                                                 value="{{ $topping->price }}" aria-describedby="topping-help"
                                                 style="transform: scale(0.5,0.5)" onclick="calc_total()">
                                         </td>

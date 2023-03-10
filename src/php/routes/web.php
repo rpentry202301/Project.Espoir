@@ -62,3 +62,7 @@ Route::prefix('mypage')
         Route::get('/edit-profile', [App\Http\Controllers\MyPage\ProfileController::class, 'showProfileEditForm'])->name('mypage.edit-profile');
         Route::post('/edit-profile', [App\Http\Controllers\MyPage\ProfileController::class, 'editProfile'])->name('mypage.edit-profile');
     });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/purchase-history', [App\Http\Controllers\PurchaseHistoryController::class, 'showPurchaseHistory'])->name('purchase-history');
+});

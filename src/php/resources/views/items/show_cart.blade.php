@@ -44,12 +44,8 @@
             console.log('onclickイベントの動作確認');
             var totalPrice =0;
             var goukei = document.getElementById('goukei');
-            var formElements = document.forms;//ブラウザのすべてのフォームを取得（4こ）
+            var formElements = document.forms;//ブラウザのすべてのフォームを取得(商品*2+2)
             console.log(formElements);
-            // console.log(formElements[0]);
-            // console.log(formElements[2]);
-            // console.log(formElements[4]);
-            // console.log(formElements[6]);
             console.log(formElements.length);
             for(i=2; i<formElements.length-1; i++){//商品フォームは2番目～.length-1番目となる
                 if(i % 2 == 0){
@@ -58,28 +54,16 @@
                     var item_price = Number(form_row.elements['itemPrice'].getAttribute('value'));//i+1番目の商品の値段を取得
                     console.log('商品価格は'+item_price);
                     var kingaku = 0;
-                    // var NumberOfToppings = form_row.elements['toppingPrice'].length;//トッピングス配列の要素数を取得
                     var quantity = form_row.elements['quantity'].value;
                     for(j=1;j<=7;j++){
+                        console.log(form_row.elements['toppingPrice'+j]);
                         if(form_row.elements['toppingPrice'+j].checked){
-                            var toppingPrice = Number(form_row.elements['toppingPrice'+1].value);
+                            var toppingPrice = Number(form_row.elements['toppingPrice'+j].value);
+                            console.log(form_row.elements['toppingPrice1'+j]);
                             item_price +=toppingPrice;
                             console.log('if文の動作確認');
                         }
                     }
-
-
-
-                    // console.log('数量は'+form_row.elements['quantity'].value);
-                    // for(j=1; j<=NumberOfToppings; j++){
-                    //     var toppingPrice = Number(form_row.elements[j].value);
-                    //     console.log('トッピングの値段は'+toppingPrice);
-                    //     // console.log(form_row.elements[j]);
-                    //     if(form_row.elements[j].checked){
-                    //         item_price +=toppingPrice;
-                    //         console.log('if文の動作確認');
-                    //     }
-                    // }
                     form_row.elements['customedPrice'].value = item_price;
                     totalPrice += item_price * quantity ;
                     console.log('合計金額は'+ totalPrice);
@@ -90,7 +74,7 @@
         </script>
         
             @foreach ($orderItemList as $index => $orderItem)
-                <form action="{{ route('add.topping.cart') }}" method="post" id="item-update" name="orderForm">
+                <form action="{{ route('add.topping.cart') }}" method="post" id="item-update{{$orderItem}}" name="orderForm">
                     @csrf
                     <tr>
                         <td>
@@ -109,7 +93,7 @@
                                         <td>
                                             <span class="small" style="font-size: 5px">{{ $topping->name }} /
                                                 ¥{{ $topping->price }}</span>
-                                            <input id="toppingPrice" type="checkbox" class="form-control small" name="toppingPrice{{$topping->id}}"
+                                            <input id="toppingPrice{{$topping->id}}" type="checkbox" class="form-control small" name="toppingPrice{{$topping->id}}"
                                                 value="{{ $topping->price }}" aria-describedby="topping-help"
                                                 style="transform: scale(0.5,0.5)" onclick="calc_total()">
                                         </td>
@@ -136,7 +120,7 @@
                     </form>
                         </td>
                         <td>
-                            <button type="submit" class="btn btn-primary mb-2" form="item-update">更新</button>
+                            <button type="submit" class="btn btn-primary mb-2" form="item-update{{$orderItem}}">更新</button>
                             <form action="{{ route('delete.item.cart') }}" method="post">
                                 @csrf
                                 <button type="submit" class="btn btn-danger mb-2">削除</button>

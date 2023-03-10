@@ -55,9 +55,37 @@
                             <td colspan="2">この中にテーブルで配送先情報を表示する</td>
                             <td>代金引換</td>
                         </tr>
+                        @foreach ($orders as $order)
+                            <tr>
+                                <td>{{ $order->user_id }}</td>
+                                <td>{{ $order->order_date }}</td>
+                                <td colspan="2">この中にテーブルで商品一覧を表示する</td>
+                                <td>¥{{ $order->price_include_tax }}</td>
+                                <td colspan="2">
+                                    <table class="w-100 p-3 border-0">
+                                        <thead>
+                                            <tr>
+                                                <th>名前</th>
+                                                <th>郵便番号</th>
+                                                <th>住所</th>
+                                                <th>電話番号</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <td>{{ $order->delivery_destination_name }}</td>
+                                            <td>{{ $order->zipcode }}</td>
+                                            <td>{{ $order->address }}</td>
+                                            <td>{{ $order->telephone }}</td>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>{{ $order->payment_method }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
+        <br>
     </div>
 @endsection

@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Auth;
 class ItemsController extends Controller
 {
     public function showItems(Request $request){
+        if($request->filled('category') || $request->filled('keyword')){
+            $isRecommendItems = null;
+        }else{
+            $isRecommendItems = Item::where('is_recommend',true)->get();
+        }
+
         $query = Item::query();
  
         // カテゴリで絞り込み
@@ -44,6 +50,7 @@ class ItemsController extends Controller
             [
                 'items' => $items,
                 'user' => $user,
+                'isRecommendItems' => $isRecommendItems
             ]
         );
     }

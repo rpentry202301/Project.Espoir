@@ -6,13 +6,13 @@
 
 @section('content')
 <!--/slider-->
+@if($isRecommendItems)
 <ul class="slider col-10">
-    <li><img src="/storage/item-images/drink_sample1.jpg" alt=""></li>
-    <li><img src="/storage/item-images/drink_sample2.jpg" alt=""></li>
-    <li><img src="/storage/item-images/drink_sample3.jpg" alt=""></li>
-    <li><img src="/storage/item-images/drink_sample4.jpg" alt=""></li>
-    <li><img src="/storage/item-images/drink_sample5.jpg" alt=""></li>
+    @foreach($isRecommendItems as $isRecommendItem)
+    <li><img src="/storage/item-images/{{$isRecommendItem->image_file}}" alt="おすすめ画像"></li>
+    @endforeach
 </ul>
+@endif
 <!--/slider-->
 <div class="container">
     <div class="row">

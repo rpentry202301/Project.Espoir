@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call([SecondaryCategorySeeder::class]);
         $this->call([ItemSeeder::class]);
         $this->call([ToppingSeeder::class]);
+        $this->call([IPContentSeeder::class]);
     }
 }

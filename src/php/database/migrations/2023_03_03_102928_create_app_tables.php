@@ -117,6 +117,23 @@ return new class extends Migration
 
             $table->timestamps();
         });
+        
+        #IPContents
+        Schema::create('IPContents', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('image_file')->nullable();
+            $table->timestamps();
+        });
+
+        #IPContents_Users
+        Schema::create('IPContents_Users', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('IPContent_id');
+            $table->foreign('IPContent_id')->references('id')->on('IPContents');
+        });
     }
 
     /**
@@ -126,6 +143,9 @@ return new class extends Migration
      */
     public function down()
     {
+        // Schema::dropIfExists('IPContents');
+        // Schema::dropIfExists('IPContents_Users');
+
         Schema::dropIfExists('order_toppings');
         Schema::dropIfExists('toppings');
 

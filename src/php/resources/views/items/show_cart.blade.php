@@ -25,56 +25,59 @@
         <h3 class="text-center py-2 text-danger">カートに商品が入っていません</h3>
     @endif
     {{-- カートの枠 --}}
-    <table class="table mx-auto table-striped table-hover w-75 p-3 table-bordered">
+    <table class="table mx-auto table-hover col-11 table-bordered">
         <thead>
             <tr>
-                <th colspan="2">商品名</th>
+                <th>商品名</th>
+                <th>トッピング</th>
                 <th>価格</th>
-                <th class="w-25">数量</th>
-                <th>操作</th>
+                <th class="col-1">数量</th>
+                <th class="col-1">操作</th>
             </tr>
         </thead>
         <tbody>
 
-        <script>
-            window.onload = function(){
-                calc_total();
-            }
-        function calc_total(){
-            console.log('onclickイベントの動作確認');
-            var totalPrice =0;
-            var goukei = document.getElementById('goukei');
-            var formElements = document.forms;//ブラウザのすべてのフォームを取得(商品*2+2)
-            console.log(formElements);
-            console.log(formElements.length);
-            for(i=2; i<formElements.length-1; i++){//商品フォームは2番目～.length-1番目となる
-                if(i % 2 == 0){
-                    console.log(i+'番目のセッション（フォーム）が呼ばれている');
-                    var form_row = formElements[i];//i+1番目のフォーム情報を取得
-                    var item_price = Number(form_row.elements['itemPrice'].getAttribute('value'));//i+1番目の商品の値段を取得
-                    console.log('商品価格は'+item_price);
-                    var kingaku = 0;
-                    var quantity = form_row.elements['quantity'].value;
-                    for(j=1;j<=7;j++){
-                        console.log(form_row.elements['toppingPrice'+j]);
-                        if(form_row.elements['toppingPrice'+j].checked){
-                            var toppingPrice = Number(form_row.elements['toppingPrice'+j].value);
-                            console.log(form_row.elements['toppingPrice1'+j]);
-                            item_price +=toppingPrice;
-                            console.log('if文の動作確認');
+            <script>
+                window.onload = function() {
+                    calc_total();
+                }
+
+                function calc_total() {
+                    console.log('onclickイベントの動作確認');
+                    var totalPrice = 0;
+                    var goukei = document.getElementById('goukei');
+                    var formElements = document.forms; //ブラウザのすべてのフォームを取得(商品*2+2)
+                    console.log(formElements);
+                    console.log(formElements.length);
+                    for (i = 2; i < formElements.length - 1; i++) { //商品フォームは2番目～.length-1番目となる
+                        if (i % 2 == 0) {
+                            console.log(i + '番目のセッション（フォーム）が呼ばれている');
+                            var form_row = formElements[i]; //i+1番目のフォーム情報を取得
+                            var item_price = Number(form_row.elements['itemPrice'].getAttribute('value')); //i+1番目の商品の値段を取得
+                            console.log('商品価格は' + item_price);
+                            var kingaku = 0;
+                            var quantity = form_row.elements['quantity'].value;
+                            for (j = 1; j <= 7; j++) {
+                                console.log(form_row.elements['toppingPrice' + j]);
+                                if (form_row.elements['toppingPrice' + j].checked) {
+                                    var toppingPrice = Number(form_row.elements['toppingPrice' + j].value);
+                                    console.log(form_row.elements['toppingPrice1' + j]);
+                                    item_price += toppingPrice;
+                                    console.log('if文の動作確認');
+                                }
+                            }
+                            form_row.elements['customedPrice'].value = item_price;
+                            totalPrice += item_price * quantity;
+                            console.log('合計金額は' + totalPrice);
+                            goukei.value = totalPrice;
                         }
                     }
-                    form_row.elements['customedPrice'].value = item_price;
-                    totalPrice += item_price * quantity ;
-                    console.log('合計金額は'+ totalPrice);
-                    goukei.value = totalPrice;
                 }
-            }
-        }
-        </script>
-        
+            </script>
+
             @foreach ($orderItemList as $index => $orderItem)
-                <form action="{{ route('add.topping.cart') }}" method="post" id="item-update{{$orderItem}}" name="orderForm">
+                <form action="{{ route('add.topping.cart') }}" method="post" id="item-update{{ $orderItem }}"
+                    name="orderForm">
                     @csrf
                     <tr>
                         <td>
@@ -83,17 +86,12 @@
                         <td>
                             <table>
                                 <tr>
-                                    <td colspan="{{ count($toppings) }}"><span class="form-group form-check-inline">
-                                            <label for="select-topping" style="font-size: 8px">トッピング</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <!-- <input type="hidden" name="index" value="{{ $index }}"> -->
                                     @foreach ($toppings as $topping)
                                         <td>
                                             <span class="small" style="font-size: 5px">{{ $topping->name }} /
                                                 ¥{{ $topping->price }}</span>
-                                            <input id="toppingPrice{{$topping->id}}" type="checkbox" class="form-control small" name="toppingPrice{{$topping->id}}"
+                                            <input id="toppingPrice{{ $topping->id }}" type="checkbox"
+                                                class="form-control small" name="toppingPrice{{ $topping->id }}"
                                                 value="{{ $topping->price }}" aria-describedby="topping-help"
                                                 style="transform: scale(0.5,0.5)" onclick="calc_total()">
                                         </td>
@@ -101,10 +99,12 @@
                                 </tr>
                             </table>
                         </td>
-                        <td><span id="itemPrice" value="{{ $orderItem->price }}"> ¥<input name="customedPrice" class="customedPrice w-50" value="{{ $orderItem->price }}" readonly>/個<input type="hidden" value="{{$orderItem->price}}" name="itemPrice"></span></td>
+                        <td><span id="itemPrice" value="{{ $orderItem->price }}"> ¥<input name="customedPrice"
+                                    class="customedPrice col-5" value="{{ $orderItem->price }}" readonly>/個<input
+                                    type="hidden" value="{{ $orderItem->price }}" name="itemPrice"></span></td>
                         <td>
                             <span class="form-group">
-                                <select id="quantity" name="quantity" class="form-control col-8" onchange="calc_total()">
+                                <select id="quantity" name="quantity" class="form-control col-11" onchange="calc_total()">
                                     <option value="">--</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -117,20 +117,21 @@
                                     <option value="9">9</option>
                                 </select>
                             </span>
+                </form>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary mb-2" form="item-update{{ $orderItem }}">更新</button>
+                    <form action="{{ route('delete.item.cart') }}" method="post">
+                        @csrf
+                        <button type="submit" class="btn btn-danger mb-2">削除</button>
+                        <input type="hidden" name="index" value="{{ $index }}">
                     </form>
-                        </td>
-                        <td>
-                            <button type="submit" class="btn btn-primary mb-2" form="item-update{{$orderItem}}">更新</button>
-                            <form action="{{ route('delete.item.cart') }}" method="post">
-                                @csrf
-                                <button type="submit" class="btn btn-danger mb-2">削除</button>
-                                <input type="hidden" name="index" value="{{ $index }}">
-                            </form>
-                        </td>
-                    </tr>
+                </td>
+                </tr>
             @endforeach
             <tr>
-                <td colspan="5" class="text-right font-weight-bold">合計金額 : <input id="goukei" name="goukei" class="text-danger" value="" readonly>円
+                <td colspan="5" class="text-right font-weight-bold">合計金額 : <input id="goukei" name="goukei"
+                        class="text-danger" value="" readonly>円
                 </td>
             </tr>
         </tbody>
@@ -152,13 +153,13 @@
     <hr>
     <br>
     <!-- <form action="{{ route('add.item.cart') }}" method="post">
-        @csrf
-        <input type="hidden" value="1" name="id">
-        <input type="submit" value="カートに入れる（1）">
-    </form>
-    <form action="{{ route('add.item.cart') }}" method="post">
-        @csrf
-        <input type="hidden" value="2" name="id">
-        <input type="submit" value="カートに入れる（2）">
-    </form> -->
+                                                                                                                                            @csrf
+                                                                                                                                            <input type="hidden" value="1" name="id">
+                                                                                                                                            <input type="submit" value="カートに入れる（1）">
+                                                                                                                                        </form>
+                                                                                                                                        <form action="{{ route('add.item.cart') }}" method="post">
+                                                                                                                                            @csrf
+                                                                                                                                            <input type="hidden" value="2" name="id">
+                                                                                                                                            <input type="submit" value="カートに入れる（2）">
+                                                                                                                                        </form> -->
 @endsection

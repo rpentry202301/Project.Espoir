@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
+use App\Models\IpcontentUser;
+use App\Models\Ipcontent;
 use App\Models\PrimaryCategory;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,8 +14,10 @@ class ItemsController extends Controller
     public function showItems(Request $request){
         if($request->filled('category') || $request->filled('keyword')){
             $isRecommendItems = null;
+            $IPContents = null;
         }else{
             $isRecommendItems = Item::where('is_recommend',true)->get();
+            $IPContents = Ipcontent::inRandomOrder()->take(10)->get();
         }
 
         $query = Item::query();
@@ -50,7 +54,8 @@ class ItemsController extends Controller
             [
                 'items' => $items,
                 'user' => $user,
-                'isRecommendItems' => $isRecommendItems
+                'isRecommendItems' => $isRecommendItems,
+                'IPContents' => $IPContents
             ]
         );
     }

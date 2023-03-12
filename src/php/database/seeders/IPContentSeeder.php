@@ -15,7 +15,7 @@ class IPContentSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('IPContents')->insert(
+        DB::table('ipcontents')->insert(
             [
                 [
                     'id'=>1,

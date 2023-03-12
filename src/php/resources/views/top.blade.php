@@ -46,20 +46,21 @@
     </div>
 </div>
 <br>
-<div class="mt-5">
-    <h3>取得したスタンプ</h3>
-    <!--/slider-->
-    @if($IPContents && Auth::check())
-    <ul class="slider col-10">
-        @foreach($IPContents as $IPContent)
-        <li><img src="/storage/item-images/{{$IPContent->image_file}}" alt="おすすめ画像"></li>
-        @endforeach
-    </ul>
-    @endif
-    <!--/slider-->
-</div>
 
-    @if(Auth::check())
+
+@if(Auth::check())
+    <div class="mt-5">
+        <h3>取得したスタンプ</h3>
+        <!--/slider-->
+        @if($IPContents && Auth::check())
+        <ul class="slider col-10">
+            @foreach($IPContents as $IPContent)
+            <li><img src="/storage/item-images/{{$IPContent->image_file}}" alt="おすすめ画像"></li>
+            @endforeach
+        </ul>
+        @endif
+        <!--/slider-->
+    </div>
         @if($user->admin_flag === 1)
         <a href="{{route('sell')}}"
         class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"

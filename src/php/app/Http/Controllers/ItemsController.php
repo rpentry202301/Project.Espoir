@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
-use App\Models\IpcontentUser;
 use App\Models\Ipcontent;
 use App\Models\PrimaryCategory;
 use Illuminate\Support\Facades\Auth;
@@ -12,14 +11,21 @@ use Illuminate\Support\Facades\Auth;
 class ItemsController extends Controller
 {
     public function showItems(Request $request){
+        $user = Auth::user();
+
         if($request->filled('category') || $request->filled('keyword')){
             $isRecommendItems = null;
             $IPContents = null;
         }else{
             $isRecommendItems = Item::where('is_recommend',true)->get();
-            $IPContents = Ipcontent::inRandomOrder()->take(10)->get();
+            $IPContent = Ipcontent::inRandomOrder()->first();
+            if($user){
+                $IPContents = $user->ipcontents()->get();
+            }else{
+                $IPContents = null;
+            }
         }
-
+        // $IPContents_Users = IpcontentUser::where('user_id',Auth::id())->get();
         $query = Item::query();
  
         // カテゴリで絞り込み
@@ -49,7 +55,6 @@ class ItemsController extends Controller
         ->simplePaginate(8)
         ->withQueryString();
         
-        $user = Auth::user();
         return view('top')->with(
             [
                 'items' => $items,

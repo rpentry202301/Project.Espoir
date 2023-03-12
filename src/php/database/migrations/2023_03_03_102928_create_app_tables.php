@@ -127,12 +127,15 @@ return new class extends Migration
         });
 
         #IPContents_Users
-        Schema::create('ipcontents_Users', function (Blueprint $table) {
-            $table->id();
+        Schema::create('ipcontent_user', function (Blueprint $table) {
+            // $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('ipcontent_id');
-            $table->foreign('ipcontent_id')->references('id')->on('ipcontents');
+            // 複合主キーを定義
+            $table->primary(['user_id','ipcontent_id']);
+            // 外部キー制約を定義
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('ipcontent_id')->references('id')->on('ipcontents')->onDelete('cascade');
         });
     }
 
@@ -144,7 +147,7 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('ipcontents');
-        Schema::dropIfExists('ipcontents_Users');
+        Schema::dropIfExists('ipcontent_user');
 
         Schema::dropIfExists('order_toppings');
         Schema::dropIfExists('toppings');

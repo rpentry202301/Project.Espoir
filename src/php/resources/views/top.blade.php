@@ -10,11 +10,34 @@
 <h2>～{{\Carbon\Carbon::now()->format('n')}}月のおすすめ～</h2>
 <ul class="slider col-8">
     @foreach($isRecommendItems as $isRecommendItem)
-    <li><img src="/storage/item-images/{{$isRecommendItem->image_file}}" alt="おすすめ画像"></li>
+    <li><a href="#" data-toggle="modal" data-target="#my-modal" 
+    data-price="{{number_format($isRecommendItem->price)}}" 
+    data-name="{{$isRecommendItem->name}}" 
+    data-primaryCategoryName = "{{$isRecommendItem->secondaryCategory->primaryCategory->name}}" 
+    data-secondaryCategoryName = " {{$isRecommendItem->secondaryCategory->name}}">
+    <img src="/storage/item-images/{{$isRecommendItem->image_file}}" alt="おすすめ画像"></a></li>
     @endforeach
 </ul>
 @endif
 <!--/slider-->
+
+<div class="modal fade" id="my-modal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">title</h4>
+            </div>
+            <div class="modal-body">
+                <label>データを削除しますか？</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="container">
     <div class="row">
         @foreach ($items as $item)

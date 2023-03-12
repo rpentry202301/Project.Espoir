@@ -80,24 +80,6 @@
                                 <td>{{ $order->payment_method }}</td>
                             </tr>
                         @endforeach
-                        <tr>
-                            <td>3</td>
-                            <td>テスト太郎</td>
-                            <td>2023年3月10日</td>
-                            <td colspan="2">この中にテーブルで商品一覧を表示する</td>
-                            <td>¥200</td>
-                            <td colspan="2">この中にテーブルで配送先情報を表示する</td>
-                            <td>クレジットカード</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>サンプル</td>
-                            <td>2023年3月11日</td>
-                            <td colspan="2">この中にテーブルで商品一覧を表示する</td>
-                            <td>¥300</td>
-                            <td colspan="2">この中にテーブルで配送先情報を表示する</td>
-                            <td>代金引換</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>

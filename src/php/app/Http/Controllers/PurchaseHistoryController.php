@@ -56,8 +56,6 @@ class PurchaseHistoryController extends Controller
             }
         }
 
-        // dd($orderItems);
-
         return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings]);
     }
 }

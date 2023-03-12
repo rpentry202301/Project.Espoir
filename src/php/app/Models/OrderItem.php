@@ -9,10 +9,4 @@ use App\Models\Item;
 class OrderItem extends Item
 {
     use HasFactory;
-
-    protected $appends = ['length'];
-    public function getLengthAttribute()
-    {
-        return 1;
-    }
 }

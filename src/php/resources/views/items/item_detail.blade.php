@@ -33,10 +33,10 @@
                 <div class="my-3 text-center">{!! nl2br(e($item->description)) !!}</div>
                 <div class="row">
                     <div class="col-8 offset-2">
-                        <form action="{{ route('add.item.cart') }}" method="post" class="btn btn-secondary btn-block">
+                        <form action="{{ route('add.item.cart') }}" method="post">
                             @csrf
                             <input type="hidden" value="{{ $item->id }}" name="id">
-                            <input type="submit" value="カートに入れる">
+                            <button type="submit" class="btn btn-secondary btn-block">カートに入れる</button>
                         </form>
                     </div>
                 </div>

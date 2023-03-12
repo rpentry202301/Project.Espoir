@@ -152,14 +152,14 @@
     <br>
     <hr>
     <br>
-    <!-- <form action="{{ route('add.item.cart') }}" method="post">
-                                                                                                                                            @csrf
-                                                                                                                                            <input type="hidden" value="1" name="id">
-                                                                                                                                            <input type="submit" value="カートに入れる（1）">
-                                                                                                                                        </form>
-                                                                                                                                        <form action="{{ route('add.item.cart') }}" method="post">
-                                                                                                                                            @csrf
-                                                                                                                                            <input type="hidden" value="2" name="id">
-                                                                                                                                            <input type="submit" value="カートに入れる（2）">
-                                                                                                                                        </form> -->
+    <form action="{{ route('add.item.cart') }}" method="post">
+        @csrf
+        <input type="hidden" value="1" name="id">
+        <input type="submit" value="カートに入れる（1）">
+    </form>
+    <form action="{{ route('add.item.cart') }}" method="post">
+        @csrf
+        <input type="hidden" value="2" name="id">
+        <input type="submit" value="カートに入れる（2）">
+    </form>
 @endsection

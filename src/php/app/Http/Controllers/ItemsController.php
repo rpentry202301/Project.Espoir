@@ -12,44 +12,23 @@ class ItemsController extends Controller
 {
     public function showItems(Request $request){
         $user = Auth::user();
+        $query = Item::query();
 
         if($request->filled('category') || $request->filled('keyword')){
+            $this->search($request);
             $isRecommendItems = null;
             $IPContents = null;
         }else{
             $isRecommendItems = Item::where('is_recommend',true)->get();
-            $IPContent = Ipcontent::inRandomOrder()->first();
             if($user){
+                // トップ画面にアクセスしたらIPContentをランダムで一つ、ユーザーに付与する→購入完了時の処理へ移行予定
+                $IPContent = Ipcontent::inRandomOrder()->first();
+                $user->ipcontents()->sync($IPContent->id,false);
                 $IPContents = $user->ipcontents()->get();
             }else{
                 $IPContents = null;
             }
         }
-        // $IPContents_Users = IpcontentUser::where('user_id',Auth::id())->get();
-        $query = Item::query();
- 
-        // カテゴリで絞り込み
-        if ($request->filled('category')) {
-            list($categoryType, $categoryID) = explode(':', $request->input('category'));
-
-            if ($categoryType === 'primary') {
-                $query->whereHas('secondaryCategory', function ($query) use ($categoryID) {
-                    $query->where('primary_category_id', $categoryID);
-                });
-            } else if ($categoryType === 'secondary') {
-                $query->where('secondary_category_id', $categoryID);
-            }
-        }
-
-        // キーワードで絞り込み
-        if ($request->filled('keyword')) {
-            $keyword = '%' . $this->escape($request->input('keyword')) . '%';
-            $query->where(function ($query) use ($keyword) {
-                $query->where('name', 'LIKE', $keyword);
-                $query->orWhere('description', 'LIKE', $keyword);
-            });
-        }
-        
         
         $items = $query->orderBy('secondary_category_id', 'ASC')
         ->simplePaginate(8)
@@ -113,6 +92,34 @@ class ItemsController extends Controller
             ['\\\\', '\\%', '\\_'],
             $value
         );
+    }
+
+    /**
+     * 検索処理
+     * @params Request
+     */
+    private function search($request){
+        // カテゴリで絞り込み
+        if ($request->filled('category')) {
+            list($categoryType, $categoryID) = explode(':', $request->input('category'));
+
+            if ($categoryType === 'primary') {
+                $query->whereHas('secondaryCategory', function ($query) use ($categoryID) {
+                    $query->where('primary_category_id', $categoryID);
+                });
+            } else if ($categoryType === 'secondary') {
+                $query->where('secondary_category_id', $categoryID);
+            }
+        }
+
+        // キーワードで絞り込み
+        if ($request->filled('keyword')) {
+            $keyword = '%' . $this->escape($request->input('keyword')) . '%';
+            $query->where(function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', $keyword);
+                $query->orWhere('description', 'LIKE', $keyword);
+            });
+        }
     }
 }
 

@@ -79,6 +79,7 @@
                 <form action="{{ route('add.topping.cart') }}" method="post" id="item-update{{ $orderItem }}"
                     name="orderForm">
                     @csrf
+                    <input type="hidden" name="index" value="{{ $index }}">
                     <tr>
                         <td>
                             {{ $index }} / {{ $orderItem->name }}
@@ -105,20 +106,19 @@
                         <td>
                             <span class="form-group">
                                 <select id="quantity" name="quantity" class="form-control col-11" onchange="calc_total()">
-                                    <option value="">--</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
+                                    <option value="{{ $orderItem->quantity }}" selected="selected">
+                                        {{ $orderItem->quantity }}</option>
+                                    @for ($i = 1; $i <= 9; $i++)
+                                        @if ($i == $orderItem->quantity)
+                                            <?php continue; ?>
+                                        @else
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endif
+                                    @endfor
                                 </select>
                             </span>
+                        </td>
                 </form>
-                </td>
                 <td>
                     <button type="submit" class="btn btn-primary mb-2" form="item-update{{ $orderItem }}">更新</button>
                     <form action="{{ route('delete.item.cart') }}" method="post">
@@ -131,7 +131,7 @@
             @endforeach
             <tr>
                 <td colspan="5" class="text-right font-weight-bold">合計金額 : <input id="goukei" name="goukei"
-                        class="text-danger" value="" readonly>円
+                        class="text-danger col-1" value="" readonly>円
                 </td>
             </tr>
         </tbody>

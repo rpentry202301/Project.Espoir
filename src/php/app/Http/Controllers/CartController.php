@@ -57,7 +57,6 @@ class CartController extends Controller
             $itemIdList = array();
         }
 
-
         //カートに追加する商品を追加する
         $query = Item::query();
         $orderItem = new OrderItem();
@@ -131,15 +130,15 @@ class CartController extends Controller
         return;
     }
 
-    public function updateTopping(object $request, int $index, array $orderToppingList)
+    public function updateTopping(array $toppingList, int $index, array $orderToppingList)
     {
         $orderTopping = new OrderTopping();
-        foreach ($request->topping as $toppingId) {
+        foreach ($toppingList as $toppingId) {
             $query = Topping::query();
             $orderTopping = $query->where('id', $toppingId)->first();
-            $orderTopping->order_item_id = $request->index; //ここでorder_toppingsテーブルのorder_item_idを仮置きする。
+            $orderTopping->order_item_id = $index; //ここでorder_toppingsテーブルのorder_item_idを仮置きする。
             $orderTopping->topping_id = $query->where('id', $toppingId)->value('id');
-            $this->customedPriceCalc($orderTopping->price, $request->index);
+            $this->customedPriceCalc($orderTopping->price, $index);
             $orderToppingList[] = $orderTopping;
         }
         $_SESSION['orderToppingList'] = $orderToppingList;
@@ -155,25 +154,39 @@ class CartController extends Controller
             $orderToppingList = array();
         }
 
-        //送られてくるindexと変更したいトッピング/数量を紐づける処理
+        //現在の数量を取得
         $orderItemList = $_SESSION['orderItemList'];
-        // foreach($orderItemList)
-        dd($request);
-        //変更内容がnullの場合の条件分岐
-        if ($request->topping == null && $request->quantity == "") {
-            return redirect()->back()->with(['status' => '変更内容を選択してください']);
+        foreach ($orderItemList as $index => $orderItem) {
+            if ($index == $request->index) {
+                $currentQuantity = $orderItem->quantity;
+            }
         }
-        if ($request->topping == null && !$request->quantity == "") {
+
+        //toppingPriceの最後の数字だけを取得し、Toppingのidとして使用できるようにする。
+        $toppingList = array();
+        foreach ($request->request as $key => $value) {
+            $result = strpos($key, 'toppingPrice');
+            if ($result !== false) {
+                $key = str_replace('toppingPrice', '', $key);
+                $toppingList[] = $key;
+            }
+        }
+
+        //変更内容がnullの場合の条件分岐
+        if (count($toppingList) == 0 && $request->quantity == $currentQuantity) {
+            return redirect()->back()->with(['status' => '変更内容を確認してください']);
+        }
+        if (count($toppingList) == 0 && $request->quantity != $currentQuantity) {
             $this->updateQuantity($request->quantity, $request->index);
             return redirect()->back()->with(['status' => '数量を変更しました']);
         }
-        if (!$request->topping == null && $request->quantity == "") {
-            $this->updateTopping($request, $request->index, $orderToppingList);
+        if (count($toppingList) != 0 && $request->quantity == $currentQuantity) {
+            $this->updateTopping($toppingList, $request->index, $orderToppingList);
             return redirect()->back()->with(['status' => 'トッピングを変更しました']);
         }
 
         $this->updateQuantity($request->quantity, $request->index);
-        $this->updateTopping($request, $request->index, $orderToppingList);
+        $this->updateTopping($toppingList, $request->index, $orderToppingList);
 
         # TODO トッピングの重複処理
         //

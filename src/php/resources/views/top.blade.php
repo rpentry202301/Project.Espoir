@@ -7,7 +7,8 @@
 @section('content')
 <!--/slider-->
 @if($isRecommendItems)
-<ul class="slider col-10">
+<h2>～{{\Carbon\Carbon::now()->format('n')}}月のおすすめ～</h2>
+<ul class="slider col-8">
     @foreach($isRecommendItems as $isRecommendItem)
     <li><img src="/storage/item-images/{{$isRecommendItem->image_file}}" alt="おすすめ画像"></li>
     @endforeach
@@ -53,9 +54,9 @@
         <h3>取得したスタンプ</h3>
         <!--/slider-->
         @if($IPContents && Auth::check())
-        <ul class="slider col-10">
+        <ul class="slider-stamp col-7">
             @foreach($IPContents as $IPContent)
-            <li><img src="/storage/item-images/{{$IPContent->image_file}}" alt="おすすめ画像"></li>
+            <li><img src="/storage/item-images/{{$IPContent->image_file}}" class="rounded-circle border border-1" alt="IPスタンプ"></li>
             @endforeach
         </ul>
         @endif

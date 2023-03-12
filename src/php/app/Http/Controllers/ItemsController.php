@@ -24,6 +24,7 @@ class ItemsController extends Controller
                 // トップ画面にアクセスしたらIPContentをランダムで一つ、ユーザーに付与する→購入完了時の処理へ移行予定
                 $IPContent = Ipcontent::inRandomOrder()->first();
                 $user->ipcontents()->sync($IPContent->id,false);
+                // 
                 $IPContents = $user->ipcontents()->get();
             }else{
                 $IPContents = null;

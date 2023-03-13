@@ -11,24 +11,22 @@
           <h5 class="text-uppercase mb-4">About company</h5>
 
           <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-            voluptatum deleniti atque corrupti.
+            We're Espoir providing comfort and vitality to our customers through a full cup of delicious coffee.
           </p>
 
           <p>
-            Blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas
-            molestias.
+          We will continue to deliver warm-hearted moments that are integrated into the lives of each and every one of our customers, while positively impacting the community (local community) and continuing to take on further challenges while valuing humanity.
           </p>
 
           <div class="mt-4">
             <!-- Facebook -->
-            <a type="button" class="btn btn-floating btn-light btn-lg"><i class="fab fa-facebook-f"></i></a>
+            <a type="button" class="btn btn-floating btn-light btn-lg" href="https://www.facebook.com/MetaJapan/"><i class="fab fa-facebook-f"></i></a>
             <!-- Dribbble -->
-            <a type="button" class="btn btn-floating btn-light btn-lg"><i class="fab fa-dribbble"></i></a>
+            <a type="button" class="btn btn-floating btn-light btn-lg" href="https://about.instagram.com/ja-jp"><i class="fab fa-instagram"></i></a>
             <!-- Twitter -->
-            <a type="button" class="btn btn-floating btn-light btn-lg"><i class="fab fa-twitter"></i></a>
+            <a type="button" class="btn btn-floating btn-light btn-lg" href="https://twitter.com/twitterjp?lang=ja"><i class="fab fa-twitter"></i></a>
             <!-- Google + -->
-            <a type="button" class="btn btn-floating btn-light btn-lg"><i class="fab fa-google-plus-g"></i></a>
+            <a type="button" class="btn btn-floating btn-light btn-lg" href="https://www.google.com/search?"><i class="fab fa-google-plus-g"></i></a>
             <!-- Linkedin -->
           </div>
         </div>
@@ -36,17 +34,17 @@
 
         <!--Grid column-->
         <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-          <h5 class="text-uppercase mb-4 pb-1">Search something</h5>
+          <h5 class="text-uppercase mb-4 pb-1">Access</h5>
 
           <ul class="fa-ul" style="margin-left: 1.65em;">
             <li class="mb-3">
-              <span class="fa-li"><i class="fas fa-home"></i></span><span class="ms-2">Warsaw, 00-967, Poland</span>
+              <span class="fa-li"><i class="fas fa-home"></i></span><span class="ms-2">TOKYU REIT Shinjuku-Building, 4-3-25, Shinjuku, Tokyo, Japan</span>
             </li>
             <li class="mb-3">
-              <span class="fa-li"><i class="fas fa-envelope"></i></span><span class="ms-2">contact@example.com</span>
+              <span class="fa-li"><i class="fas fa-envelope"></i></span><span class="ms-2">rakus-partners@example.com</span>
             </li>
             <li class="mb-3">
-              <span class="fa-li"><i class="fas fa-phone"></i></span><span class="ms-2">+ 48 234 567 88</span>
+              <span class="fa-li"><i class="fas fa-phone"></i></span><span class="ms-2">+ 81 6675 3638</span>
             </li>
           </ul>
         </div>
@@ -59,16 +57,16 @@
           <table class="table text-center text-white">
             <tbody class="fw-normal">
               <tr>
-                <td>Mon - Thu:</td>
-                <td>8am - 9pm</td>
+                <td>Mon - Fri:</td>
+                <td>9am - 18pm</td>
               </tr>
               <tr>
-                <td>Fri - Sat:</td>
-                <td>8am - 1am</td>
+                <td>Sat:</td>
+                <td>9am - 16am</td>
               </tr>
               <tr>
                 <td>Sunday:</td>
-                <td>9am - 10pm</td>
+                <td>regularly closed</td>
               </tr>
             </tbody>
           </table>
@@ -81,8 +79,7 @@
 
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-      © 2020 Copyright:
-      <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+      <a class="text-white" href="#">&copy; Espoir</a>
     </div>
     <!-- Copyright -->
   </footer>

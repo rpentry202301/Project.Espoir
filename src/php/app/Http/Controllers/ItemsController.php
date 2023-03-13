@@ -15,7 +15,7 @@ class ItemsController extends Controller
         $query = Item::query();
 
         if($request->filled('category') || $request->filled('keyword')){
-            $this->search($request,$query,$statement);
+            $this->search($request,$query);
             $isRecommendItems = null;
             $IPContents = null;
         }else{
@@ -99,7 +99,7 @@ class ItemsController extends Controller
      * 検索処理
      * @params Request
      */
-    private function search($request,$query,$statement){
+    private function search($request,$query){
         // カテゴリで絞り込み
         if ($request->filled('category')) {
             list($categoryType, $categoryID) = explode(':', $request->input('category'));
@@ -120,7 +120,6 @@ class ItemsController extends Controller
                 $query->where('name', 'LIKE', $keyword);
                 $query->orWhere('description', 'LIKE', $keyword);
             });
-            $keywordStatement = $request->input('keyword');
         }
     }
 }

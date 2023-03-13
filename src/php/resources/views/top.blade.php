@@ -5,15 +5,64 @@
 @endsection
 
 @section('content')
+
 <!--/slider-->
-<ul class="slider col-10">
-    <li><img src="/storage/item-images/drink_sample1.jpg" alt=""></li>
-    <li><img src="/storage/item-images/drink_sample2.jpg" alt=""></li>
-    <li><img src="/storage/item-images/drink_sample3.jpg" alt=""></li>
-    <li><img src="/storage/item-images/drink_sample4.jpg" alt=""></li>
-    <li><img src="/storage/item-images/drink_sample5.jpg" alt=""></li>
+@if($isRecommendItems)
+<h2>～{{\Carbon\Carbon::now()->format('n')}}月のおすすめ～</h2>
+<ul class="slider col-8">
+    @foreach($isRecommendItems as $isRecommendItem)
+    <li><a href="#" data-toggle="modal" data-target="#my-modal" 
+    data-price="{{number_format($isRecommendItem->price)}}" 
+    data-name="{{$isRecommendItem->name}}" 
+    data-primaryCategoryName = "{{$isRecommendItem->secondaryCategory->primaryCategory->name}}" 
+    data-secondaryCategoryName = " {{$isRecommendItem->secondaryCategory->name}}">
+    <img src="/storage/item-images/{{$isRecommendItem->image_file}}" alt="おすすめ画像"></a></li>
+    @endforeach
 </ul>
+@endif
 <!--/slider-->
+
+<div class="modal fade" id="my-modal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">title（商品名）</h4>
+            </div>
+            <div class="modal-body">
+                <label>データを削除しますか？</label>
+                <table class="table table-bordered">
+                    <tr>
+                        <th class="w-25">テキストテキストテキスト</th>
+                    </tr>
+                    <tr>
+                        <th class="w-25">カテゴリー</th>
+                    </tr>
+                    <tr>
+                        <th class="w-25">値段(税抜)</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        $('#my-modal').on('shown.bs.modal', function (event) {
+            console.log('動作確認');
+            //Ajaxの処理はここに
+            //modal-bodyのpタグにtextメソッド内を表示
+            modal.find('.modal-body p').eq(0).text("本当に"+title+"を削除しますか?");
+            //formタグのaction属性にurlのデータ渡す
+            modal.find('form').attr('action',url);
+        });
+    }
+</script>
+
+
 <div class="container">
     <div class="row">
         @foreach ($items as $item)
@@ -45,7 +94,22 @@
         {{$items->links()}}
     </div>
 </div>
-    @if(Auth::check())
+<br>
+
+
+@if(Auth::check())
+    <div class="mt-5">
+        <h3>取得したスタンプ</h3>
+        <!--/slider-->
+        @if($IPContents && Auth::check())
+        <ul class="slider-stamp col-7">
+            @foreach($IPContents as $IPContent)
+            <li><img src="/storage/item-images/{{$IPContent->image_file}}" class="rounded-circle border border-1" alt="IPスタンプ"></li>
+            @endforeach
+        </ul>
+        @endif
+        <!--/slider-->
+    </div>
         @if($user->admin_flag === 1)
         <a href="{{route('sell')}}"
         class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"

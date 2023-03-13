@@ -4,46 +4,43 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
+use App\Models\Ipcontent;
 use App\Models\PrimaryCategory;
 use Illuminate\Support\Facades\Auth;
 
 class ItemsController extends Controller
 {
     public function showItems(Request $request){
+        $user = Auth::user();
         $query = Item::query();
- 
-        // カテゴリで絞り込み
-        if ($request->filled('category')) {
-            list($categoryType, $categoryID) = explode(':', $request->input('category'));
 
-            if ($categoryType === 'primary') {
-                $query->whereHas('secondaryCategory', function ($query) use ($categoryID) {
-                    $query->where('primary_category_id', $categoryID);
-                });
-            } else if ($categoryType === 'secondary') {
-                $query->where('secondary_category_id', $categoryID);
+        if($request->filled('category') || $request->filled('keyword')){
+            $this->search($request,$query);
+            $isRecommendItems = null;
+            $IPContents = null;
+        }else{
+            $isRecommendItems = Item::where('is_recommend',true)->get();
+            if($user){
+                // トップ画面にアクセスしたらIPContentをランダムで一つ、ユーザーに付与する→購入完了時の処理へ移行予定
+                $IPContent = Ipcontent::inRandomOrder()->first();
+                $user->ipcontents()->sync($IPContent->id,false);
+                // 
+                $IPContents = $user->ipcontents()->get();
+            }else{
+                $IPContents = null;
             }
         }
-
-        // キーワードで絞り込み
-        if ($request->filled('keyword')) {
-            $keyword = '%' . $this->escape($request->input('keyword')) . '%';
-            $query->where(function ($query) use ($keyword) {
-                $query->where('name', 'LIKE', $keyword);
-                $query->orWhere('description', 'LIKE', $keyword);
-            });
-        }
-        
         
         $items = $query->orderBy('secondary_category_id', 'ASC')
         ->simplePaginate(8)
         ->withQueryString();
-        
-        $user = Auth::user();
+
         return view('top')->with(
             [
                 'items' => $items,
                 'user' => $user,
+                'isRecommendItems' => $isRecommendItems,
+                'IPContents' => $IPContents
             ]
         );
     }
@@ -96,6 +93,34 @@ class ItemsController extends Controller
             ['\\\\', '\\%', '\\_'],
             $value
         );
+    }
+
+    /**
+     * 検索処理
+     * @params Request
+     */
+    private function search($request,$query){
+        // カテゴリで絞り込み
+        if ($request->filled('category')) {
+            list($categoryType, $categoryID) = explode(':', $request->input('category'));
+
+            if ($categoryType === 'primary') {
+                $query->whereHas('secondaryCategory', function ($query) use ($categoryID) {
+                    $query->where('primary_category_id', $categoryID);
+                });
+            } else if ($categoryType === 'secondary') {
+                $query->where('secondary_category_id', $categoryID);
+            }
+        }
+
+        // キーワードで絞り込み
+        if ($request->filled('keyword')) {
+            $keyword = '%' . $this->escape($request->input('keyword')) . '%';
+            $query->where(function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', $keyword);
+                $query->orWhere('description', 'LIKE', $keyword);
+            });
+        }
     }
 }
 

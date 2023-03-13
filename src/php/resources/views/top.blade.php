@@ -11,57 +11,14 @@
 <h2>～{{\Carbon\Carbon::now()->format('n')}}月のおすすめ～</h2>
 <ul class="slider col-8">
     @foreach($isRecommendItems as $isRecommendItem)
-    <li><a href="#" data-toggle="modal" data-target="#my-modal" 
-    data-price="{{number_format($isRecommendItem->price)}}" 
-    data-name="{{$isRecommendItem->name}}" 
-    data-primaryCategoryName = "{{$isRecommendItem->secondaryCategory->primaryCategory->name}}" 
-    data-secondaryCategoryName = " {{$isRecommendItem->secondaryCategory->name}}">
-    <img src="/storage/item-images/{{$isRecommendItem->image_file}}" alt="おすすめ画像"></a></li>
+    <div class="slide-img">
+        <li><a href="{{route ('item.showDetail',[$isRecommendItem->id])}}">
+        <img src="/storage/item-images/{{$isRecommendItem->image_file}}" alt="おすすめ画像"></a></li>
+    </div>
     @endforeach
 </ul>
 @endif
 <!--/slider-->
-
-<div class="modal fade" id="my-modal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">title（商品名）</h4>
-            </div>
-            <div class="modal-body">
-                <label>データを削除しますか？</label>
-                <table class="table table-bordered">
-                    <tr>
-                        <th class="w-25">テキストテキストテキスト</th>
-                    </tr>
-                    <tr>
-                        <th class="w-25">カテゴリー</th>
-                    </tr>
-                    <tr>
-                        <th class="w-25">値段(税抜)</th>
-                    </tr>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    window.onload = function() {
-        $('#my-modal').on('shown.bs.modal', function (event) {
-            console.log('動作確認');
-            //Ajaxの処理はここに
-            //modal-bodyのpタグにtextメソッド内を表示
-            modal.find('.modal-body p').eq(0).text("本当に"+title+"を削除しますか?");
-            //formタグのaction属性にurlのデータ渡す
-            modal.find('form').attr('action',url);
-        });
-    }
-</script>
-
 
 <div class="container">
     <div class="row">

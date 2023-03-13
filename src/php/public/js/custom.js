@@ -50,23 +50,3 @@ $(".slider-stamp").slick({
         },
     ],
 });
-
-// モーダル
-$("#my-modal").on("hidden.bs.modal", function (event) {
-    console.log("動作確認");
-});
-// $("#my-modal").on("show.bs.modal", function (e) {
-//     console.log("show"); //showメソッドが実行されたら実行される。
-// });
-
-// $("#my-modal").on("shown.bs.modal", function (e) {
-//     console.log("shown"); //見えるようになったら実行される
-// });
-
-// $("#my-modal").on("hide.bs.modal", function (e) {
-//     console.log("hide"); //hideメソッドが実行されたら実行される
-// });
-
-// $("#my-modal").on("hidden.bs.modal", function (e) {
-//     console.log("hidden"); //見えなくなったら実行される
-// });

@@ -24,7 +24,8 @@
                 購入履歴一覧（仮）
                 <br>
                 <div class="text-right">
-                    <form action="#" class="" method="POST">
+                    <form action="{{ route('cvs-export') }}" method="POST">
+                        @csrf
                         <button class="btn btn-link">CSVダウンロード</button>
                     </form>
                 </div>

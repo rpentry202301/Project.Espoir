@@ -121,11 +121,11 @@
                 </form>
                 <td>
                     <button type="submit" class="btn btn-primary mb-2" form="item-update{{ $orderItem }}">更新</button>
-                    <form action="{{ route('delete.item.cart') }}" method="post">
-                        @csrf
-                        <button type="submit" class="btn btn-danger mb-2">削除</button>
-                        <input type="hidden" name="index" value="{{ $index }}">
-                    </form>
+                    {{-- <form action="{{ route('delete.item.cart') }}" method="post">
+                        @csrf --}}
+                    <button type="submit" class="btn btn-danger mb-2" form="delete-item">削除</button>
+                    {{-- <input type="hidden" name="index" value="{{ $index }}">
+                    </form> --}}
                 </td>
                 </tr>
             @endforeach
@@ -152,14 +152,4 @@
     <br>
     <hr>
     <br>
-    <form action="{{ route('add.item.cart') }}" method="post">
-        @csrf
-        <input type="hidden" value="1" name="id">
-        <input type="submit" value="カートに入れる（1）">
-    </form>
-    <form action="{{ route('add.item.cart') }}" method="post">
-        @csrf
-        <input type="hidden" value="2" name="id">
-        <input type="submit" value="カートに入れる（2）">
-    </form>
 @endsection

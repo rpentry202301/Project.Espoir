@@ -88,8 +88,8 @@ class CartController extends Controller
             $orderToppingList = array();
         }
 
-        #TODO 削除実行。トッピングが追加されている連続した商品を、数字が小さい商品を消すと、2番目のトッピングが残ってしまう問題。
-        for ($i = 0; $i < count($orderToppingList); $i++) {
+        $count = count($orderToppingList);
+        for ($i = 0; $i < $count; $i++) {
             if ($orderToppingList[$i]->order_item_id == $index) {
                 unset($orderToppingList[$i]);
             }
@@ -147,6 +147,7 @@ class CartController extends Controller
 
     public function addCartTopping(Request $request)
     {
+
         session_start();
         if (isset($_SESSION['orderToppingList'])) {
             $orderToppingList = $_SESSION['orderToppingList'];
@@ -187,6 +188,9 @@ class CartController extends Controller
 
         $this->updateQuantity($request->quantity, $request->index);
         $this->updateTopping($toppingList, $request->index, $orderToppingList);
+
+        #TODO 2つ目以降のOrderItemにトッピング追加と数量変更が効かないこと
+        //
 
         # TODO トッピングの重複処理
         //

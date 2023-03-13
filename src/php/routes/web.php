@@ -27,7 +27,7 @@ Route::post('/items/cart/delete-Item', [App\Http\Controllers\CartController::cla
 Route::post('/items/cart/add-Topping', [App\Http\Controllers\CartController::class, 'addCartTopping'])->name('add.topping.cart');
 
 
-Route::get('items/{item}',[ \App\Http\Controllers\ItemsController::class,'showDetail'])->name('item.showDetail');
+Route::get('items/{item}', [\App\Http\Controllers\ItemsController::class, 'showDetail'])->name('item.showDetail');
 Route::controller(ItemsController::class)->group(function () {
     Route::prefix('items')
         ->middleware('auth')
@@ -66,4 +66,5 @@ Route::prefix('mypage')
 
 Route::middleware('auth')->group(function () {
     Route::get('/purchase-history', [App\Http\Controllers\PurchaseHistoryController::class, 'showPurchaseHistory'])->name('purchase-history');
+    Route::post('/purchase-history', [App\Http\Controllers\PurchaseHistoryController::class, 'cvsExport'])->name('cvs-export');
 });

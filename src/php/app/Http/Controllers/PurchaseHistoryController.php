@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PurchaseHistoryController extends Controller
 {
@@ -57,5 +60,49 @@ class PurchaseHistoryController extends Controller
         }
 
         return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings]);
+    }
+
+    public function cvsExport()
+    {
+        $date = Carbon::now(); // 現在時刻
+
+        $response = new StreamedResponse(function () {
+
+            //orderクラスのcsvHeaderメソッドを使用するためにインスタンス化
+            $order = new Order();
+            //ファイルに書き込みできるようにする
+            $stream = fopen('php://output', 'w');
+            //DBから商品のレコードを全件配列として取得する。
+            $query = Order::query();
+            $orders = $query->get()->toArray();
+
+            // 文字化け回避（第2引数に下記を指定することで、マルチバイト文字が入っていても文字化けがでないように対策）
+            stream_filter_prepend($stream, 'convert.iconv.utf-8/cp932//TRANSLIT');
+
+            // ヘッダー行を追加
+            fputcsv($stream, $order->csvHeader());
+
+            foreach ($orders as $order) {
+                fputcsv($stream, $order);
+            }
+            fclose($stream);
+
+            //期間を指定するために必要。
+            // $results = $items->getCsvData($post['start_date'], $post['end_date']);
+            // if (empty($results[0])) {
+            //     fputcsv($stream, [
+            //         'データが存在しませんでした。',
+            //     ]);
+            // } else {
+            //     foreach ($results as $row) {
+            //         fputcsv($stream, $items->csvRow($row));
+            //     }
+            // }
+            // fclose($stream);
+        });
+
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('content-disposition', 'attachment; filename=' . $date .  '注文履歴一覧.csv');
+        return $response;
     }
 }

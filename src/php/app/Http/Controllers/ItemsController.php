@@ -15,7 +15,7 @@ class ItemsController extends Controller
         $query = Item::query();
 
         if($request->filled('category') || $request->filled('keyword')){
-            $this->search($request);
+            $this->search($request,$query,$statement);
             $isRecommendItems = null;
             $IPContents = null;
         }else{
@@ -34,7 +34,7 @@ class ItemsController extends Controller
         $items = $query->orderBy('secondary_category_id', 'ASC')
         ->simplePaginate(8)
         ->withQueryString();
-        
+
         return view('top')->with(
             [
                 'items' => $items,
@@ -99,7 +99,7 @@ class ItemsController extends Controller
      * 検索処理
      * @params Request
      */
-    private function search($request){
+    private function search($request,$query,$statement){
         // カテゴリで絞り込み
         if ($request->filled('category')) {
             list($categoryType, $categoryID) = explode(':', $request->input('category'));
@@ -120,6 +120,7 @@ class ItemsController extends Controller
                 $query->where('name', 'LIKE', $keyword);
                 $query->orWhere('description', 'LIKE', $keyword);
             });
+            $keywordStatement = $request->input('keyword');
         }
     }
 }

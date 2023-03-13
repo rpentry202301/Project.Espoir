@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+
 <!--/slider-->
 @if($isRecommendItems)
 <h2>～{{\Carbon\Carbon::now()->format('n')}}月のおすすめ～</h2>

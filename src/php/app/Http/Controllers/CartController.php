@@ -61,6 +61,7 @@ class CartController extends Controller
         $query = Item::query();
         $orderItem = new OrderItem();
         $orderItem = $query->where('id', $request->id)->first();
+        $orderItem->id = time();
         $orderItem->item_id = $query->where('id', $request->id)->value('id');
         $orderItem->customed_price = $orderItem->price;
         $orderItem->quantity = 1;
@@ -80,7 +81,8 @@ class CartController extends Controller
         session_start();
 
         //配列の添え字をリクエストで持ってくる。
-        $index = $request->index;
+        $index = (int)$request->index;
+
         $orderItemList = $_SESSION['orderItemList'];
         if (isset($_SESSION['orderToppingList'])) {
             $orderToppingList = $_SESSION['orderToppingList'];
@@ -88,13 +90,17 @@ class CartController extends Controller
             $orderToppingList = array();
         }
 
-        $count = count($orderToppingList);
-        for ($i = 0; $i < $count; $i++) {
-            if ($orderToppingList[$i]->order_item_id == $index) {
-                unset($orderToppingList[$i]);
+        foreach ($orderToppingList as $key => $orderTopping) {
+            if ($orderTopping->order_item_id == $index) {
+                unset($orderToppingList[$key]);
             }
         }
-        unset($orderItemList[$index]);
+
+        foreach ($orderItemList as $key => $orderItem) {
+            if ($orderItem->id == $index) {
+                unset($orderItemList[$key]);
+            }
+        }
 
         //indexを詰める
         $orderToppingList = array_values($orderToppingList);
@@ -103,14 +109,14 @@ class CartController extends Controller
         $_SESSION['orderItemList'] = $orderItemList;
         $_SESSION['orderToppingList'] = $orderToppingList;
 
-        return redirect()->back()->with('status', 'カートから削除しました');;
+        return redirect()->back()->with('status', 'カートから削除しました');
     }
 
     public function customedPriceCalc(int $price, int $index)
     {
         $orderItemList = $_SESSION['orderItemList'];
         foreach ($orderItemList as $key => $orderItem) {
-            if ($key == $index) {
+            if ($orderItem->id == $index) {
                 $orderItem->customed_price += $price;
             }
         }
@@ -122,7 +128,7 @@ class CartController extends Controller
     {
         $orderItemList = $_SESSION['orderItemList'];
         foreach ($orderItemList as $key => $orderItem) {
-            if ($key == $index) {
+            if ($orderItem->id == $index) {
                 $orderItem->quantity = $quantity;
             }
         }
@@ -158,7 +164,7 @@ class CartController extends Controller
         //現在の数量を取得
         $orderItemList = $_SESSION['orderItemList'];
         foreach ($orderItemList as $index => $orderItem) {
-            if ($index == $request->index) {
+            if ($orderItem->id == $request->index) {
                 $currentQuantity = $orderItem->quantity;
             }
         }
@@ -173,24 +179,29 @@ class CartController extends Controller
             }
         }
 
+        //quautityを利用するための処理
+        foreach ($request->request as $key => $value) {
+            $result = strpos($key, 'quantity');
+            if ($result !== false) {
+                $quantity = (int)$value;
+            }
+        }
+
         //変更内容がnullの場合の条件分岐
-        if (count($toppingList) == 0 && $request->quantity == $currentQuantity) {
+        if (count($toppingList) == 0 && $quantity == $currentQuantity) {
             return redirect()->back()->with(['status' => '変更内容を確認してください']);
         }
-        if (count($toppingList) == 0 && $request->quantity != $currentQuantity) {
-            $this->updateQuantity($request->quantity, $request->index);
+        if (count($toppingList) == 0 && $quantity != $currentQuantity) {
+            $this->updateQuantity($quantity, $request->index);
             return redirect()->back()->with(['status' => '数量を変更しました']);
         }
-        if (count($toppingList) != 0 && $request->quantity == $currentQuantity) {
+        if (count($toppingList) != 0 && $quantity == $currentQuantity) {
             $this->updateTopping($toppingList, $request->index, $orderToppingList);
             return redirect()->back()->with(['status' => 'トッピングを変更しました']);
         }
 
-        $this->updateQuantity($request->quantity, $request->index);
+        $this->updateQuantity($quantity, $request->index);
         $this->updateTopping($toppingList, $request->index, $orderToppingList);
-
-        #TODO 2つ目以降のOrderItemにトッピング追加と数量変更が効かないこと
-        //
 
         # TODO トッピングの重複処理
         //

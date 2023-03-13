@@ -35,11 +35,11 @@
                     <input type="hidden" id="card-token" name="card-token">
                     <br>
                     {{-- カートの枠 --}}
-                    <table class="table mx-auto table-striped table-hover w-75 p-3 table-bordered">
+                    <table class="table mx-auto table-striped table-hover col-11 table-bordered">
                         <thead>
                             <tr>
-
-                                <th colspan="2">商品名</th>
+                                <th>商品名</th>
+                                <th>トッピング</th>
                                 <th>価格</th>
                                 <th>数量</th>
                             </tr>
@@ -47,19 +47,18 @@
                         <tbody>
                             @foreach ($orderItemList as $itemKey => $orderItem)
                                 <tr>
-                                    <td>{{ $itemKey }} / {{ $orderItem->name }}<br>
+                                    <td>{{ $orderItem->name }}<br>
                                         <input type="hidden" name="order_item_id" value="{{ $orderItem->id }}">
                                         <input type="hidden" name="item_id[]" value="{{ $orderItem->item_id }}">
+                                    </td>
+                                    <td>
                                         @foreach ($orderToppingList as $toppingKey => $orderTopping)
-                                            @if ($orderTopping->order_item_id == $itemKey)
-                                                <small
-                                                    class="text-muted">{{ $orderTopping->name }}/{{ $orderTopping->price }}円</small><br>
+                                            @if ($orderItem->id == $orderTopping->order_item_id)
+                                                <small class="text-black-50">{{ $orderTopping->name }}</small><br>
                                                 <input type="hidden" name="topping_id[]"
                                                     value="{{ $orderTopping->topping_id }}">
                                             @endif
                                         @endforeach
-                                    </td>
-                                    <td>本当はここに追加されているトッピングがあれば表示させたい
                                     </td>
                                     <td>¥{{ $orderItem->customed_price }}/個
                                         <input type="hidden" name="customed_price[]"

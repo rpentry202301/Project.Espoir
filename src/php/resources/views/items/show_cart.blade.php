@@ -76,13 +76,13 @@
             </script>
 
             @foreach ($orderItemList as $index => $orderItem)
-                <form action="{{ route('add.topping.cart') }}" method="post" id="item-update{{ $orderItem }}"
+                <form action="{{ route('add.topping.cart') }}" method="post" id="item-update{{ $index }}"
                     name="orderForm">
                     @csrf
-                    <input type="hidden" name="index" value="{{ $index }}">
+                    <input type="hidden" name="index" value="{{ $orderItem->id }}">
                     <tr>
                         <td>
-                            {{ $index }} / {{ $orderItem->name }}
+                            {{ $orderItem->name }}
                         </td>
                         <td>
                             <table>
@@ -90,7 +90,8 @@
                                     @foreach ($toppings as $topping)
                                         <td>
                                             <span class="small" style="font-size: 5px">{{ $topping->name }} /
-                                                ¥{{ $topping->price }}</span>
+                                                ¥{{ $topping->price }}
+                                            </span>
                                             <input id="toppingPrice{{ $topping->id }}" type="checkbox"
                                                 class="form-control small" name="toppingPrice{{ $topping->id }}"
                                                 value="{{ $topping->price }}" aria-describedby="topping-help"
@@ -105,7 +106,8 @@
                                     type="hidden" value="{{ $orderItem->price }}" name="itemPrice"></span></td>
                         <td>
                             <span class="form-group">
-                                <select id="quantity" name="quantity" class="form-control col-11" onchange="calc_total()">
+                                <select id="quantity" name="quantity{{ $index }}" class="form-control col-11"
+                                    onchange="calc_total()">
                                     <option value="{{ $orderItem->quantity }}" selected="selected">
                                         {{ $orderItem->quantity }}</option>
                                     @for ($i = 1; $i <= 9; $i++)
@@ -120,12 +122,13 @@
                         </td>
                 </form>
                 <td>
-                    <button type="submit" class="btn btn-primary mb-2" form="item-update{{ $orderItem }}">更新</button>
-                    {{-- <form action="{{ route('delete.item.cart') }}" method="post">
-                        @csrf --}}
-                    <button type="submit" class="btn btn-danger mb-2" form="delete-item">削除</button>
-                    {{-- <input type="hidden" name="index" value="{{ $index }}">
-                    </form> --}}
+                    <button type="submit" class="btn btn-primary mb-2" form="item-update{{ $index }}">更新</button>
+                    <form action="{{ route('delete.item.cart') }}" method="post" id="delete-item{{ $index }}">
+                        @csrf
+                        <button type="submit" class="btn btn-danger mb-2"
+                            form="delete-item{{ $index }}">削除</button>
+                        <input type="hidden" name="index" value="{{ $orderItem->id }}">
+                    </form>
                 </td>
                 </tr>
             @endforeach

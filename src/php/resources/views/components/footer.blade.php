@@ -38,11 +38,6 @@
         <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
           <h5 class="text-uppercase mb-4 pb-1">Search something</h5>
 
-          <div class="form-outline form-white mb-4">
-            <input type="text" id="formControlLg" class="form-control form-control-lg" />
-            <label class="form-label" for="formControlLg">Search</label>
-          </div>
-
           <ul class="fa-ul" style="margin-left: 1.65em;">
             <li class="mb-3">
               <span class="fa-li"><i class="fas fa-home"></i></span><span class="ms-2">Warsaw, 00-967, Poland</span>

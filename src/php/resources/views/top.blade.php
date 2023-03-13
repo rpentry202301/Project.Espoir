@@ -8,17 +8,21 @@
 
 <!--/slider-->
 @if($isRecommendItems)
-<h2>～{{\Carbon\Carbon::now()->format('n')}}月のおすすめ～</h2>
-<ul class="slider col-8">
-    @foreach($isRecommendItems as $isRecommendItem)
-    <li><a href="#" data-toggle="modal" data-target="#my-modal" 
-    data-price="{{number_format($isRecommendItem->price)}}" 
-    data-name="{{$isRecommendItem->name}}" 
-    data-primaryCategoryName = "{{$isRecommendItem->secondaryCategory->primaryCategory->name}}" 
-    data-secondaryCategoryName = " {{$isRecommendItem->secondaryCategory->name}}">
-    <img src="/storage/item-images/{{$isRecommendItem->image_file}}" alt="おすすめ画像"></a></li>
-    @endforeach
-</ul>
+<div id="recommend-slider">
+    <h2>～{{\Carbon\Carbon::now()->format('n')}}月のおすすめ～</h2>
+    <ul class="slider col-8 recommend-slider">
+        @foreach($isRecommendItems as $isRecommendItem)
+            <li><a class="recommend-img" value="{{$isRecommendItem}}" href="#" data-toggle="modal" data-target="#my-modal" 
+            data-price="{{number_format($isRecommendItem->price)}}" 
+            data-name="{{$isRecommendItem->name}}" 
+            data-primaryCategoryName = "{{$isRecommendItem->secondaryCategory->primaryCategory->name}}" 
+            data-secondaryCategoryName = " {{$isRecommendItem->secondaryCategory->name}}" 
+            data-text = "{{$isRecommendItem->description}}"
+            data-url = "{{route ('item.showDetail',[$isRecommendItem->id])}}" >
+            <img src="/storage/item-images/{{$isRecommendItem->image_file}}" alt="おすすめ画像"></a></li>
+        @endforeach
+    </ul>
+</div>
 @endif
 <!--/slider-->
 
@@ -29,18 +33,30 @@
                 <h4 class="modal-title" id="myModalLabel">title（商品名）</h4>
             </div>
             <div class="modal-body">
-                <label>データを削除しますか？</label>
                 <table class="table table-bordered">
-                    <tr>
-                        <th class="w-25">テキストテキストテキスト</th>
-                    </tr>
-                    <tr>
-                        <th class="w-25">カテゴリー</th>
-                    </tr>
-                    <tr>
-                        <th class="w-25">値段(税抜)</th>
-                    </tr>
+                <tr>
+                    <th class="w-25">商品名</th>
+                    <td id="modal-name" class="w-75">サンプルネーム</td>
+                </tr>
+                <tr>
+                    <th class="w-25">カテゴリー</th>
+                    <td class="w-75"><span id="modal-category">サンプルカテゴリー</span>/<span id="modal-sub-category">サンプルサブカテゴリー</span></td>
+                </tr>
+                <tr>
+                    <th class="w-25">値段(税抜)</th>
+                    <td class="w-75"><i class="fas fa-yen-sign"></i><span id="modal-price" >サンプル価格</span></td>
+                </tr>
                 </table>
+                <div id="modal-text" class="my-3 text-center">サンプルテキスト</div>
+                    <div class="row">
+                        <div class="col-8 offset-2">
+                        <form id="modal-form" method="get">
+                            @csrf
+                            <button type="submit" class="btn btn-secondary btn-block">詳細を見る</button>
+                        </form>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
@@ -48,19 +64,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    window.onload = function() {
-        $('#my-modal').on('shown.bs.modal', function (event) {
-            console.log('動作確認');
-            //Ajaxの処理はここに
-            //modal-bodyのpタグにtextメソッド内を表示
-            modal.find('.modal-body p').eq(0).text("本当に"+title+"を削除しますか?");
-            //formタグのaction属性にurlのデータ渡す
-            modal.find('form').attr('action',url);
-        });
-    }
-</script>
 
 
 <div class="container">

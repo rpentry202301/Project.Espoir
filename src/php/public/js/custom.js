@@ -52,21 +52,36 @@ $(".slider-stamp").slick({
 });
 
 // モーダル
-$("#my-modal").on("hidden.bs.modal", function (event) {
-    console.log("動作確認");
+
+var recommendImgs = document.querySelectorAll(".recommend-img");
+var myModalLabel = document.getElementById("myModalLabel");
+
+recommendImgs.forEach(function (element) {
+    element.addEventListener("click", function () {
+        console.log("動作確認");
+        var price = element.getAttribute("data-price");
+        var name = element.getAttribute("data-name");
+        var dataPrimaryCategoryName = element.getAttribute(
+            "data-primaryCategoryName"
+        );
+        var dataSecondaryCategoryName = element.getAttribute(
+            "data-secondaryCategoryName"
+        );
+        var dataText = element.getAttribute("data-text");
+        var url = element.getAttribute("data-url");
+
+        document.getElementById("myModalLabel").innerText = name;
+        document.getElementById("modal-name").innerText = name;
+        document.getElementById("modal-price").innerText = price;
+        document.getElementById("modal-text").innerText = dataText;
+        document.getElementById("modal-category").innerText =
+            dataPrimaryCategoryName;
+        document.getElementById("modal-sub-category").innerText =
+            dataSecondaryCategoryName;
+        document.getElementById("modal-form").setAttribute("action", url);
+    });
 });
-// $("#my-modal").on("show.bs.modal", function (e) {
-//     console.log("show"); //showメソッドが実行されたら実行される。
-// });
 
-// $("#my-modal").on("shown.bs.modal", function (e) {
-//     console.log("shown"); //見えるようになったら実行される
-// });
-
-// $("#my-modal").on("hide.bs.modal", function (e) {
-//     console.log("hide"); //hideメソッドが実行されたら実行される
-// });
-
-// $("#my-modal").on("hidden.bs.modal", function (e) {
-//     console.log("hidden"); //見えなくなったら実行される
+// $("#my-modal").on("hidden.bs.modal", function (event) {
+//     console.log("動作確認");
 // });

@@ -64,3 +64,10 @@
 .pt-6 {
     margin-top: 65px;
 }
+
+.recommend-img img {
+    transition: transform 0.6s ease;
+}
+.recommend-img img:hover {
+    transform: scale(1.1);
+}

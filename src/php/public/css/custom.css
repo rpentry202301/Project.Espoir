@@ -65,9 +65,16 @@
     margin-top: 65px;
 }
 
+<<<<<<< HEAD
 .slide-img img {
     transition: transform 0.6s ease;
 }
 .slide-img:hover img {
+=======
+.recommend-img img {
+    transition: transform 0.6s ease;
+}
+.recommend-img img:hover {
+>>>>>>> origin
     transform: scale(1.1);
 }

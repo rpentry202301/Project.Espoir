@@ -9,7 +9,8 @@ class Item extends Model
 {
     use HasFactory;
 
-    public function secondaryCategory(){
+    public function secondaryCategory()
+    {
         return $this->belongsTo(SecondaryCategory::class);
     }
 }

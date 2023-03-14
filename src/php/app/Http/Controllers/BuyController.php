@@ -47,10 +47,11 @@ class BuyController extends Controller
 
     public function buyOrderItems(Request $request)
     {
-        // dd($request);
-
         $token = $request->input('card-token');
         try {
+            if ($token == null) {
+                $token = 0;
+            }
             $this->settlement($token, $request);
         } catch (BuyException $e) {
             return redirect()->back()
@@ -84,7 +85,7 @@ class BuyController extends Controller
             $order->save();
 
             //もし商品がカートに存在しない場合
-            if ($request->topping_id == null) {
+            if ($request->item_id == null) {
                 throw new BuyException;
             }
 
@@ -98,23 +99,27 @@ class BuyController extends Controller
                 $orderItem->save();
 
                 //order_toppingをテーブルにinsert
-                for ($j = 0; $j < count($request->topping_id); $j++) {
-                    if ($request->order_item_id[$j] == $request->onetime_id[$i]) {
-                        $orderTopping = new OrderTopping();
-                        $orderTopping->order_item_id = DB::table('order_items')->latest('id')->value('id');
-                        $orderTopping->topping_id = $request->topping_id[$j];
-                        $orderTopping->save();
+                if ($request->topping_id != null) {
+                    for ($j = 0; $j < count($request->topping_id); $j++) {
+                        if ($request->order_item_id[$j] == $request->onetime_id[$i]) {
+                            $orderTopping = new OrderTopping();
+                            $orderTopping->order_item_id = DB::table('order_items')->latest('id')->value('id');
+                            $orderTopping->topping_id = $request->topping_id[$j];
+                            $orderTopping->save();
+                        }
                     }
                 }
             }
 
-            $charge = Charge::create([
-                'card'     => $token,
-                'amount'   => $request->price_include_tax,
-                'currency' => 'jpy'
-            ]);
-            if (!$charge->captured) {
-                throw new \Exception('支払い確定失敗');
+            if ($token != 0) {
+                $charge = Charge::create([
+                    'card'     => $token,
+                    'amount'   => $request->price_include_tax,
+                    'currency' => 'jpy'
+                ]);
+                if (!$charge->captured) {
+                    throw new \Exception('支払い確定失敗');
+                }
             }
 
             //セッションを切って、カートの中を空にする

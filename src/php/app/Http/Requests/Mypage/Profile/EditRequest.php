@@ -24,22 +24,30 @@ class EditRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'min:1', 'max:30'],
-            'email' => ['required', 'string', 'email', 'min:6', 'max:254', 'unique:users'],
-            'zipcode' => ['required', 'numeric', 'digits:7'],
-            'address' => ['required', 'string', 'min:1', 'max:30'],
-            'telephone' => ['required', 'numeric', 'digits_between:10,14'],
+            // 'name' => ['required', 'string', 'min:1', 'max:30'],
+            // 'email' => ['required', 'string', 'email', 'min:6', 'max:254', 'unique:users'],
+            // 'zipcode' => ['required', 'numeric', 'digits:7'],
+            // 'address' => ['required', 'string', 'min:1', 'max:30'],
+            // 'telephone' => ['required', 'numeric', 'digits_between:10,14'],
         ];
     }
+
+
+    // public function withValidator(Validator $validator)
+    // {
+    //     $validator->sometimes('required', 'string', 'email', 'min:6', 'max:254', function ($email) {
+    //         return $email == Auth::user()->email;
+    //     });
+    // }
 
     public function attributes()
     {
         return [
-            'name' => 'ユーザー名',
-            'email' => 'メールアドレス',
-            'zipcode' => '郵便番号',
-            'address' => '住所',
-            'telephone' => '電話番号',
+            // 'name' => 'ユーザー名',
+            // 'email' => 'メールアドレス',
+            // 'zipcode' => '郵便番号',
+            // 'address' => '住所',
+            // 'telephone' => '電話番号',
         ];
     }
 }

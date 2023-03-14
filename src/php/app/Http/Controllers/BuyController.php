@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\OrderItem;
 use App\Models\Item;
 use App\Models\Topping;
 use App\Models\OrderTopping;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
-use Carbon\Carbon;
+use App\Models\Ipcontent;
+use App\Http\Controllers\MailController;
+use App\Exceptions\BuyException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Payjp\Charge;
-use App\Exceptions\BuyException;
-use App\Models\Ipcontent;
+use Carbon\Carbon;
 
 class BuyController extends Controller
 {
@@ -68,6 +69,9 @@ class BuyController extends Controller
         $user = Auth::user();
         $IPContent = Ipcontent::inRandomOrder()->first();
         $user->ipcontents()->sync($IPContent->id,false);
+        // 購入完了したらメールを送信する
+        $mail = new MailController;
+        $mail->send($request);
 
         return redirect()->back()->with('status', '購入完了しました');
     }

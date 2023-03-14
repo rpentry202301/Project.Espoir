@@ -18,9 +18,14 @@ class TestMail extends Mailable
      *
      * @return void
      */
-    public function __construct($name)
+    public function __construct($name,$price_include_tax,$order_date,$zipcode,$address,$payment_method)
     {
         $this->name = $name;
+        $this->price_include_tax = $price_include_tax;
+        $this->order_date = $order_date;
+        $this->zipcode = $zipcode;
+        $this->address = $address;
+        $this->payment_method = $payment_method;
 
     }
 
@@ -46,7 +51,13 @@ class TestMail extends Mailable
         return new Content(
             view: 'testMail',
             with: [
-                'name' => $this->name
+                'greeting' => '商品の購入が完了しました',
+                'name' => $this->name,
+                'price_include_tax' => $this->price_include_tax,
+                'order_date' => $this->order_date,
+                'zipcode' => $this->zipcode,
+                'address' => $this->address,
+                'payment_method' => $this->payment_method
             ]
         );
     }

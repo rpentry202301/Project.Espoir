@@ -125,7 +125,7 @@
                                 <label>支払方法</label>
                                 <div>
                                     <span> <input type="radio"
-                                            name="payment_method" id="input-payment-method-1" class="" value="1" checked
+                                            name="payment_method" id="input-payment-method-1" class="" value="1" 
                                             onclick="buttonClick()"><label for="input-payment-method-1">代金引換</label></span>
                                     <span><input type="radio"
                                             name="payment_method" id="input-payment-method-2" class=""

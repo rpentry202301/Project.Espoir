@@ -80,6 +80,7 @@
                     name="orderForm">
                     @csrf
                     <input type="hidden" name="index" value="{{ $orderItem->id }}">
+                    <input type="hidden" name="item_id" value="{{ $orderItem->item_id }}">
                     <tr>
                         <td>
                             {{ $orderItem->name }}
@@ -126,7 +127,7 @@
                         </td>
                 </form>
                 <td>
-                    <button type="submit" class="btn btn-primary mb-2" form="item-update{{ $index }}">更新</button>
+                    <button type="submit" class="btn btn-primary mb-2" form="item-update{{ $index }}">変更</button>
                     <form action="{{ route('delete.item.cart') }}" method="post" id="delete-item{{ $index }}">
                         @csrf
                         <button type="submit" class="btn btn-danger mb-2"

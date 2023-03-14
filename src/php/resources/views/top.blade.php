@@ -99,7 +99,15 @@
 </div>
 <br>
 
-
+<a href="{{ route('show.item.cart') }}"
+    class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
+    role="button"
+    style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;">
+    <div style="font-size: 24px;">カート一覧へ</div>
+    <div>
+        <i class="fas fa-shopping-cart" style="font-size: 30px;"></i>
+    </div>
+</a>
 @if(Auth::check())
     <div class="mt-5">
         <h3>取得したスタンプ</h3>

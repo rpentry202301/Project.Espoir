@@ -8,7 +8,7 @@
     <div class="container">
         <div class="card" style="width: 500px">
             <div class="card-body">
-                <div class="font-weight-bold text-center border-bottom pb-3" style="font-size: 24px">パスワード変更</div>
+                <div class="font-weight-bold text-center border-bottom pb-3" style="font-size: 24px">パスワード再設定</div>
 
                 <form method="POST" action="{{ route('password.email') }}" class="p-5">
                     @if (session('status'))
@@ -20,6 +20,9 @@
                     @csrf
 
                     <div class="form-group">
+                        パスワード再設定用のメールを送信します。<br>
+                        ご登録のメールアドレスを入力して「送信する」ボタンをクリックしてください。<br>
+                        <br>
                         <label for="email">メールアドレス</label>
                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="email">
 

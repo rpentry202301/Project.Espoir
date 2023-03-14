@@ -49,7 +49,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/buy-form', [App\Http\Controllers\BuyController::class, 'showBuyForm'])->name('buy.form');
     Route::post('/buy-form', [App\Http\Controllers\BuyController::class, 'buyOrderItems'])->name('buy.form');
 });
-
 Route::middleware('judge_admin')->group(function () {
     Route::get('/sell', [App\Http\Controllers\SellController::class, 'showSellForm'])->name('sell');
     Route::post('/sell', [App\Http\Controllers\SellController::class, 'registerItem'])->name('sell');
@@ -62,6 +61,12 @@ Route::prefix('mypage')
     ->group(function () {
         Route::get('/edit-profile', [App\Http\Controllers\MyPage\ProfileController::class, 'showProfileEditForm'])->name('mypage.edit-profile');
         Route::post('/edit-profile', [App\Http\Controllers\MyPage\ProfileController::class, 'editProfile'])->name('mypage.edit-profile');
+        Route::get('/edit-destination/{deliverydestination}', [App\Http\Controllers\MyPage\ProfileController::class, 'showDestinationEditForm'])->name('mypage.edit-destination');
+        Route::post('/edit-destination/{deliverydestination}', [App\Http\Controllers\MyPage\ProfileController::class, 'editDestination'])->name('mypage.edit-destination');
+        Route::get('/register-destination', [App\Http\Controllers\MyPage\ProfileController::class, 'showDestinationRegisterForm'])->name('mypage.register-destination');
+        Route::post('/register-destination', [App\Http\Controllers\MyPage\ProfileController::class, 'registerDestination'])->name('mypage.register-destination');
+        Route::get('/destination-list', [App\Http\Controllers\MyPage\ProfileController::class, 'showDestinationList'])->name('mypage.destination-list');
+        Route::post('/destroy{id}', [App\Http\Controllers\MyPage\ProfileController::class, 'destroy'])->name('mypage.destroy-destination');
     });
 
 Route::middleware('auth')->group(function () {

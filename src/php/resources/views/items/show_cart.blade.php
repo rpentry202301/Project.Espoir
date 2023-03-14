@@ -95,7 +95,11 @@
                                             <input id="toppingPrice{{ $topping->id }}" type="checkbox"
                                                 class="form-control small" name="toppingPrice{{ $topping->id }}"
                                                 value="{{ $topping->price }}" aria-describedby="topping-help"
-                                                style="transform: scale(0.5,0.5)" onclick="calc_total()">
+                                                style="transform: scale(0.5,0.5)" onclick="calc_total()"
+                                                @foreach ($orderToppingList as $orderTopping)
+                                                @if ($orderTopping->order_item_id == $orderItem->id && $orderTopping->topping_id == $topping->id)
+                                                checked                                                    
+                                                @endif @endforeach>
                                         </td>
                                     @endforeach
                                 </tr>
@@ -145,14 +149,12 @@
         class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
         role="button"
         style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;">
-        <div style="font-size: 24px;">購入確認画面へ</div>
+        <div style="font-size: 20px;">購入確認画面へ</div>
         <div>
             <i class="fas fa-camera" style="font-size: 30px;"></i>
         </div>
     </a>
     <br>
     <br>
-    <br>
-    <hr>
     <br>
 @endsection

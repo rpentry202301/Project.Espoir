@@ -129,7 +129,7 @@
         >
         <div style="font-size: 24px;">出品</div>
         <div>
-            <i class="fas fa-camera" style="font-size: 30px;"></i>
+            <i class="fas fa-box" style="font-size: 30px;"></i>
         </div>
         </a>
         @endif

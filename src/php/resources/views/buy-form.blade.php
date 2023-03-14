@@ -88,11 +88,14 @@
                             {{-- delivery_destination_name --}}
                             <div class="form-group mx-auto">
                                 <label for="input-delivery-destination">お届け先</label>
-                                <input type="text" class="form-control" id="input-delivery-destination"
-                                    name="delivery_destination_name" aria-describedby="delivery-destination-help"
-                                    placeholder="ここにお届け先の名前を入力してください">
-                                <small id="delivery-destination-help"
-                                    class="form-text text-muted">この位置にプルダウンで「登録住所から選択」を置きたい</small>
+                                <div class="">
+                                    @foreach($deliveryDestinations as $deliveryDestination)
+                                    <div class="w-100">
+                                        <input id="place{{$deliveryDestination->id}}" type="radio" name="place" value="{{$deliveryDestination->id}}" {{ old('place') ? 'checked' : '' }}><label for="place{{$deliveryDestination->id}}">{{$deliveryDestination->delivery_destination_name}} | 〒{{$deliveryDestination->zipcode}} {{$deliveryDestination->address}}</label>
+                                        <hr>
+                                    </div>
+                                    @endforeach
+                                </div>
                             </div>
                             {{-- zipcode --}}
                             <div class="form-group mx-auto">

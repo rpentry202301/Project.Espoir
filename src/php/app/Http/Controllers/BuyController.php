@@ -9,6 +9,7 @@ use App\Models\OrderTopping;
 use App\Models\Order;
 use App\Models\Ipcontent;
 use App\Http\Controllers\MailController;
+use App\Models\DeliveryDestination;
 use App\Exceptions\BuyException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,8 +44,9 @@ class BuyController extends Controller
         } else {
             $orderToppingList = array();
         }
-
-        return view('buy-form', ['orderItemList' => $orderItemList, 'orderToppingList' => $orderToppingList, 'priceIncludeTax' => $priceIncludeTax]);
+        $user = Auth::user();
+        $deliveryDestinations = DeliveryDestination::where('user_id',$user->id)->orderby('id','ASC')->get();
+        return view('buy-form', ['orderItemList' => $orderItemList, 'orderToppingList' => $orderToppingList, 'priceIncludeTax' => $priceIncludeTax,'deliveryDestinations'=>$deliveryDestinations]);
     }
 
     public function buyOrderItems(Request $request)

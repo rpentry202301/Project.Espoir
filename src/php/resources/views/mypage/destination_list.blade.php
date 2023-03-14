@@ -58,7 +58,7 @@
 
                 {{-- お届け先登録 --}}
                 <div class="mt-1">
-                    お届け先の登録は<a href="{{ route('mypage.register-destination') }}">こちら</a>
+                    お届け先の登録は<a href="{{ route('mypage.register-destination') }}" class=text-primary>こちら</a>
                 </div>    
             </div>    
         </div>    

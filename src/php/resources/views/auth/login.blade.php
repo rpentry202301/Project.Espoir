@@ -52,10 +52,10 @@
                 </div>
 
                 <div class="mt-3">
-                    アカウントをお持ちでない方は<a href="{{ route('register') }}">こちら</a>
+                    アカウントをお持ちでない方は<a href="{{ route('register') }}" class=text-primary>こちら</a>
                 </div>
                 <div class="mt-1">
-                    パスワードをお忘れの方は<a href="{{ route('password.request') }}">こちら</a>
+                    パスワードをお忘れの方は<a href="{{ route('password.request') }}" class=text-primary>こちら</a>
                 </div>
             </form>
         </div>

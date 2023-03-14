@@ -117,7 +117,7 @@ return new class extends Migration
 
             $table->timestamps();
         });
-        
+
         #IPContents
         Schema::create('ipcontents', function (Blueprint $table) {
             $table->id();
@@ -132,7 +132,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('ipcontent_id');
             // 複合主キーを定義
-            $table->primary(['user_id','ipcontent_id']);
+            $table->primary(['user_id', 'ipcontent_id']);
             // 外部キー制約を定義
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('ipcontent_id')->references('id')->on('ipcontents')->onDelete('cascade');
@@ -146,8 +146,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ipcontents');
         Schema::dropIfExists('ipcontent_user');
+        Schema::dropIfExists('ipcontents');
 
         Schema::dropIfExists('order_toppings');
         Schema::dropIfExists('toppings');

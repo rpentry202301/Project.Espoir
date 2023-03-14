@@ -46,6 +46,8 @@ class BuyController extends Controller
 
     public function buyOrderItems(Request $request)
     {
+        // dd($request);
+
         $token = $request->input('card-token');
         try {
             $this->settlement($token, $request);
@@ -77,7 +79,7 @@ class BuyController extends Controller
             $order->save();
 
             //order_itemをテーブルにinsert。orderItemListを1回回している中に、orderToppingListをn回回す必要があると思う。
-            for ($i = 0; $i < count($request->item_id); $i++) {
+            for ($i = 0; $i < count($request->onetime_id); $i++) {
                 $orderItem = new OrderItem();
                 $orderItem->item_id = $request->item_id[$i];
                 $orderItem->order_id = DB::table('orders')->latest('id')->value('id');
@@ -86,11 +88,11 @@ class BuyController extends Controller
                 $orderItem->save();
 
                 //order_toppingをテーブルにinsert
-                if (!$request->topping_id == null) {
-                    for ($i = 0; $i < count($request->topping_id); $i++) {
+                for ($j = 0; $j < count($request->topping_id); $j++) {
+                    if ($request->order_item_id[$j] == $request->onetime_id[$i]) {
                         $orderTopping = new OrderTopping();
                         $orderTopping->order_item_id = DB::table('order_items')->latest('id')->value('id');
-                        $orderTopping->topping_id = $request->topping_id[$i];
+                        $orderTopping->topping_id = $request->topping_id[$j];
                         $orderTopping->save();
                     }
                 }

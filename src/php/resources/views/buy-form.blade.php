@@ -48,7 +48,7 @@
                             @foreach ($orderItemList as $itemKey => $orderItem)
                                 <tr>
                                     <td>{{ $orderItem->name }}<br>
-                                        <input type="hidden" name="order_item_id" value="{{ $orderItem->id }}">
+                                        <input type="hidden" name="onetime_id[]" value="{{ $orderItem->id }}">
                                         <input type="hidden" name="item_id[]" value="{{ $orderItem->item_id }}">
                                     </td>
                                     <td>
@@ -57,6 +57,8 @@
                                                 <small class="text-black-50">{{ $orderTopping->name }}</small><br>
                                                 <input type="hidden" name="topping_id[]"
                                                     value="{{ $orderTopping->topping_id }}">
+                                                <input type="hidden" name="order_item_id[]"
+                                                    value="{{ $orderTopping->order_item_id }}">
                                             @endif
                                         @endforeach
                                     </td>

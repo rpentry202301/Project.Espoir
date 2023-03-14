@@ -151,7 +151,7 @@
         style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;">
         <div style="font-size: 20px;">購入確認画面へ</div>
         <div>
-            <i class="fas fa-camera" style="font-size: 30px;"></i>
+            <i class="fas fa-money-check-alt" style="font-size: 30px;"></i>
         </div>
     </a>
     <br>

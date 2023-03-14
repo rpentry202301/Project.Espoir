@@ -39,6 +39,14 @@ class DeliveryDestinationSeeder extends Seeder
                     'zipcode'                   => '3333333',
                     'address'                   => '東京都新宿区新宿3-3-3',
                     'telephone'                 => '09033333333'
+                ],
+                [
+                    'id'                        => '4',
+                    'user_id'                   => '2',
+                    'delivery_destination_name' => '管理室',
+                    'zipcode'                   => '4444444',
+                    'address'                   => '東京都新宿区新宿4-4-4',
+                    'telephone'                 => '09044444444'
                 ]
             ]
         );

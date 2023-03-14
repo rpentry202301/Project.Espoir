@@ -88,14 +88,14 @@ class PurchaseHistoryController extends Controller
             fclose($stream);
 
             //期間を指定するために必要。
-            // $results = $items->getCsvData($post['start_date'], $post['end_date']);
+            // $results = $orders->getCsvData($post['start_date'], $post['end_date']);
             // if (empty($results[0])) {
             //     fputcsv($stream, [
             //         'データが存在しませんでした。',
             //     ]);
             // } else {
             //     foreach ($results as $row) {
-            //         fputcsv($stream, $items->csvRow($row));
+            //         fputcsv($stream, $orders->csvRow($row));
             //     }
             // }
             // fclose($stream);
@@ -106,19 +106,25 @@ class PurchaseHistoryController extends Controller
         return $response;
     }
 
-    public function recommendItem()
+    public function recommendItem(Request $request)
     {
-        $query = Order::query();
-        $orders = $query->get();
-
+        //リクエストでitemのidを取得してくる
+        //レコメンドの条件 同時に買われていること＝同じOrderのidであること。
+        $recommendItemList = array();
         $orderItems = DB::table('order_items')->get();
         $items = DB::table('items')->get();
         foreach ($orderItems as $orderItem) {
             foreach ($items as $item) {
                 if ($orderItem->item_id == $item->id) {
                     $orderItem->name = $item->name;
+                    $orderItem->name = $item->image_file;
                 }
             }
+
+            if ($orderItem->id == $request->id) {
+                $recommendItemList[] = $orderItem;
+            }
         }
+        return $recommendItemList;
     }
 }

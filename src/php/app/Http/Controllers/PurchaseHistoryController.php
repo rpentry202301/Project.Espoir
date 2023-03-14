@@ -14,7 +14,7 @@ class PurchaseHistoryController extends Controller
     //
     public function showPurchaseHistory()
     {
-        $orders = DB::table('orders')->get();
+        $orders = DB::table('orders')->where('user_id', Auth::id())->get();
         foreach ($orders as $order) {
             if ($order->payment_method == 1) {
                 $order->payment_method = '代金引換';

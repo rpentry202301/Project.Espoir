@@ -4,8 +4,9 @@ namespace App\Http\Controllers\MyPage;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Mypage\Profile\EditRequest;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Mypage\Profile\DestinationEditRequest;
 use App\Models\DeliveryDestination;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -48,7 +49,7 @@ class ProfileController extends Controller
     }
 
     // お届け先編集
-    public function editDestination(EditRequest $request, string $deliverydestination)
+    public function editDestination(DestinationEditRequest $request, string $deliverydestination)
     {
         $delivery_destination_name = $request->input('delivery_destination_name');
 
@@ -74,7 +75,7 @@ class ProfileController extends Controller
     }
 
     // お届け先登録
-    public function registerDestination(EditRequest $request)
+    public function registerDestination(DestinationEditRequest $request)
     {
         $delivery_destination_name = $request->input('delivery_destination_name');
 

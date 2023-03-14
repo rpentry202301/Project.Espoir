@@ -17,8 +17,8 @@
                     @if (count($orders) == 0)
                         <br>
                         <h3 class="text-center py-2 text-danger">購入履歴が存在しません</h3>
-                        <br>
                     @endif
+                    <br>
                 </form>
             </div>
             <br>

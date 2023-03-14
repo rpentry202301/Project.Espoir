@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Payjp\Charge;
+use App\Exceptions\BuyException;
 
 class BuyController extends Controller
 {
@@ -51,6 +52,10 @@ class BuyController extends Controller
         $token = $request->input('card-token');
         try {
             $this->settlement($token, $request);
+        } catch (BuyException $e) {
+            return redirect()->back()
+                ->with('type', 'danger')
+                ->with('message', 'カートに商品が追加されていません');
         } catch (\Exception $e) {
             Log::error($e);
             return redirect()->back()
@@ -77,6 +82,11 @@ class BuyController extends Controller
             $order->telephone = $request->telephone;
             $order->payment_method = $request->payment_method;
             $order->save();
+
+            //もし商品がカートに存在しない場合
+            if ($request->topping_id == null) {
+                throw new BuyException;
+            }
 
             //order_itemをテーブルにinsert。orderItemListを1回回している中に、orderToppingListをn回回す必要があると思う。
             for ($i = 0; $i < count($request->onetime_id); $i++) {

@@ -105,4 +105,20 @@ class PurchaseHistoryController extends Controller
         $response->headers->set('content-disposition', 'attachment; filename=' . $date .  '購入履歴一覧.csv');
         return $response;
     }
+
+    public function recommendItem()
+    {
+        $query = Order::query();
+        $orders = $query->get();
+
+        $orderItems = DB::table('order_items')->get();
+        $items = DB::table('items')->get();
+        foreach ($orderItems as $orderItem) {
+            foreach ($items as $item) {
+                if ($orderItem->item_id == $item->id) {
+                    $orderItem->name = $item->name;
+                }
+            }
+        }
+    }
 }

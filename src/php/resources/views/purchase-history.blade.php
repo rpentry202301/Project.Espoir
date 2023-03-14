@@ -16,7 +16,7 @@
                     <br>
                     @if (count($orders) == 0)
                         <br>
-                        <h3 class="text-center py-2 text-danger">注文履歴が存在しません</h3>
+                        <h3 class="text-center py-2 text-danger">購入履歴が存在しません</h3>
                         <br>
                     @endif
                 </form>

@@ -102,7 +102,7 @@ class PurchaseHistoryController extends Controller
         });
 
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('content-disposition', 'attachment; filename=' . $date .  '注文履歴一覧.csv');
+        $response->headers->set('content-disposition', 'attachment; filename=' . $date .  '購入履歴一覧.csv');
         return $response;
     }
 }

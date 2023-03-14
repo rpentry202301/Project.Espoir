@@ -8,7 +8,6 @@ use App\Models\Item;
 use App\Models\Topping;
 use App\Models\OrderTopping;
 
-
 class CartController extends Controller
 {
     public function showCartItem()
@@ -31,9 +30,6 @@ class CartController extends Controller
 
         if (isset($_SESSION['orderToppingList'])) {
             $orderToppingList = $_SESSION['orderToppingList'];
-            foreach ($orderToppingList as $orderTopping) {
-                // $priceIncludeTax += $orderTopping->price;
-            }
         } else {
             $orderToppingList = array();
         }
@@ -55,15 +51,26 @@ class CartController extends Controller
             $orderItemList = array();
         }
 
+        if (isset($_SESSION['itemIdList'])) {
+            $itemIdList = $_SESSION['itemIdList'];
+        } else {
+            $itemIdList = array();
+        }
+
         //カートに追加する商品を追加する
         $query = Item::query();
         $orderItem = new OrderItem();
         $orderItem = $query->where('id', $request->id)->first();
+        $orderItem->id = time();
         $orderItem->item_id = $query->where('id', $request->id)->value('id');
         $orderItem->customed_price = $orderItem->price;
         $orderItem->quantity = 1;
         $orderItemList[] = $orderItem;
         $_SESSION['orderItemList'] = $orderItemList;
+
+        //Itemのidが要素の配列をセッションに入れる
+        $itemIdList[] = $query->where('id', $request->id)->value('id');
+        $_SESSION['itemIdList'] = $itemIdList;
 
         //直前の画面に戻る
         return redirect()->back()->with('status', 'カートに追加しました');
@@ -72,8 +79,10 @@ class CartController extends Controller
     public function deleteCartItem(Request $request)
     {
         session_start();
+
         //配列の添え字をリクエストで持ってくる。
-        $index = $request->index;
+        $index = (int)$request->index;
+
         $orderItemList = $_SESSION['orderItemList'];
         if (isset($_SESSION['orderToppingList'])) {
             $orderToppingList = $_SESSION['orderToppingList'];
@@ -81,13 +90,17 @@ class CartController extends Controller
             $orderToppingList = array();
         }
 
-        #TODO 削除実行。トッピングが追加されている連続した商品を、数字が小さい商品を消すと、2番目のトッピングが残ってしまう問題。
-        for ($i = 0; $i < count($orderToppingList); $i++) {
-            if ($orderToppingList[$i]->order_item_id == $index) {
-                unset($orderToppingList[$i]);
+        foreach ($orderToppingList as $key => $orderTopping) {
+            if ($orderTopping->order_item_id == $index) {
+                unset($orderToppingList[$key]);
             }
         }
-        unset($orderItemList[$index]);
+
+        foreach ($orderItemList as $key => $orderItem) {
+            if ($orderItem->id == $index) {
+                unset($orderItemList[$key]);
+            }
+        }
 
         //indexを詰める
         $orderToppingList = array_values($orderToppingList);
@@ -96,14 +109,43 @@ class CartController extends Controller
         $_SESSION['orderItemList'] = $orderItemList;
         $_SESSION['orderToppingList'] = $orderToppingList;
 
-        return redirect()->back()->with('status', 'カートから削除しました');;
+        return redirect()->back()->with('status', 'カートから削除しました');
+    }
+
+    public function deleteCartTopping(int $index, int $item_id, int $currentQuantity, array $orderToppingList)
+    {
+        //案⑴ 更新ボタンを押す度にそのorderItemのid（time）に紐づくトッピングを削除する処理
+        //　　 送られてくるindexを元に、セッションのorderToppingListを回して、order_item_idが一致するorderToppingを削除する
+        foreach ($orderToppingList as $key => $orderTopping) {
+            if ($orderTopping->order_item_id == $index) {
+                unset($orderToppingList[$key]);
+            }
+        }
+        $orderToppingList = array_values($orderToppingList);
+        $_SESSION['orderToppingList'] = $orderToppingList;
+
+        //商品のカスタム価格を一度リセットする処理
+        $orderItemList = $_SESSION['orderItemList'];
+        foreach ($orderItemList as $key => $orderItem) {
+            if ($orderItem->id == $index) {
+                $query = Item::query();
+                $orderItem = $query->where('id', $item_id)->first();
+                $orderItem->id = $index;
+                $orderItem->item_id = $query->where('id', $item_id)->value('id');
+                $orderItem->quantity = $currentQuantity;
+                $orderItem->customed_price = $orderItem->price;
+                $orderItemList[$key] = $orderItem;
+            }
+        }
+        $_SESSION['orderItemList'] = $orderItemList;
+        return $orderToppingList;
     }
 
     public function customedPriceCalc(int $price, int $index)
     {
         $orderItemList = $_SESSION['orderItemList'];
         foreach ($orderItemList as $key => $orderItem) {
-            if ($key == $index) {
+            if ($orderItem->id == $index) {
                 $orderItem->customed_price += $price;
             }
         }
@@ -115,7 +157,7 @@ class CartController extends Controller
     {
         $orderItemList = $_SESSION['orderItemList'];
         foreach ($orderItemList as $key => $orderItem) {
-            if ($key == $index) {
+            if ($orderItem->id == $index) {
                 $orderItem->quantity = $quantity;
             }
         }
@@ -123,55 +165,119 @@ class CartController extends Controller
         return;
     }
 
-    public function updateTopping(object $request, int $index, array $orderToppingList)
+    public function removeDuplicateTopping(array $toppingIdList, array $orderToppingList)
     {
+        $msg = '';
+        foreach ($orderToppingList as $orderTopping) {
+            foreach ($toppingIdList as $key => $toppingId) {
+                if ($orderTopping->topping_id == $toppingId) {
+                    $msg = '（重複するトッピングは除く）';
+                    unset($toppingIdList[$key]);
+                }
+            }
+        }
+        $toppingIdList = array_values($toppingIdList);
+        return array($msg, $toppingIdList);
+    }
+
+
+    public function updateTopping(array $toppingIdList, int $index, array $orderToppingList)
+    {
+
+        list($msg, $toppingIdList) = $this->removeDuplicateTopping($toppingIdList, $orderToppingList);
+
         $orderTopping = new OrderTopping();
-        foreach ($request->topping as $toppingId) {
+        foreach ($toppingIdList as $toppingId) {
             $query = Topping::query();
             $orderTopping = $query->where('id', $toppingId)->first();
-            $orderTopping->order_item_id = $request->index; //ここでorder_toppingsテーブルのorder_item_idを仮置きする。
+            $orderTopping->order_item_id = $index; //ここでorder_toppingsテーブルのorder_item_idを仮置きする。バリューはtime()。
             $orderTopping->topping_id = $query->where('id', $toppingId)->value('id');
-            $this->customedPriceCalc($orderTopping->price, $request->index);
+            $this->customedPriceCalc($orderTopping->price, $index);
             $orderToppingList[] = $orderTopping;
         }
         $_SESSION['orderToppingList'] = $orderToppingList;
-        return;
+        return $msg;
     }
 
     public function addCartTopping(Request $request)
     {
         session_start();
-
-
         if (isset($_SESSION['orderToppingList'])) {
             $orderToppingList = $_SESSION['orderToppingList'];
         } else {
             $orderToppingList = array();
         }
 
-        //変更内容がnullの場合の条件分岐
-        if ($request->topping == null && $request->quantity == "") {
-            return redirect()->back()->with(['status' => '変更内容を選択してください']);
+        //現在の数量を取得
+        $orderItemList = $_SESSION['orderItemList'];
+        foreach ($orderItemList as $index => $orderItem) {
+            if ($orderItem->id == $request->index) {
+                $currentQuantity = $orderItem->quantity;
+            }
         }
 
-        if ($request->topping == null && !$request->quantity == "") {
-            $this->updateQuantity($request->quantity, $request->index);
+        //toppingPriceの最後の数字だけを取得し、Toppingのidとして使用できるようにする。
+        $toppingIdList = array();
+        foreach ($request->request as $key => $value) {
+            $result = strpos($key, 'toppingPrice');
+            if ($result !== false) {
+                $key = str_replace('toppingPrice', '', $key);
+                $toppingIdList[] = $key;
+            }
+        }
+
+        //quautityを利用するための処理
+        foreach ($request->request as $key => $value) {
+            $result = strpos($key, 'quantity');
+            if ($result !== false) {
+                $quantity = (int)$value;
+            }
+        }
+        //indexと等しい、変更前のorderToppingが何件あるのかの処理
+        $count = 0;
+        foreach ($orderToppingList as $key => $orderTopping) {
+            if ($orderTopping->order_item_id == $request->index) {
+                $count++;
+            }
+        }
+
+        //変更内容が無いの場合の条件分岐
+        if (count($toppingIdList) == 0 && $count == 0 && $quantity == $currentQuantity) {
+            return redirect()->back()->with(['status' => '変更内容を確認してください']);
+        }
+        #TODO ここに紐づいているトッピングがある状態かつ追加のトッピングにチェックを入れない「変更内容を確認してください」パータンが必要
+
+        //数量のみの変更パターン
+        if (count($toppingIdList) == 0 && $count == 0 && $quantity != $currentQuantity) {
+            $this->updateQuantity($quantity, $request->index);
             return redirect()->back()->with(['status' => '数量を変更しました']);
         }
-        if (!$request->topping == null && $request->quantity == "") {
-            $this->updateTopping($request, $request->index, $orderToppingList);
+        if (count($toppingIdList) == 0 && $count != 0 && $quantity != $currentQuantity) {
+            $this->updateQuantity($quantity, $request->index);
+            return redirect()->back()->with(['status' => '数量を変更しました']);
+        }
+
+        //トッピングのみの変更パターン（TODOのパターンはここに来てしまう）
+        if (count($toppingIdList) != 0 && $count != 0 && $quantity == $currentQuantity) {
+            $orderToppingList = $this->deleteCartTopping($request->index, $request->item_id, $currentQuantity, $orderToppingList);
+            $msg = $this->updateTopping($toppingIdList, $request->index, $orderToppingList);
+            return redirect()->back()->with(['status' => 'トッピングを変更しました' . $msg]);
+        }
+
+        if (count($toppingIdList) == 0 && $count != 0 && $quantity == $currentQuantity) {
+            $orderToppingList = $this->deleteCartTopping($request->index, $request->item_id, $currentQuantity, $orderToppingList);
             return redirect()->back()->with(['status' => 'トッピングを変更しました']);
         }
 
-        $this->updateQuantity($request->quantity, $request->index);
-        $this->updateTopping($request, $request->index, $orderToppingList);
+        if (count($toppingIdList) != 0 && $count == 0 && $quantity == $currentQuantity) {
+            $msg = $this->updateTopping($toppingIdList, $request->index, $orderToppingList);
+            return redirect()->back()->with(['status' => 'トッピングを変更しました' . $msg]);
+        }
 
-        # TODO トッピングの重複処理
-        //
+        $this->updateQuantity($quantity, $request->index);
+        $this->deleteCartTopping($request->index, $request->item_id, $currentQuantity, $orderToppingList);
+        $msg = $this->updateTopping($toppingIdList, $request->index, $orderToppingList);
 
-        #TODO トッピングの削除
-        //
-
-        return redirect()->back()->with(['status' => 'トッピングと数量を変更しました']);
+        return redirect()->back()->with(['status' => 'トッピングと数量を変更しました' . $msg]);
     }
 }

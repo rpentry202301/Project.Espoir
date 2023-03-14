@@ -26,11 +26,12 @@ Route::post('/items/cart/add-Item', [App\Http\Controllers\CartController::class,
 Route::post('/items/cart/delete-Item', [App\Http\Controllers\CartController::class, 'deleteCartItem'])->name('delete.item.cart');
 Route::post('/items/cart/add-Topping', [App\Http\Controllers\CartController::class, 'addCartTopping'])->name('add.topping.cart');
 
+
+Route::get('items/{item}', [\App\Http\Controllers\ItemsController::class, 'showDetail'])->name('item.showDetail');
 Route::controller(ItemsController::class)->group(function () {
     Route::prefix('items')
         ->middleware('auth')
         ->group(function () {
-            Route::get('/{item}', 'showDetail')->name('item.showDetail');
         });
     Route::prefix('items')
         ->middleware('judge_admin')
@@ -67,3 +68,10 @@ Route::prefix('mypage')
         Route::get('/destination-list', [App\Http\Controllers\MyPage\ProfileController::class, 'showDestinationList'])->name('mypage.destination-list');
         Route::post('/destroy{id}', [App\Http\Controllers\MyPage\ProfileController::class, 'destroy'])->name('mypage.destroy-destination');
     });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/purchase-history', [App\Http\Controllers\PurchaseHistoryController::class, 'showPurchaseHistory'])->name('purchase-history');
+    Route::post('/purchase-history', [App\Http\Controllers\PurchaseHistoryController::class, 'cvsExport'])->name('cvs-export');
+});
+
+Route::get('/mail/send',[App\Http\Controllers\MailController::class, 'send'])->name('mail.send');

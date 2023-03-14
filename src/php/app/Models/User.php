@@ -13,6 +13,14 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
+     * 
+     */
+    public function ipcontents(){
+        return $this->belongsToMany(Ipcontent::class);
+    }
+
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

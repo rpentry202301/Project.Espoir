@@ -117,6 +117,26 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
+        #IPContents
+        Schema::create('ipcontents', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('image_file')->nullable();
+            $table->timestamps();
+        });
+
+        #IPContents_Users
+        Schema::create('ipcontent_user', function (Blueprint $table) {
+            // $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('ipcontent_id');
+            // 複合主キーを定義
+            $table->primary(['user_id', 'ipcontent_id']);
+            // 外部キー制約を定義
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('ipcontent_id')->references('id')->on('ipcontents')->onDelete('cascade');
+        });
     }
 
     /**
@@ -126,6 +146,9 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('ipcontent_user');
+        Schema::dropIfExists('ipcontents');
+
         Schema::dropIfExists('order_toppings');
         Schema::dropIfExists('toppings');
 

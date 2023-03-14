@@ -35,11 +35,11 @@
                     <input type="hidden" id="card-token" name="card-token">
                     <br>
                     {{-- カートの枠 --}}
-                    <table class="table mx-auto table-striped table-hover w-75 p-3 table-bordered">
+                    <table class="table mx-auto table-striped table-hover col-11 table-bordered">
                         <thead>
                             <tr>
-
-                                <th colspan="2">商品名</th>
+                                <th>商品名</th>
+                                <th>トッピング</th>
                                 <th>価格</th>
                                 <th>数量</th>
                             </tr>
@@ -47,19 +47,20 @@
                         <tbody>
                             @foreach ($orderItemList as $itemKey => $orderItem)
                                 <tr>
-                                    <td>{{ $itemKey }} / {{ $orderItem->name }}<br>
-                                        <input type="hidden" name="order_item_id" value="{{ $orderItem->id }}">
+                                    <td>{{ $orderItem->name }}<br>
+                                        <input type="hidden" name="onetime_id[]" value="{{ $orderItem->id }}">
                                         <input type="hidden" name="item_id[]" value="{{ $orderItem->item_id }}">
+                                    </td>
+                                    <td>
                                         @foreach ($orderToppingList as $toppingKey => $orderTopping)
-                                            @if ($orderTopping->order_item_id == $itemKey)
-                                                <small
-                                                    class="text-muted">{{ $orderTopping->name }}/{{ $orderTopping->price }}円</small><br>
+                                            @if ($orderItem->id == $orderTopping->order_item_id)
+                                                <small class="text-black-50">{{ $orderTopping->name }}</small><br>
                                                 <input type="hidden" name="topping_id[]"
                                                     value="{{ $orderTopping->topping_id }}">
+                                                <input type="hidden" name="order_item_id[]"
+                                                    value="{{ $orderTopping->order_item_id }}">
                                             @endif
                                         @endforeach
-                                    </td>
-                                    <td>本当はここに追加されているトッピングがあれば表示させたい
                                     </td>
                                     <td>¥{{ $orderItem->customed_price }}/個
                                         <input type="hidden" name="customed_price[]"
@@ -121,43 +122,45 @@
 
                             {{-- payment_method --}}
                             <div class="form-group mx-auto">
-                                <label for="input-payment-method">支払方法</label>
-                                <select name="payment_method" id="input-payment-method" class="form-control"
-                                    aria-describedby="payment-method-help">
-                                    <option>--</option>
-                                    <option value="1">代金引換</option>
-                                    <option value="2">クレジットカード</option>
-                                </select>
-                                <small id="payment-method-help"
-                                    class="form-text text-muted">クレジットカードだったら下の入力フォームが出る仕様にしたい</small>
+                                <label>支払方法</label>
+                                <div>
+                                    <span> <label for="input-payment-method-1">代金引換：</label><input type="radio"
+                                            name="payment_method" id="input-payment-method-1" class="" value="1"
+                                            onclick="buttonClick()"></span>
+                                    <span><label for="input-payment-method-2"> クレジットカード：</label><input type="radio"
+                                            name="payment_method" id="input-payment-method-2" class=""
+                                            value="2" onclick="buttonClick()"></span>
+                                </div>
                             </div>
                 </form>
+                <span id="sub-form" style="display: none">
 
-                <div class="form-group mt-3">
-                    <label for="number-form">カード番号</label>
-                    <div id="number-form" class="form-control">
-                        <!-- ここにカード番号入力フォームが生成されます -->
+                    <div class="form-group mt-3">
+                        <label for="number-form">カード番号</label>
+                        <div id="number-form" class="form-control">
+                            <!-- ここにカード番号入力フォームが生成されます -->
+                        </div>
                     </div>
-                </div>
-                <div class="form-group mt-3">
-                    <label for="expiry-form">有効期限</label>
-                    <div id="expiry-form" class="form-control">
-                        <!-- ここに有効期限入力フォームが生成されます -->
+                    <div class="form-group mt-3">
+                        <label for="expiry-form">有効期限</label>
+                        <div id="expiry-form" class="form-control">
+                            <!-- ここに有効期限入力フォームが生成されます -->
+                        </div>
                     </div>
-                </div>
-                <div class="form-group mt-3">
-                    <label for="expiry-form">セキュリティコード</label>
-                    <div id="cvc-form" class="form-control">
-                        <!-- ここにCVC入力フォームが生成されます -->
+                    <div class="form-group mt-3">
+                        <label for="expiry-form">セキュリティコード</label>
+                        <div id="cvc-form" class="form-control">
+                            <!-- ここにCVC入力フォームが生成されます -->
+                        </div>
                     </div>
-                </div>
+                </span>
 
             </div>
         </div>
 
         <div class="row mt-3 mb-3">
             <div class="col-8 offset-2">
-                <button class="btn btn-secondary btn-block" onclick="onSubmit(event)">購入</button>
+                <button id="buy-button" class="btn btn-secondary btn-block">購入</button>
             </div>
         </div>
         <br>
@@ -192,6 +195,24 @@
                 document.querySelector('#card-token').value = r.id;
                 document.querySelector('#buy-form').submit();
             })
+        }
+    </script>
+
+    <script>
+        function buttonClick() {
+            let btnHide = document.getElementById("input-payment-method-1");
+            let btnOpen = document.getElementById("input-payment-method-2");
+            let subForm = document.getElementById("sub-form");
+            let buyButton = document.getElementById("buy-button");
+            if (btnHide.checked) {
+                subForm.style.display = "none";
+                buyButton.setAttribute('onclick', "");
+                buyButton.setAttribute('form', 'buy-form');
+            } else {
+                subForm.style.display = "";
+                buyButton.setAttribute('onclick', "onSubmit(event)");
+                buyButton.setAttribute('form', '');
+            }
         }
     </script>
 @endsection

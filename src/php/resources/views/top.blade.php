@@ -5,15 +5,67 @@
 @endsection
 
 @section('content')
+
 <!--/slider-->
-<ul class="slider col-10">
-    <li><img src="/storage/item-images/drink_sample1.jpg" alt=""></li>
-    <li><img src="/storage/item-images/drink_sample2.jpg" alt=""></li>
-    <li><img src="/storage/item-images/drink_sample3.jpg" alt=""></li>
-    <li><img src="/storage/item-images/drink_sample4.jpg" alt=""></li>
-    <li><img src="/storage/item-images/drink_sample5.jpg" alt=""></li>
-</ul>
+@if($isRecommendItems)
+<div id="recommend-slider">
+    <h2>～{{\Carbon\Carbon::now()->format('n')}}月のおすすめ～</h2>
+    <ul class="slider col-8 recommend-slider">
+        @foreach($isRecommendItems as $isRecommendItem)
+            <li><a class="recommend-img" value="{{$isRecommendItem}}" href="#" data-toggle="modal" data-target="#my-modal" 
+            data-price="{{number_format($isRecommendItem->price)}}" 
+            data-name="{{$isRecommendItem->name}}" 
+            data-primaryCategoryName = "{{$isRecommendItem->secondaryCategory->primaryCategory->name}}" 
+            data-secondaryCategoryName = " {{$isRecommendItem->secondaryCategory->name}}" 
+            data-text = "{{$isRecommendItem->description}}"
+            data-url = "{{route ('item.showDetail',[$isRecommendItem->id])}}" >
+            <img src="/storage/item-images/{{$isRecommendItem->image_file}}" alt="おすすめ画像"></a></li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <!--/slider-->
+
+<div class="modal fade" id="my-modal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">title（商品名）</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                <tr>
+                    <th class="w-25">商品名</th>
+                    <td id="modal-name" class="w-75">サンプルネーム</td>
+                </tr>
+                <tr>
+                    <th class="w-25">カテゴリー</th>
+                    <td class="w-75"><span id="modal-category">サンプルカテゴリー</span>/<span id="modal-sub-category">サンプルサブカテゴリー</span></td>
+                </tr>
+                <tr>
+                    <th class="w-25">値段(税抜)</th>
+                    <td class="w-75"><i class="fas fa-yen-sign"></i><span id="modal-price" >サンプル価格</span></td>
+                </tr>
+                </table>
+                <div id="modal-text" class="my-3 text-center">サンプルテキスト</div>
+                    <div class="row">
+                        <div class="col-8 offset-2">
+                        <form id="modal-form" method="get">
+                            @csrf
+                            <button type="submit" class="btn btn-secondary btn-block">詳細を見る</button>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="container">
     <div class="row">
         @foreach ($items as $item)
@@ -45,7 +97,30 @@
         {{$items->links()}}
     </div>
 </div>
-    @if(Auth::check())
+<br>
+
+<a href="{{ route('show.item.cart') }}"
+    class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
+    role="button"
+    style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;">
+    <div style="font-size: 24px;">カート一覧へ</div>
+    <div>
+        <i class="fas fa-shopping-cart" style="font-size: 30px;"></i>
+    </div>
+</a>
+@if(Auth::check())
+    <div class="mt-5">
+        <h3>取得したスタンプ</h3>
+        <!--/slider-->
+        @if($IPContents && Auth::check())
+        <ul class="slider-stamp col-7">
+            @foreach($IPContents as $IPContent)
+            <li><img src="/storage/item-images/{{$IPContent->image_file}}" class="rounded-circle border border-1" alt="IPスタンプ"></li>
+            @endforeach
+        </ul>
+        @endif
+        <!--/slider-->
+    </div>
         @if($user->admin_flag === 1)
         <a href="{{route('sell')}}"
         class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"

@@ -14,6 +14,10 @@
                     <br>
                     <button class="btn btn-primary offset-5">検索</button>
                     <br>
+                    @if (count($orders) == 0)
+                        <br>
+                        <h3 class="text-center py-2 text-danger">購入履歴が存在しません</h3>
+                    @endif
                     <br>
                 </form>
             </div>
@@ -23,12 +27,14 @@
             <div class="col-12 bg-white">
                 購入履歴一覧（仮）
                 <br>
-                <div class="text-right">
-                    <form action="{{ route('cvs-export') }}" method="POST">
-                        @csrf
-                        <button class="btn btn-link">CSVダウンロード</button>
-                    </form>
-                </div>
+                @if (count($orders) != 0)
+                    <div class="text-right">
+                        <form action="{{ route('cvs-export') }}" method="POST">
+                            @csrf
+                            <button class="btn btn-link">CSVダウンロード</button>
+                        </form>
+                    </div>
+                @endif
                 <table class="table mx-auto w-100 p-3 table-bordered" style="font-size:5px;">
                     <thead>
                         <tr>

@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Payjp\Charge;
+use App\Exceptions\BuyException;
 
 class BuyController extends Controller
 {
@@ -48,7 +49,14 @@ class BuyController extends Controller
     {
         $token = $request->input('card-token');
         try {
+            if ($token == null) {
+                $token = 0;
+            }
             $this->settlement($token, $request);
+        } catch (BuyException $e) {
+            return redirect()->back()
+                ->with('type', 'danger')
+                ->with('message', 'カートに商品が追加されていません');
         } catch (\Exception $e) {
             Log::error($e);
             return redirect()->back()
@@ -76,8 +84,13 @@ class BuyController extends Controller
             $order->payment_method = $request->payment_method;
             $order->save();
 
+            //もし商品がカートに存在しない場合
+            if ($request->item_id == null) {
+                throw new BuyException;
+            }
+
             //order_itemをテーブルにinsert。orderItemListを1回回している中に、orderToppingListをn回回す必要があると思う。
-            for ($i = 0; $i < count($request->item_id); $i++) {
+            for ($i = 0; $i < count($request->onetime_id); $i++) {
                 $orderItem = new OrderItem();
                 $orderItem->item_id = $request->item_id[$i];
                 $orderItem->order_id = DB::table('orders')->latest('id')->value('id');
@@ -86,23 +99,27 @@ class BuyController extends Controller
                 $orderItem->save();
 
                 //order_toppingをテーブルにinsert
-                if (!$request->topping_id == null) {
-                    for ($i = 0; $i < count($request->topping_id); $i++) {
-                        $orderTopping = new OrderTopping();
-                        $orderTopping->order_item_id = DB::table('order_items')->latest('id')->value('id');
-                        $orderTopping->topping_id = $request->topping_id[$i];
-                        $orderTopping->save();
+                if ($request->topping_id != null) {
+                    for ($j = 0; $j < count($request->topping_id); $j++) {
+                        if ($request->order_item_id[$j] == $request->onetime_id[$i]) {
+                            $orderTopping = new OrderTopping();
+                            $orderTopping->order_item_id = DB::table('order_items')->latest('id')->value('id');
+                            $orderTopping->topping_id = $request->topping_id[$j];
+                            $orderTopping->save();
+                        }
                     }
                 }
             }
 
-            $charge = Charge::create([
-                'card'     => $token,
-                'amount'   => $request->price_include_tax,
-                'currency' => 'jpy'
-            ]);
-            if (!$charge->captured) {
-                throw new \Exception('支払い確定失敗');
+            if ($token != 0) {
+                $charge = Charge::create([
+                    'card'     => $token,
+                    'amount'   => $request->price_include_tax,
+                    'currency' => 'jpy'
+                ]);
+                if (!$charge->captured) {
+                    throw new \Exception('支払い確定失敗');
+                }
             }
 
             //セッションを切って、カートの中を空にする

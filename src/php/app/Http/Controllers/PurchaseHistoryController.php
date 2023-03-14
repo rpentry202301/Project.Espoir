@@ -14,7 +14,7 @@ class PurchaseHistoryController extends Controller
     //
     public function showPurchaseHistory()
     {
-        $orders = DB::table('orders')->get();
+        $orders = DB::table('orders')->where('user_id', Auth::id())->get();
         foreach ($orders as $order) {
             if ($order->payment_method == 1) {
                 $order->payment_method = '代金引換';
@@ -88,21 +88,43 @@ class PurchaseHistoryController extends Controller
             fclose($stream);
 
             //期間を指定するために必要。
-            // $results = $items->getCsvData($post['start_date'], $post['end_date']);
+            // $results = $orders->getCsvData($post['start_date'], $post['end_date']);
             // if (empty($results[0])) {
             //     fputcsv($stream, [
             //         'データが存在しませんでした。',
             //     ]);
             // } else {
             //     foreach ($results as $row) {
-            //         fputcsv($stream, $items->csvRow($row));
+            //         fputcsv($stream, $orders->csvRow($row));
             //     }
             // }
             // fclose($stream);
         });
 
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('content-disposition', 'attachment; filename=' . $date .  '注文履歴一覧.csv');
+        $response->headers->set('content-disposition', 'attachment; filename=' . $date .  '購入履歴一覧.csv');
         return $response;
+    }
+
+    public function recommendItem(Request $request)
+    {
+        //リクエストでitemのidを取得してくる
+        //レコメンドの条件 同時に買われていること＝同じOrderのidであること。
+        $recommendItemList = array();
+        $orderItems = DB::table('order_items')->get();
+        $items = DB::table('items')->get();
+        foreach ($orderItems as $orderItem) {
+            foreach ($items as $item) {
+                if ($orderItem->item_id == $item->id) {
+                    $orderItem->name = $item->name;
+                    $orderItem->name = $item->image_file;
+                }
+            }
+
+            if ($orderItem->id == $request->id) {
+                $recommendItemList[] = $orderItem;
+            }
+        }
+        return $recommendItemList;
     }
 }

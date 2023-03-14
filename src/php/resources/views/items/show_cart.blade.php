@@ -80,6 +80,7 @@
                     name="orderForm">
                     @csrf
                     <input type="hidden" name="index" value="{{ $orderItem->id }}">
+                    <input type="hidden" name="item_id" value="{{ $orderItem->item_id }}">
                     <tr>
                         <td>
                             {{ $orderItem->name }}
@@ -95,7 +96,11 @@
                                             <input id="toppingPrice{{ $topping->id }}" type="checkbox"
                                                 class="form-control small" name="toppingPrice{{ $topping->id }}"
                                                 value="{{ $topping->price }}" aria-describedby="topping-help"
-                                                style="transform: scale(0.5,0.5)" onclick="calc_total()">
+                                                style="transform: scale(0.5,0.5)" onclick="calc_total()"
+                                                @foreach ($orderToppingList as $orderTopping)
+                                                @if ($orderTopping->order_item_id == $orderItem->id && $orderTopping->topping_id == $topping->id)
+                                                checked                                                    
+                                                @endif @endforeach>
                                         </td>
                                     @endforeach
                                 </tr>
@@ -122,7 +127,7 @@
                         </td>
                 </form>
                 <td>
-                    <button type="submit" class="btn btn-primary mb-2" form="item-update{{ $index }}">更新</button>
+                    <button type="submit" class="btn btn-primary mb-2" form="item-update{{ $index }}">変更</button>
                     <form action="{{ route('delete.item.cart') }}" method="post" id="delete-item{{ $index }}">
                         @csrf
                         <button type="submit" class="btn btn-danger mb-2"
@@ -145,14 +150,12 @@
         class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
         role="button"
         style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;">
-        <div style="font-size: 24px;">購入確認画面へ</div>
+        <div style="font-size: 20px;">購入確認画面へ</div>
         <div>
-            <i class="fas fa-camera" style="font-size: 30px;"></i>
+            <i class="fas fa-money-check-alt" style="font-size: 30px;"></i>
         </div>
     </a>
     <br>
     <br>
-    <br>
-    <hr>
     <br>
 @endsection

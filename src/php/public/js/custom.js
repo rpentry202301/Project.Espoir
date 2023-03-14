@@ -50,8 +50,6 @@ $(".slider-stamp").slick({
         },
     ],
 });
-<<<<<<< HEAD
-=======
 
 // モーダル
 
@@ -87,4 +85,3 @@ recommendImgs.forEach(function (element) {
 // $("#my-modal").on("hidden.bs.modal", function (event) {
 //     console.log("動作確認");
 // });
->>>>>>> origin

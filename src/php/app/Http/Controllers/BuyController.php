@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Payjp\Charge;
 use App\Exceptions\BuyException;
+use App\Models\Ipcontent;
 
 class BuyController extends Controller
 {
@@ -63,6 +64,11 @@ class BuyController extends Controller
                 ->with('type', 'danger')
                 ->with('message', '購入処理が失敗しました。');
         }
+        // 購入完了したらIPContentをランダムで一つ、ユーザーに付与する
+        $user = Auth::user();
+        $IPContent = Ipcontent::inRandomOrder()->first();
+        $user->ipcontents()->sync($IPContent->id,false);
+
         return redirect()->back()->with('status', '購入完了しました');
     }
 

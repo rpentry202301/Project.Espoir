@@ -25,7 +25,7 @@ class DestinationEditRequest extends FormRequest
     {
         return [
             'zipcode' => ['required', 'numeric', 'digits:7'],
-            'address' => ['required', 'string', 'min:1', 'max:30'],
+            'address' => ['required', 'string', 'min:1', 'max:50'],
             'telephone' => ['required', 'numeric', 'digits_between:10,14']
         ];
     }

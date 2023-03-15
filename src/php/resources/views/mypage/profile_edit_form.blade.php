@@ -64,14 +64,14 @@
                         </button>
                     </div>
 
-                    {{-- 配送先一覧 --}}
+                    {{-- お届け先一覧 --}}
                     <div class="mt-1">
-                        配送先一覧は<a href="{{ route('mypage.destination-list') }}">こちら</a>
+                        お届け先一覧は<a href="{{ route('mypage.destination-list') }}" class=text-primary>こちら</a>
                     </div>
 
                     {{-- パスワード変更 --}}
                     <div class="mt-1">
-                        パスワードの変更は<a href="{{ route('password.request') }}">こちら</a>
+                        パスワードの変更は<a href="{{ route('password.request') }}" class=text-primary>こちら</a>
                     </div>
                 </form>
             </div>

@@ -24,10 +24,12 @@
                     お届け先を編集する
                 </div>
 
-                <form method="POST" action="{{ route('mypage.register-destination', ['deliverydestination' => $deliverydestination->id,]) }}" class="p-5" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('mypage.edit-destination', ['deliverydestination' => $deliverydestination->id,]) }}" class="p-5" enctype="multipart/form-data">
                     @csrf
 
-                    <div id="registerForm">
+                    <input id="id" type="hidden" class="form-control" name="id" value="{{ $deliverydestination->id }}">
+
+                    <div id="editForm">
                         
                         {{-- お届け先名 --}}
                         <div class="form-group mt-3">

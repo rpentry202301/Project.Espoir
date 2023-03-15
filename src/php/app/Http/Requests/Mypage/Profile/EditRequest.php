@@ -44,9 +44,6 @@ class EditRequest extends FormRequest
         return [
             'name' => 'ユーザー名',
             'email' => 'メールアドレス',
-            // 'zipcode' => '郵便番号',
-            // 'address' => '住所',
-            // 'telephone' => '電話番号',
         ];
     }
 }

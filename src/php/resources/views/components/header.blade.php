@@ -38,6 +38,10 @@
                         <li class="nav-item">
                             <a class="btn btn-outline-info ml-2" href="{{ route('login') }}" role="button">ログイン</a>
                         </li>
+                        <form id="dummy-form" action="#" method=""
+                            style="display: none;">
+                            @csrf
+                        </form>
                     @else
                         {{-- ログイン済み --}}
                         <li class="nav-item dropdown ml-2">

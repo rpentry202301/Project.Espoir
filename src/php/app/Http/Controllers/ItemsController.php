@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
-use App\Models\Ipcontent;
 use App\Models\PrimaryCategory;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,10 +20,6 @@ class ItemsController extends Controller
         }else{
             $isRecommendItems = Item::where('is_recommend',true)->get();
             if($user){
-                // トップ画面にアクセスしたらIPContentをランダムで一つ、ユーザーに付与する→購入完了時の処理へ移行予定
-                $IPContent = Ipcontent::inRandomOrder()->first();
-                $user->ipcontents()->sync($IPContent->id,false);
-                // 
                 $IPContents = $user->ipcontents()->get();
             }else{
                 $IPContents = null;

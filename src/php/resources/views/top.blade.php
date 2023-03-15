@@ -57,9 +57,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-defaul" data-dismiss="modal">閉じる</button>
+                </div>
             </div>
         </div>
     </div>
@@ -108,30 +108,28 @@
         <i class="fas fa-shopping-cart" style="font-size: 30px;"></i>
     </div>
 </a>
-@if(Auth::check())
-    <div class="mt-5">
-        <h3>取得したスタンプ</h3>
-        <!--/slider-->
-        @if($IPContents && Auth::check())
-        <ul class="slider-stamp col-7">
-            @foreach($IPContents as $IPContent)
-            <li><img src="/storage/item-images/{{$IPContent->image_file}}" class="rounded-circle border border-1" alt="IPスタンプ"></li>
-            @endforeach
-        </ul>
-        @endif
-        <!--/slider-->
-    </div>
-        @if($user->admin_flag === 1)
-        <a href="{{route('sell')}}"
-        class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
-        role="button"
-        style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;"
-        >
-        <div style="font-size: 24px;">出品</div>
-        <div>
-            <i class="fas fa-box" style="font-size: 30px;"></i>
-        </div>
-        </a>
-        @endif
-    @endif
+@if(!empty($IPContents) && Auth::check())
+<div class="mt-5">
+    <h3>取得したスタンプ</h3>
+    <!--/slider-->
+    <ul class="slider-stamp col-7">
+        @foreach($IPContents as $IPContent)
+        <li><img src="/storage/item-images/{{$IPContent->image_file}}" class="rounded-circle border border-1" alt="IPスタンプ"></li>
+        @endforeach
+    </ul>
+    <!--/slider-->
+</div>
+@endif
+@if(Auth::check() && $user->admin_flag === 1)
+<a href="{{route('sell')}}"
+class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
+role="button"
+style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; border-radius: 75px;"
+>
+<div style="font-size: 24px;">出品</div>
+<div>
+    <i class="fas fa-box" style="font-size: 30px;"></i>
+</div>
+</a>
+@endif
 @endsection

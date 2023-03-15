@@ -86,7 +86,7 @@
                                     </table>
                                     {{-- </span> --}}
                                 </td>
-                                <td>¥{{ $order->price_include_tax }}</td>
+                                <td>¥{{ number_format($order->price_include_tax) }}</td>
                                 <td colspan="2">
                                     <div>{{ $order->delivery_destination_name }}</div>
                                     <div>〒{{ $order->zipcode }}</div>

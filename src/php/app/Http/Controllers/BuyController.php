@@ -57,6 +57,28 @@ class BuyController extends Controller
         }
         $user = Auth::user();
         $deliveryDestinations = DeliveryDestination::where('user_id', $user->id)->orderby('id', 'ASC')->get();
+
+        foreach ($deliveryDestinations as $key => $deliveryDestination) {
+            $zipcode = $deliveryDestination->zipcode;
+            $zip1    = substr($zipcode, 0, 3);
+            $zip2    = substr($zipcode, 3);
+            $zipcode = $zip1 . "-" . $zip2;
+            $deliveryDestination->zipcode = $zipcode;
+
+            //電話番号のフォーマットは一旦保留
+            // $telephone = $deliveryDestination->telephone;
+            // if (mb_strlen($telephone) == 9) {
+            //     $tel1    = substr($telephone, 0, 3);
+            //     $tel2    = substr($telephone, 2, 3);
+            //     $tel3    = substr($telephone, 5, 3);
+            // } else {
+            //     $tel1    = substr($telephone, 0, 4);
+            //     $tel2    = substr($telephone, 3, 2);
+            //     $tel3    = substr($telephone, 5, 4);
+            // }
+            // $telephone = $tel1 . "-" . $tel2 . '-' . $tel3;
+            // $deliveryDestination->telephone = $telephone;
+        }
         return view('buy-form', ['orderItemList' => $orderItemList, 'orderToppingList' => $orderToppingList, 'priceIncludeTax' => $priceIncludeTax, 'deliveryDestinations' => $deliveryDestinations, 'tax' => $tax]);
     }
 

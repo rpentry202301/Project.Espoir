@@ -72,7 +72,7 @@
                                             @endif
                                         @endforeach
                                     </td>
-                                    <td>¥{{ $orderItem->customed_price }}/個
+                                    <td>¥{{ number_format($orderItem->customed_price) }}/個
                                         <input type="hidden" name="customed_price[]"
                                             value="{{ $orderItem->customed_price }}">
                                     </td>
@@ -84,9 +84,10 @@
                             <tr>
                                 <td colspan="5" class="text-right font-weight-bold">
                                     @if ($tax != 0)
-                                        <div>消費税：¥{{ $tax }}</div>
+                                        <div>消費税：¥{{ number_format($tax) }}</div>
                                     @endif
-                                    <div>合計金額 : <span class="text-danger">¥{{ $priceIncludeTax }}</span></div>
+                                    <div>合計金額 : <span class="text-danger">¥{{ number_format($priceIncludeTax) }}</span>
+                                    </div>
                                 </td>
                                 <input type="hidden" name="price_include_tax" value="{{ $priceIncludeTax }}">
                             </tr>
@@ -121,30 +122,30 @@
                                 </p>
                             </div>
                             <!-- {{-- zipcode --}}
-                                                                                                                                    <div class="form-group mx-auto">
-                                                                                                                                        <label for="input-zipcode">郵便番号</label>
-                                                                                                                                        <input type="text" class="form-control col-3" maxlength="7" name="zipcode"
-                                                                                                                                            id="input-zipcode" oninput="value = value.replace(/[^0-9]+/i,'');"
-                                                                                                                                            aria-describedby="zipcode-help" placeholder="9991234">
-                                                                                                                                        <small id="zipcode-help" class="form-text text-muted">半角数字で入力してください</small>
-                                                                                                                                    </div>
+                                                                                                                                                <div class="form-group mx-auto">
+                                                                                                                                                    <label for="input-zipcode">郵便番号</label>
+                                                                                                                                                    <input type="text" class="form-control col-3" maxlength="7" name="zipcode"
+                                                                                                                                                        id="input-zipcode" oninput="value = value.replace(/[^0-9]+/i,'');"
+                                                                                                                                                        aria-describedby="zipcode-help" placeholder="9991234">
+                                                                                                                                                    <small id="zipcode-help" class="form-text text-muted">半角数字で入力してください</small>
+                                                                                                                                                </div>
 
-                                                                                                                                    {{-- address --}}
-                                                                                                                                    <div class="form-group mx-auto">
-                                                                                                                                        <label for="input-address">住所</label><input type="text" class="form-control"
-                                                                                                                                            id="input-address" name="address" aria-describedby="address-help"
-                                                                                                                                            placeholder="ここに住所を入力してください">
-                                                                                                                                        <small id="address-help" class="form-text text-muted">郵便番号から補完してくれたらうれしい</small>
-                                                                                                                                    </div>
+                                                                                                                                                {{-- address --}}
+                                                                                                                                                <div class="form-group mx-auto">
+                                                                                                                                                    <label for="input-address">住所</label><input type="text" class="form-control"
+                                                                                                                                                        id="input-address" name="address" aria-describedby="address-help"
+                                                                                                                                                        placeholder="ここに住所を入力してください">
+                                                                                                                                                    <small id="address-help" class="form-text text-muted">郵便番号から補完してくれたらうれしい</small>
+                                                                                                                                                </div>
 
-                                                                                                                                    {{-- telephone --}}
-                                                                                                                                    <div class="form-group mx-auto">
-                                                                                                                                        <label for="input-telephone">電話番号</label>
-                                                                                                                                        <input type="text" class="form-control" maxlength="9" name="telephone"
-                                                                                                                                            id="input-telephone" oninput="value = value.replace(/[^0-9]+/i,'');"
-                                                                                                                                            aria-describedby="telephone-help" placeholder="電話番号">
-                                                                                                                                        <small id="telephone-help" class="form-text text-muted">全角を自動的に半角にしてくれたらうれしい</small>
-                                                                                                                                    </div> -->
+                                                                                                                                                {{-- telephone --}}
+                                                                                                                                                <div class="form-group mx-auto">
+                                                                                                                                                    <label for="input-telephone">電話番号</label>
+                                                                                                                                                    <input type="text" class="form-control" maxlength="9" name="telephone"
+                                                                                                                                                        id="input-telephone" oninput="value = value.replace(/[^0-9]+/i,'');"
+                                                                                                                                                        aria-describedby="telephone-help" placeholder="電話番号">
+                                                                                                                                                    <small id="telephone-help" class="form-text text-muted">全角を自動的に半角にしてくれたらうれしい</small>
+                                                                                                                                                </div> -->
 
                             {{-- payment_method --}}
                             <div class="form-group mx-auto">

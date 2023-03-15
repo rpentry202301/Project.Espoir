@@ -74,4 +74,4 @@ Route::middleware('auth')->group(function () {
     Route::post('/purchase-history', [App\Http\Controllers\PurchaseHistoryController::class, 'cvsExport'])->name('cvs-export');
 });
 
-Route::get('/mail/send',[App\Http\Controllers\MailController::class, 'send'])->name('mail.send');
+// Route::get('/mail/send',[App\Http\Controllers\MailController::class, 'send'])->name('mail.send');

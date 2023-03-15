@@ -3,10 +3,8 @@
 namespace App\Http\Requests\Mypage\Profile;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 
-class EditRequest extends FormRequest
+class DestinationEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,25 +23,19 @@ class EditRequest extends FormRequest
      */
     public function rules()
     {
-        $user = Auth::user();
         return [
-            'name' => ['required', 'string', 'min:1', 'max:30'],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'min:6',
-                'max:254',
-                Rule::unique('users')->ignore($user->id)
-            ],
+            'zipcode' => ['required', 'numeric', 'digits:7'],
+            'address' => ['required', 'string', 'min:1', 'max:50'],
+            'telephone' => ['required', 'numeric', 'digits_between:10,14']
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => 'ユーザー名',
-            'email' => 'メールアドレス',
+            'zipcode' => '郵便番号',
+            'address' => '住所',
+            'telephone' => '電話番号'
         ];
     }
 }

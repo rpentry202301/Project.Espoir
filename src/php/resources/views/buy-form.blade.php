@@ -88,48 +88,62 @@
                             {{-- delivery_destination_name --}}
                             <div class="form-group mx-auto">
                                 <label for="input-delivery-destination">お届け先</label>
-                                <input type="text" class="form-control" id="input-delivery-destination"
-                                    name="delivery_destination_name" aria-describedby="delivery-destination-help"
-                                    placeholder="ここにお届け先の名前を入力してください">
-                                <small id="delivery-destination-help"
-                                    class="form-text text-muted">この位置にプルダウンで「登録住所から選択」を置きたい</small>
+                                <div class="">
+                                    @foreach ($deliveryDestinations as $deliveryDestination)
+                                        <div class="w-100">
+                                            <input id="place{{ $deliveryDestination->id }}" type="radio" name="place"
+                                                value="{{ $deliveryDestination->id }}"
+                                                {{ old('place') ? 'checked' : '' }}><label
+                                                for="place{{ $deliveryDestination->id }}">{{ $deliveryDestination->delivery_destination_name }}
+                                                | 〒{{ $deliveryDestination->zipcode }} {{ $deliveryDestination->address }}
+                                                | {{ $deliveryDestination->telephone }}</label>
+                                            <hr>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                {{-- お届け先登録 --}}
+                                <p>
+                                    お届け先の登録は<a href="{{ route('mypage.register-destination') }}"
+                                        class="text-primary">こちら</a>
+                                </p>
                             </div>
-                            {{-- zipcode --}}
-                            <div class="form-group mx-auto">
-                                <label for="input-zipcode">郵便番号</label>
-                                <input type="text" class="form-control col-3" maxlength="7" name="zipcode"
-                                    id="input-zipcode" oninput="value = value.replace(/[^0-9]+/i,'');"
-                                    aria-describedby="zipcode-help" placeholder="9991234">
-                                <small id="zipcode-help" class="form-text text-muted">半角数字で入力してください</small>
-                            </div>
+                            <!-- {{-- zipcode --}}
+                                                    <div class="form-group mx-auto">
+                                                        <label for="input-zipcode">郵便番号</label>
+                                                        <input type="text" class="form-control col-3" maxlength="7" name="zipcode"
+                                                            id="input-zipcode" oninput="value = value.replace(/[^0-9]+/i,'');"
+                                                            aria-describedby="zipcode-help" placeholder="9991234">
+                                                        <small id="zipcode-help" class="form-text text-muted">半角数字で入力してください</small>
+                                                    </div>
 
-                            {{-- address --}}
-                            <div class="form-group mx-auto">
-                                <label for="input-address">住所</label><input type="text" class="form-control"
-                                    id="input-address" name="address" aria-describedby="address-help"
-                                    placeholder="ここに住所を入力してください">
-                                <small id="address-help" class="form-text text-muted">郵便番号から補完してくれたらうれしい</small>
-                            </div>
+                                                    {{-- address --}}
+                                                    <div class="form-group mx-auto">
+                                                        <label for="input-address">住所</label><input type="text" class="form-control"
+                                                            id="input-address" name="address" aria-describedby="address-help"
+                                                            placeholder="ここに住所を入力してください">
+                                                        <small id="address-help" class="form-text text-muted">郵便番号から補完してくれたらうれしい</small>
+                                                    </div>
 
-                            {{-- telephone --}}
-                            <div class="form-group mx-auto">
-                                <label for="input-telephone">電話番号</label>
-                                <input type="text" class="form-control" maxlength="9" name="telephone"
-                                    id="input-telephone" oninput="value = value.replace(/[^0-9]+/i,'');"
-                                    aria-describedby="telephone-help" placeholder="電話番号">
-                                <small id="telephone-help" class="form-text text-muted">全角を自動的に半角にしてくれたらうれしい</small>
-                            </div>
+                                                    {{-- telephone --}}
+                                                    <div class="form-group mx-auto">
+                                                        <label for="input-telephone">電話番号</label>
+                                                        <input type="text" class="form-control" maxlength="9" name="telephone"
+                                                            id="input-telephone" oninput="value = value.replace(/[^0-9]+/i,'');"
+                                                            aria-describedby="telephone-help" placeholder="電話番号">
+                                                        <small id="telephone-help" class="form-text text-muted">全角を自動的に半角にしてくれたらうれしい</small>
+                                                    </div> -->
 
                             {{-- payment_method --}}
                             <div class="form-group mx-auto">
                                 <label>支払方法</label>
                                 <div>
-                                    <span> <label for="input-payment-method-1">代金引換：</label><input type="radio"
-                                            name="payment_method" id="input-payment-method-1" class=""
-                                            value="1" onclick="buttonClick()"></span>
-                                    <span><label for="input-payment-method-2"> クレジットカード：</label><input type="radio"
-                                            name="payment_method" id="input-payment-method-2" class=""
-                                            value="2" onclick="buttonClick()"></span>
+                                    <span> <input type="radio" name="payment_method" id="input-payment-method-1"
+                                            class="" value="1" onclick="buttonClick()"><label
+                                            for="input-payment-method-1">代金引換</label></span>
+                                    <span> </span>
+                                    <span><input type="radio" name="payment_method" id="input-payment-method-2"
+                                            class="" value="2" onclick="buttonClick()"><label
+                                            for="input-payment-method-2">クレジットカード</label></span>
                                 </div>
                             </div>
                 </form>

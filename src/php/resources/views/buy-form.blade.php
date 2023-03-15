@@ -96,6 +96,10 @@
                                     </div>
                                     @endforeach
                                 </div>
+                                {{-- お届け先登録 --}}
+                                <p>
+                                    お届け先の登録は<a href="{{ route('mypage.register-destination') }}" class="text-primary">こちら</a>
+                                </p>   
                             </div>
                             <!-- {{-- zipcode --}}
                             <div class="form-group mx-auto">

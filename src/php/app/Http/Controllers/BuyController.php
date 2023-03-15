@@ -8,18 +8,21 @@ use App\Models\Topping;
 use App\Models\OrderTopping;
 use App\Models\Order;
 use App\Models\Ipcontent;
-use App\Http\Controllers\MailController;
 use App\Models\DeliveryDestination;
 use App\Exceptions\BuyException;
+use App\Notifications\sendPurchaseCompletedMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Notifications\Notifiable;
 use Payjp\Charge;
 use Carbon\Carbon;
 
 class BuyController extends Controller
 {
+    use Notifiable;
+
     public function showBuyForm()
     {
         // 既にカートに商品が存在しているかどうか判別。
@@ -138,12 +141,23 @@ class BuyController extends Controller
             throw $e;
         }
         DB::commit();
+
         // 購入完了したらIPContentをランダムで一つ、ユーザーに付与する
         $user = Auth::user();
         $IPContent = Ipcontent::inRandomOrder()->first();
         $user->ipcontents()->sync($IPContent->id,false);
+
         // 購入完了したらメールを送信する
-        $mail = new MailController;
-        $mail->send($request, $deliveryDestination);
+        $price_include_tax = $request->price_include_tax;
+        $order_date = Carbon::now();
+        $zipcode = $deliveryDestination->zipcode;
+        $address = $deliveryDestination->address;
+        $payment_method = '';
+        if($request->payment_method == 1){
+            $payment_method = '代金引換';
+        }else if($request->payment_method == 2){
+            $payment_method = 'クレジットカード';
+        }
+        $user->notify(new sendPurchaseCompletedMail($price_include_tax,$order_date,$zipcode,$address,$payment_method));
     }
 }

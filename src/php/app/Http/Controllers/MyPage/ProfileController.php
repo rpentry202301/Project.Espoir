@@ -74,12 +74,16 @@ class ProfileController extends Controller
     // お届け先登録フォーム
     public function showDestinationRegisterForm()
     {
-        return view('mypage.destination_register_form');
+        $this_url = url()->previous();
+        return view('mypage.destination_register_form')
+            ->with('this_url', $this_url);
     }
 
     // お届け先登録
     public function registerDestination(DestinationEditRequest $request)
     {
+        $this_url = $request->input('this_url');
+
         $deliverydestination = new DeliveryDestination();
 
         $deliverydestination->user_id = Auth::id();
@@ -90,7 +94,7 @@ class ProfileController extends Controller
 
         $deliverydestination->save();
 
-        return redirect('/mypage/destination-list')
+        return redirect($this_url)
             ->with('status', 'お届け先を登録しました。');
     }
 

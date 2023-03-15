@@ -10,17 +10,22 @@ use Carbon\Carbon;
 
 class MailController extends Controller
 {
-    public function send($request){
+    public function send($request, $deliveryDestination){
         $user = Auth::user();
         $name = $user->name;
         $email = $user->email;
         $price_include_tax = $request->price_include_tax;
         $order_date = Carbon::now();
-        $delivery_destination_name = $request->delivery_destination_name;
-        $zipcode = $request->zipcode;
-        $address = $request->address;
-        $telephone = $request->telephone;
-        $payment_method = $request->payment_method;
+        $delivery_destination_name = $deliveryDestination->delivery_destination_name;
+        $zipcode = $deliveryDestination->zipcode;
+        $address = $deliveryDestination->address;
+        $telephone = $deliveryDestination->telephone;
+        $payment_method = '';
+        if($request->payment_method == 1){
+            $payment_method = '代金引換';
+        }else if($request->payment_method == 2){
+            $payment_method = 'クレジットカード';
+        }
 
 
         Mail::to($email)->send(new TestMail($name,$price_include_tax,$order_date,$zipcode,$address,$payment_method));

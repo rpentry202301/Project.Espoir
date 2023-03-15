@@ -91,13 +91,13 @@
                                 <div class="">
                                     @foreach($deliveryDestinations as $deliveryDestination)
                                     <div class="w-100">
-                                        <input id="place{{$deliveryDestination->id}}" type="radio" name="place" value="{{$deliveryDestination->id}}" {{ old('place') ? 'checked' : '' }}><label for="place{{$deliveryDestination->id}}">{{$deliveryDestination->delivery_destination_name}} | 〒{{$deliveryDestination->zipcode}} {{$deliveryDestination->address}}</label>
+                                        <input id="place{{$deliveryDestination->id}}" type="radio" name="place" value="{{$deliveryDestination->id}}" {{ old('place') ? 'checked' : '' }}><label for="place{{$deliveryDestination->id}}">{{$deliveryDestination->delivery_destination_name}} | 〒{{$deliveryDestination->zipcode}} {{$deliveryDestination->address}} | {{$deliveryDestination->telephone}}</label>
                                         <hr>
                                     </div>
                                     @endforeach
                                 </div>
                             </div>
-                            {{-- zipcode --}}
+                            <!-- {{-- zipcode --}}
                             <div class="form-group mx-auto">
                                 <label for="input-zipcode">郵便番号</label>
                                 <input type="text" class="form-control col-3" maxlength="7" name="zipcode"
@@ -121,7 +121,7 @@
                                     id="input-telephone" oninput="value = value.replace(/[^0-9]+/i,'');"
                                     aria-describedby="telephone-help" placeholder="電話番号">
                                 <small id="telephone-help" class="form-text text-muted">全角を自動的に半角にしてくれたらうれしい</small>
-                            </div>
+                            </div> -->
 
                             {{-- payment_method --}}
                             <div class="form-group mx-auto">

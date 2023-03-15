@@ -52,11 +52,13 @@ class BuyController extends Controller
     public function buyOrderItems(Request $request)
     {
         $token = $request->input('card-token');
+        $userId = Auth::id();
+        $deliveryDestination = DeliveryDestination::where('id',$request->place)->orwhere('user_id',$userId)->first();
         try {
             if ($token == null) {
                 $token = 0;
             }
-            $this->settlement($token, $request);
+            $this->settlement($token, $request,$deliveryDestination);
         } catch (BuyException $e) {
             return redirect()->back()
                 ->with('type', 'danger')
@@ -67,18 +69,11 @@ class BuyController extends Controller
                 ->with('type', 'danger')
                 ->with('message', '購入処理が失敗しました。');
         }
-        // 購入完了したらIPContentをランダムで一つ、ユーザーに付与する
-        $user = Auth::user();
-        $IPContent = Ipcontent::inRandomOrder()->first();
-        $user->ipcontents()->sync($IPContent->id,false);
-        // 購入完了したらメールを送信する
-        $mail = new MailController;
-        $mail->send($request);
 
         return redirect()->back()->with('status', '購入完了しました');
     }
 
-    private function settlement($token, $request)
+    private function settlement($token, $request,$deliveryDestination)
     {
         DB::beginTransaction();
 
@@ -86,13 +81,13 @@ class BuyController extends Controller
             //orderをテーブルにinsert
             $order = new Order();
             $order->user_id = Auth::id();
-            $order->delivery_destination_id; #TODO delivery_destinationsのidをもってくる。もしformで選択されていなかったらnullが入るようにする。
+            // $order->delivery_destination_id; #TODO delivery_destinationsのidをもってくる。もしformで選択されていなかったらnullが入るようにする。
             $order->price_include_tax = $request->price_include_tax;
             $order->order_date = Carbon::now();
-            $order->delivery_destination_name = $request->delivery_destination_name;
-            $order->zipcode = $request->zipcode;
-            $order->address = $request->address;
-            $order->telephone = $request->telephone;
+            $order->delivery_destination_name = $deliveryDestination->delivery_destination_name;
+            $order->zipcode = $deliveryDestination->zipcode;
+            $order->address = $deliveryDestination->address;
+            $order->telephone = $deliveryDestination->telephone;
             $order->payment_method = $request->payment_method;
             $order->save();
 
@@ -143,5 +138,12 @@ class BuyController extends Controller
             throw $e;
         }
         DB::commit();
+        // 購入完了したらIPContentをランダムで一つ、ユーザーに付与する
+        $user = Auth::user();
+        $IPContent = Ipcontent::inRandomOrder()->first();
+        $user->ipcontents()->sync($IPContent->id,false);
+        // 購入完了したらメールを送信する
+        $mail = new MailController;
+        $mail->send($request, $deliveryDestination);
     }
 }

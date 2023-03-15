@@ -7,7 +7,7 @@
   
 購入金額:{{$price_include_tax}}  
   
-お届け先：{{$zipcode}}  
+お届け先：郵便番号{{$zipcode}}  
           {{$address}}  
 支払方法：{{$payment_method}}  
 

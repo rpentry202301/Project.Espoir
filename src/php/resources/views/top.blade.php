@@ -26,6 +26,7 @@
 @endif
 <!--/slider-->
 
+<!--recommendのmodal-->
 <div class="modal fade" id="my-modal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -64,6 +65,7 @@
         </div>
     </div>
 </div>
+<!--/recommendのmodal-->
 
 
 <div class="container">
@@ -114,12 +116,41 @@
     <!--/slider-->
     <ul class="slider-stamp col-7">
         @foreach($IPContents as $IPContent)
-        <li><img src="/storage/item-images/{{$IPContent->image_file}}" class="rounded-circle border border-1" alt="IPスタンプ"></li>
+        <li>
+            <a class="stamp-img" data-toggle="modal" data-target="#stamp-modal" value="{{$IPContent}}" 
+            data-url="/storage/item-images/{{$IPContent->image_file}}" data-name="{{$IPContent->name}}"
+            data-text="{{$IPContent->description}}">
+                <img src="/storage/item-images/{{$IPContent->image_file}}" class="rounded-circle border border-1" alt="IPスタンプ">
+            </a>
+        </li>
         @endforeach
     </ul>
     <!--/slider-->
 </div>
 @endif
+
+<div class="modal fade" id="stamp-modal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="stampModalLabel">title（商品名）</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <img id="stamp-url" alt="IPスタンプ">
+                </div>
+                <div id="stamp-modal-text" class="my-3 text-center">サンプルテキスト</div>
+                    <div class="row">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-defaul" data-dismiss="modal">閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @if(Auth::check() && $user->admin_flag === 1)
 <a href="{{route('sell')}}"
 class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
@@ -133,3 +164,5 @@ style="position: fixed; bottom: 30px; right: 30px; width: 150px; height: 150px; 
 </a>
 @endif
 @endsection
+
+

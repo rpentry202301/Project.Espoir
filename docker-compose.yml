@@ -9,6 +9,7 @@ services:
     volumes:
       - "./src/php:/var/www/html"
       - "./work:/work"
+      - "vendor:/var/www/html/vendor"
   php:
     container_name: "laravel"
     build:
@@ -18,16 +19,17 @@ services:
       - "5173:5173"
     volumes:
       - "./src/php:/var/www/html"
+      - "vendor:/var/www/html/vendor"
       - "./work:/work"
-#  python:
-#    container_name: "python"
-#    build:
-#      dockerfile: "./container/python/Dockerfile"
-#    ports:
-#      - "8000:8000"
-#    volumes:
-#      - "./src/python:/app"
-#      - "./work:/work"
+  #  python:
+  #    container_name: "python"
+  #    build:
+  #      dockerfile: "./container/python/Dockerfile"
+  #    ports:
+  #      - "8000:8000"
+  #    volumes:
+  #      - "./src/python:/app"
+  #      - "./work:/work"
   db1:
     container_name: "postgres"
     image: postgres:14-alpine
@@ -47,6 +49,8 @@ services:
     container_name: "mysql"
     image: mysql:8.0
     platform: linux/x86_64
+    ports:
+      - 3306:3306
     environment:
       - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
       - "MYSQL_DATABASE=${MYSQL_DATABASE}"
@@ -71,3 +75,20 @@ services:
       PGADMIN_DEFAULT_PASSWORD: pass
     depends_on:
       - db1
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    platform: linux/x86_64
+    depends_on:
+      - db2
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=db2
+      - PMA_USER=root
+      - PMA_PASSWORD=rootpass
+    ports:
+      - "8889:80"
+    volumes:
+      - ./phpmyadmin:/sessions
+
+volumes: # 追加
+  vendor: # 追加

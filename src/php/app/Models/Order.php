@@ -14,8 +14,7 @@ class Order extends Model
         return [
             'ID',
             'ユーザーID',
-            '配送先ID',
-            '合計価格',
+            '購入金額',
             '注文日',
             '配送先名',
             '郵便番号',

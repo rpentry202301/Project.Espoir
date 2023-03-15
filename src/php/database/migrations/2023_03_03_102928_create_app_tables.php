@@ -80,8 +80,6 @@ return new class extends Migration
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('delivery_destination_id')->nullable();;
-            $table->foreign('delivery_destination_id')->references('id')->on('delivery_destinations');
             $table->integer('price_include_tax');
             $table->date('order_date');
             $table->string('delivery_destination_name');

@@ -120,7 +120,7 @@
     <!--/slider-->
 </div>
 @endif
-@if($user->admin_flag === 1 && Auth::check())
+@if(Auth::check() && $user->admin_flag === 1)
 <a href="{{route('sell')}}"
 class="bg-secondary text-white d-inline-block d-flex justify-content-center align-items-center flex-column"
 role="button"

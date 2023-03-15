@@ -19,6 +19,6 @@ class JudgeAdmin
         if(auth()->check() && auth()->user()->admin_flag === 1 ){
             return $next($request);
             }
-            abort(403, '管理者権限がありません。');
+            return redirect()->route('login');
     }
 }

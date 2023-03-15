@@ -36,7 +36,8 @@ class ProfileController extends Controller
     // お届け先一覧画面
     public function showDestinationList()
     {
-        $deliverydestinations = DeliveryDestination::orderBy('id', 'ASC')->get();
+        $user = Auth::user();
+        $deliverydestinations = DeliveryDestination::where('user_id', $user->id)->orderBy('id', 'ASC')->get();
         return view('mypage.destination_list')
             ->with('deliverydestinations', $deliverydestinations);
     }

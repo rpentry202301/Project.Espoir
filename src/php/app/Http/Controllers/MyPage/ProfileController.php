@@ -25,8 +25,10 @@ class ProfileController extends Controller
     public function editProfile(EditRequest $request)
     {
         $user = Auth::user();
+
         $user->name = $request->input('name');
         $user->email = $request->input('email');
+
         $user->save();
 
         return redirect()->back()
@@ -37,7 +39,9 @@ class ProfileController extends Controller
     public function showDestinationList()
     {
         $user = Auth::user();
+
         $deliverydestinations = DeliveryDestination::where('user_id', $user->id)->orderBy('id', 'ASC')->get();
+
         return view('mypage.destination_list')
             ->with('deliverydestinations', $deliverydestinations);
     }
@@ -50,22 +54,20 @@ class ProfileController extends Controller
     }
 
     // お届け先編集
-    public function editDestination(DestinationEditRequest $request, string $deliverydestination)
+    public function editDestination(DestinationEditRequest $request)
     {
-        $delivery_destination_name = $request->input('delivery_destination_name');
+        $deliverydestination_id = $request->input('id');
+        $deliverydestination = DeliveryDestination::where('id', $deliverydestination_id)->first();
 
-        $deliverydestination = DeliveryDestination::where('delivery_destination_name', $delivery_destination_name)->first();
-        if ($deliverydestination == null) {
-            $deliverydestination = new DeliveryDestination();
-        }
         $deliverydestination->user_id = Auth::id();
         $deliverydestination->delivery_destination_name = $request->input('delivery_destination_name');
         $deliverydestination->zipcode = $request->input('zipcode');
         $deliverydestination->address = $request->input('address');
         $deliverydestination->telephone = $request->input('telephone');
+
         $deliverydestination->save();
 
-        return redirect()->back()
+        return redirect('/mypage/destination-list')
             ->with('status', 'お届け先を編集しました。');
     }
 
@@ -78,20 +80,17 @@ class ProfileController extends Controller
     // お届け先登録
     public function registerDestination(DestinationEditRequest $request)
     {
-        $delivery_destination_name = $request->input('delivery_destination_name');
+        $deliverydestination = new DeliveryDestination();
 
-        $deliverydestination = DeliveryDestination::where('delivery_destination_name', $delivery_destination_name)->first();
-        if ($deliverydestination == null) {
-            $deliverydestination = new DeliveryDestination();
-        }
         $deliverydestination->user_id = Auth::id();
         $deliverydestination->delivery_destination_name = $request->input('delivery_destination_name');
         $deliverydestination->zipcode = $request->input('zipcode');
         $deliverydestination->address = $request->input('address');
         $deliverydestination->telephone = $request->input('telephone');
+
         $deliverydestination->save();
 
-        return redirect()->back()
+        return redirect('/mypage/destination-list')
             ->with('status', 'お届け先を登録しました。');
     }
 

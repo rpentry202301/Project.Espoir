@@ -114,8 +114,8 @@ class CartController extends Controller
 
     public function deleteCartTopping(int $index, int $item_id, int $currentQuantity, array $orderToppingList)
     {
-        //案⑴ 更新ボタンを押す度にそのorderItemのid（time）に紐づくトッピングを削除する処理
-        //　　 送られてくるindexを元に、セッションのorderToppingListを回して、order_item_idが一致するorderToppingを削除する
+        // 更新ボタンを押す度にそのorderItemのid（time）に紐づくトッピングを削除する処理
+        // 送られてくるindexを元に、セッションのorderToppingListを回して、order_item_idが一致するorderToppingを削除する
         foreach ($orderToppingList as $key => $orderTopping) {
             if ($orderTopping->order_item_id == $index) {
                 unset($orderToppingList[$key]);
@@ -165,14 +165,17 @@ class CartController extends Controller
         return;
     }
 
-    public function removeDuplicateTopping(array $toppingIdList, array $orderToppingList)
+    public function removeDuplicateTopping(array $toppingIdList, array $orderToppingList, int $index)
     {
         $msg = '';
         foreach ($orderToppingList as $orderTopping) {
-            foreach ($toppingIdList as $key => $toppingId) {
-                if ($orderTopping->topping_id == $toppingId) {
-                    $msg = '（重複するトッピングは除く）';
-                    unset($toppingIdList[$key]);
+            //orderToppingListの中で更新したい商品に紐づくorderToppingを取り出す
+            if ($orderTopping->order_item_id == $index) {
+                foreach ($toppingIdList as $key => $toppingId) {
+                    if ($orderTopping->topping_id == $toppingId) {
+                        $msg = '（重複するトッピングは除く）';
+                        unset($toppingIdList[$key]);
+                    }
                 }
             }
         }
@@ -184,7 +187,7 @@ class CartController extends Controller
     public function updateTopping(array $toppingIdList, int $index, array $orderToppingList)
     {
 
-        list($msg, $toppingIdList) = $this->removeDuplicateTopping($toppingIdList, $orderToppingList);
+        list($msg, $toppingIdList) = $this->removeDuplicateTopping($toppingIdList, $orderToppingList, $index);
 
         $orderTopping = new OrderTopping();
         foreach ($toppingIdList as $toppingId) {
@@ -291,6 +294,8 @@ class CartController extends Controller
             $msg = $this->updateTopping($toppingIdList, $request->index, $orderToppingList);
             return redirect()->back()->with(['status' => 'トッピングと数量を変更しました']);
         }
+
+        dd('到達しないはず');
         return redirect()->back();
     }
 }

@@ -42,7 +42,7 @@ class BuyController extends Controller
         }
 
         if ($priceIncludeTax != 0) {
-            $tax =  $priceIncludeTax * 0.08;
+            $tax =  (int)($priceIncludeTax * 0.08);
             $priceIncludeTax += $tax;
         } else {
             $tax = 0;

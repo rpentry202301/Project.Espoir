@@ -295,7 +295,7 @@ class CartController extends Controller
             return redirect()->back()->with(['status' => 'トッピングと数量を変更しました']);
         }
 
-        dd('到達しないはず');
-        return redirect()->back();
+
+        return redirect()->back()->with(['status' => '変更内容を確認してください']);
     }
 }

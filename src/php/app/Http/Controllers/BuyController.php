@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Notifications\Notifiable;
 use Payjp\Charge;
 use Carbon\Carbon;
+use App\Http\Requests\BuyFormRequest;
 
 class BuyController extends Controller
 {
@@ -59,7 +60,7 @@ class BuyController extends Controller
         return view('buy-form', ['orderItemList' => $orderItemList, 'orderToppingList' => $orderToppingList, 'priceIncludeTax' => $priceIncludeTax, 'deliveryDestinations' => $deliveryDestinations, 'tax' => $tax]);
     }
 
-    public function buyOrderItems(Request $request)
+    public function buyOrderItems(BuyFormRequest $request)
     {
         $token = $request->input('card-token');
         $userId = Auth::id();

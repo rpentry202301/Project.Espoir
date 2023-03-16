@@ -24,6 +24,7 @@ class DestinationEditRequest extends FormRequest
     public function rules()
     {
         return [
+            'delivery_destination_name' => ['required', 'string', 'min:1', 'max:30'],
             'zipcode' => ['required', 'numeric', 'digits:7'],
             'address' => ['required', 'string', 'min:1', 'max:50'],
             'telephone' => ['required', 'numeric', 'digits_between:10,14']
@@ -33,6 +34,7 @@ class DestinationEditRequest extends FormRequest
     public function attributes()
     {
         return [
+            'delivery_destination_name' => 'お届け先名',
             'zipcode' => '郵便番号',
             'address' => '住所',
             'telephone' => '電話番号'

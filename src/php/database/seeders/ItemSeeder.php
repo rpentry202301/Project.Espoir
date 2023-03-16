@@ -21,7 +21,7 @@ class ItemSeeder extends Seeder
             [
                 [
                     'id'                    => '1',
-                    'name'                  => 'こぉひぃ（S）',
+                    'name'                  => 'コーヒー（S）',
                     'description'           => '苦みと酸味のバランスが素晴らしいコーヒーです。（Sサイズ）',
                     'secondary_category_id' => '1',
                     'price'                 => '200',
@@ -29,7 +29,7 @@ class ItemSeeder extends Seeder
                     'is_recommend'          =>  1
                 ], [
                     'id'                    => '2',
-                    'name'                  => 'こぉひぃ（M）',
+                    'name'                  => 'コーヒー（M）',
                     'description'           => '苦みと酸味のバランスが素晴らしいコーヒーです。（Mサイズ）',
                     'secondary_category_id' => '2',
                     'price'                 => '300',
@@ -37,7 +37,7 @@ class ItemSeeder extends Seeder
                     'is_recommend'          =>  0
                 ], [
                     'id'                    => '3',
-                    'name'                  => 'こぉひぃ（L）',
+                    'name'                  => 'コーヒー（L）',
                     'description'           => '苦みと酸味のバランスが素晴らしいコーヒーです。（Lサイズ）',
                     'secondary_category_id' => '3',
                     'price'                 => '400',

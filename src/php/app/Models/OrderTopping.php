@@ -10,4 +10,15 @@ use App\Models\Topping;
 class OrderTopping extends Topping
 {
     use HasFactory;
+
+    public function csvHeader()
+    {
+        return [
+            '注文商品ID',
+            '名前',
+            '',
+            '',
+            '商品価格'
+        ];
+    }
 }

@@ -55,13 +55,13 @@
 ### 管理者アカウント
 
 -   name / admin
--   email / admin@admin
+-   email / admin@example.com
 -   password / adminadmin
 
 ### ユーザーアカウント
 
 -   name / テスト太郎
--   email / test@test
+-   email / test@example.com
 -   password / testtest
     <br>
     <br>

@@ -27,7 +27,7 @@
             <div class="col-12 bg-white">
                 購入履歴一覧
                 <br>
-                @if (Auth::id() == 1)
+                @if ($user->admin_flag == 1)
                     @if (count($orders) != 0)
                         <div class="text-right">
                             <form action="{{ route('cvs-export') }}" method="POST">
@@ -40,7 +40,7 @@
                 <table class="table mx-auto w-100 p-3 table-bordered" style="font-size:5px;">
                     <thead>
                         <tr>
-                            @if (Auth::id() == 1)
+                            @if ($user->admin_flag == 1)
                                 <th>オーダーID</th>
                             @endif
                             <th>購入者</th>
@@ -54,7 +54,7 @@
                     <tbody>
                         @foreach ($orders as $order)
                             <tr>
-                                @if (Auth::id() == 1)
+                                @if ($user->admin_flag == 1)
                                     <td>{{ $order->id }}</td>
                                 @endif
                                 <td>{{ $order->user_id }}</td>

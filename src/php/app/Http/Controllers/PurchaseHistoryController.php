@@ -23,12 +23,10 @@ class PurchaseHistoryController extends Controller
             }
         }
 
-        $users = DB::table('users')->get();
+        $user = DB::table('users')->where('id', Auth::id())->first();
         foreach ($orders as $order) {
-            foreach ($users as $user) {
-                if ($user->id == $order->user_id) {
-                    $order->user_id = $user->name;
-                }
+            if ($user->id == $order->user_id) {
+                $order->user_id = $user->name;
             }
         }
 
@@ -59,7 +57,7 @@ class PurchaseHistoryController extends Controller
             }
         }
 
-        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings]);
+        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user]);
     }
 
     public function cvsExport()

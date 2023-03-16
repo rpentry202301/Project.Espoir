@@ -90,8 +90,7 @@ class ProfileController extends Controller
 
         $deliverydestination->save();
 
-        return redirect('/mypage/destination-list')
-            ->with('status', 'お届け先を登録しました。');
+        return redirect()->back()->with('status', 'お届け先を登録しました。');
     }
 
     // お届け先削除

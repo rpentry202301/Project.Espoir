@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Notifications\Notifiable;
 use Payjp\Charge;
 use Carbon\Carbon;
+use App\Http\Requests\BuyFormRequest;
 
 class BuyController extends Controller
 {
@@ -40,6 +41,13 @@ class BuyController extends Controller
             $orderItemList = array();
         }
 
+        if ($priceIncludeTax != 0) {
+            $tax =  (int)($priceIncludeTax * 0.08);
+            $priceIncludeTax += $tax;
+        } else {
+            $tax = 0;
+        }
+
         if (isset($_SESSION['orderToppingList'])) {
             $orderToppingList = $_SESSION['orderToppingList'];
             foreach ($orderToppingList as $orderTopping) {
@@ -48,20 +56,42 @@ class BuyController extends Controller
             $orderToppingList = array();
         }
         $user = Auth::user();
-        $deliveryDestinations = DeliveryDestination::where('user_id',$user->id)->orderby('id','ASC')->get();
-        return view('buy-form', ['orderItemList' => $orderItemList, 'orderToppingList' => $orderToppingList, 'priceIncludeTax' => $priceIncludeTax,'deliveryDestinations'=>$deliveryDestinations]);
+        $deliveryDestinations = DeliveryDestination::where('user_id', $user->id)->orderby('id', 'ASC')->get();
+
+        foreach ($deliveryDestinations as $key => $deliveryDestination) {
+            $zipcode = $deliveryDestination->zipcode;
+            $zip1    = substr($zipcode, 0, 3);
+            $zip2    = substr($zipcode, 3);
+            $zipcode = $zip1 . "-" . $zip2;
+            $deliveryDestination->zipcode = $zipcode;
+
+            //電話番号のフォーマットは一旦保留
+            // $telephone = $deliveryDestination->telephone;
+            // if (mb_strlen($telephone) == 9) {
+            //     $tel1    = substr($telephone, 0, 3);
+            //     $tel2    = substr($telephone, 2, 3);
+            //     $tel3    = substr($telephone, 5, 3);
+            // } else {
+            //     $tel1    = substr($telephone, 0, 4);
+            //     $tel2    = substr($telephone, 3, 2);
+            //     $tel3    = substr($telephone, 5, 4);
+            // }
+            // $telephone = $tel1 . "-" . $tel2 . '-' . $tel3;
+            // $deliveryDestination->telephone = $telephone;
+        }
+        return view('buy-form', ['orderItemList' => $orderItemList, 'orderToppingList' => $orderToppingList, 'priceIncludeTax' => $priceIncludeTax, 'deliveryDestinations' => $deliveryDestinations, 'tax' => $tax]);
     }
 
-    public function buyOrderItems(Request $request)
+    public function buyOrderItems(BuyFormRequest $request)
     {
         $token = $request->input('card-token');
         $userId = Auth::id();
-        $deliveryDestination = DeliveryDestination::where('id',$request->place)->orwhere('user_id',$userId)->first();
+        $deliveryDestination = DeliveryDestination::where('id', $request->place)->orwhere('user_id', $userId)->first();
         try {
             if ($token == null) {
                 $token = 0;
             }
-            $this->settlement($token, $request,$deliveryDestination);
+            $this->settlement($token, $request, $deliveryDestination);
         } catch (BuyException $e) {
             return redirect()->back()
                 ->with('type', 'danger')
@@ -76,7 +106,7 @@ class BuyController extends Controller
         return redirect()->back()->with('status', '購入完了しました');
     }
 
-    private function settlement($token, $request,$deliveryDestination)
+    private function settlement($token, $request, $deliveryDestination)
     {
         DB::beginTransaction();
 
@@ -145,7 +175,7 @@ class BuyController extends Controller
         // 購入完了したらIPContentをランダムで一つ、ユーザーに付与する
         $user = Auth::user();
         $IPContent = Ipcontent::inRandomOrder()->first();
-        $user->ipcontents()->sync($IPContent->id,false);
+        $user->ipcontents()->sync($IPContent->id, false);
 
         // 購入完了したらメールを送信する
         $price_include_tax = $request->price_include_tax;
@@ -153,11 +183,11 @@ class BuyController extends Controller
         $zipcode = $deliveryDestination->zipcode;
         $address = $deliveryDestination->address;
         $payment_method = '';
-        if($request->payment_method == 1){
+        if ($request->payment_method == 1) {
             $payment_method = '代金引換';
-        }else if($request->payment_method == 2){
+        } else if ($request->payment_method == 2) {
             $payment_method = 'クレジットカード';
         }
-        $user->notify(new sendPurchaseCompletedMail($price_include_tax,$order_date,$zipcode,$address,$payment_method));
+        $user->notify(new sendPurchaseCompletedMail($price_include_tax, $order_date, $zipcode, $address, $payment_method));
     }
 }

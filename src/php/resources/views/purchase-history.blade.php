@@ -25,20 +25,24 @@
             <br>
             <br>
             <div class="col-12 bg-white">
-                購入履歴一覧（仮）
+                購入履歴一覧
                 <br>
-                @if (count($orders) != 0)
-                    <div class="text-right">
-                        <form action="{{ route('cvs-export') }}" method="POST">
-                            @csrf
-                            <button class="btn btn-link">CSVダウンロード</button>
-                        </form>
-                    </div>
+                @if ($user->admin_flag == 1)
+                    @if (count($orders) != 0)
+                        <div class="text-right">
+                            <form action="{{ route('cvs-export') }}" method="POST">
+                                @csrf
+                                <button class="btn btn-link">CSVダウンロード</button>
+                            </form>
+                        </div>
+                    @endif
                 @endif
                 <table class="table mx-auto w-100 p-3 table-bordered" style="font-size:5px;">
                     <thead>
                         <tr>
-                            <th>オーダーID</th>
+                            @if ($user->admin_flag == 1)
+                                <th>オーダーID</th>
+                            @endif
                             <th>購入者</th>
                             <th>購入日</th>
                             <th colspan="2">商品</th>
@@ -50,24 +54,28 @@
                     <tbody>
                         @foreach ($orders as $order)
                             <tr>
-                                <td>{{ $order->id }}</td>
+                                @if ($user->admin_flag == 1)
+                                    <td>{{ $order->id }}</td>
+                                @endif
                                 <td>{{ $order->user_id }}</td>
                                 <td>{{ $order->order_date }}</td>
                                 <td colspan="2">
-                                    <table class="w-100 p-3 border-0">
+                                    {{-- <span class="table-responsive"> --}}
+                                    <table class="table table-borderless table-sm w-100 p-3">
                                         <tbody>
                                             @foreach ($orderItems as $orderItem)
                                                 @if ($orderItem->order_id == $order->id)
                                                     <tr>
-                                                        <td>{{ $orderItem->name }}</td>
-                                                        <td>
+                                                        <td class="col-1"> <a
+                                                                href="{{ route('item.showDetail', [$orderItem->item_id]) }}"
+                                                                class="text-primary">{{ $orderItem->name }}</a>
+                                                            ×{{ $orderItem->quantity }}</td>
+                                                        <td class="col-1">
                                                             @foreach ($orderToppings as $orderTopping)
                                                                 @if ($orderTopping->order_item_id == $orderItem->id)
-                                                                    <small
-                                                                        class="text-black-50">{{ $orderTopping->name }}</small>
-                                                                @else
-                                                                    <small
-                                                                        class="text-black-50">無し</small><?php break; ?>
+                                                                    <div> <small
+                                                                            class="text-black-50">{{ $orderTopping->name }}</small>
+                                                                    </div>
                                                                 @endif
                                                             @endforeach
                                                         </td>
@@ -76,8 +84,9 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    {{-- </span> --}}
                                 </td>
-                                <td>¥{{ $order->price_include_tax }}</td>
+                                <td>¥{{ number_format($order->price_include_tax) }}</td>
                                 <td colspan="2">
                                     <div>{{ $order->delivery_destination_name }}</div>
                                     <div>〒{{ $order->zipcode }}</div>

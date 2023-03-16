@@ -102,7 +102,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="flexRadioDefault2" name="is_recommend" value="false" {{ $item->is_recommend == '0' ? 'checked' : '' }}>
                         <label class="form-check-label" for="flexRadioDefault2">
-                            そんなことはない
+                            レギュラー商品
                         </label>
                     </div>
 

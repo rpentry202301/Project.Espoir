@@ -64,7 +64,7 @@
                                     <table class="table table-borderless table-sm w-100 p-3">
                                         <tbody>
                                             @foreach ($orderItems as $orderItem)
-                                                @if ($orderItem->order_id == $order->id)
+                                                @if ($user->admin_flag == 1)
                                                     <tr>
                                                         <td class="col-1"> <a
                                                                 href="{{ route('item.showDetail', [$orderItem->item_id]) }}"
@@ -80,6 +80,24 @@
                                                             @endforeach
                                                         </td>
                                                     </tr>
+                                                @else
+                                                    @if ($orderItem->order_id == $order->id)
+                                                        <tr>
+                                                            <td class="col-1"> <a
+                                                                    href="{{ route('item.showDetail', [$orderItem->item_id]) }}"
+                                                                    class="text-primary">{{ $orderItem->name }}</a>
+                                                                ×{{ $orderItem->quantity }}</td>
+                                                            <td class="col-1">
+                                                                @foreach ($orderToppings as $orderTopping)
+                                                                    @if ($orderTopping->order_item_id == $orderItem->id)
+                                                                        <div> <small
+                                                                                class="text-black-50">{{ $orderTopping->name }}</small>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </td>
+                                                        </tr>
+                                                    @endif
                                                 @endif
                                             @endforeach
                                         </tbody>

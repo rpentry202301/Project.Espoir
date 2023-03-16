@@ -27,6 +27,8 @@
                 <form method="POST" action="{{ route('mypage.register-destination') }}" class="p-5" enctype="multipart/form-data">
                     @csrf
 
+                    <input id="this_url" type="hidden" class="form-control" name="this_url" value="{{ $this_url }}">
+
                     <div id="registerForm">
                         
                         {{-- お届け先名 --}}

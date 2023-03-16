@@ -21,13 +21,13 @@ class ToppingSeeder extends Seeder
             [
                 [
                     'id'                    => '1',
-                    'name'                  => 'ちょこちっぷ',
+                    'name'                  => 'チョコチップ',
                     'description'           => 'サクサクの甘いチョコチップです',
                     'price'                 => '50',
                     'image_file'            => 'topping_sample1.jpg'
                 ], [
                     'id'                    => '2',
-                    'name'                  => 'きゃらめる',
+                    'name'                  => 'キャラメル',
                     'description'           => 'あま～いキャラメルです',
                     'price'                 => '80',
                     'image_file'            => 'topping_sample2.jpg'
@@ -43,20 +43,15 @@ class ToppingSeeder extends Seeder
                     'description'           => '甘いのがお好きな方におすすめです',
                     'price'                 => '80',
                     'image_file'            => 'topping_sample4.jpg'
-                ],[
+                ],
+                [
                     'id'                    => '5',
-                    'name'                  => 'ラテアートに変更',
-                    'description'           => 'ラテアートありに変更できます。',
-                    'price'                 => '80',
-                    'image_file'            => 'topping_sample5.jpg'
-                ], [
-                    'id'                    => '6',
                     'name'                  => '生クリーム',
                     'description'           => '甘すぎず、滑らかな生クリームです',
                     'price'                 => '100',
                     'image_file'            => 'topping_sample6.jpg'
                 ], [
-                    'id'                    => '7',
+                    'id'                    => '6',
                     'name'                  => 'はちみつ',
                     'description'           => 'どんな飲み物にも合います',
                     'price'                 => '80',

@@ -91,7 +91,7 @@ return [
     ],
     'not_in'                => '選択された:attributeは、有効ではありません。',
     'not_regex'             => ':attributeの形式が無効です。',
-    'numeric'               => ':attributeには、数字を指定してください。',
+    'numeric'               => ':attributeには、半角数字を指定してください。',
     'password'              => 'パスワードが正しくありません。',
     'present'               => ':attributeが存在している必要があります。',
     'regex'                 => ':attributeには、有効な正規表現を指定してください。',
@@ -145,5 +145,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'ユーザー名',
+        'email' => 'メールアドレス',
+        'password' => 'パスワード'
+    ],
 ];

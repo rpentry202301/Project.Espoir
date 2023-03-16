@@ -14,7 +14,13 @@ class PurchaseHistoryController extends Controller
     //
     public function showPurchaseHistory()
     {
-        $orders = DB::table('orders')->where('user_id', Auth::id())->get();
+
+        if (Auth::id() == 1) {
+            $orders = DB::table('orders')->orderBy('id')->get();
+        } else {
+            $orders = DB::table('orders')->where('user_id', Auth::id())->orderBy('id')->get();
+        }
+
         foreach ($orders as $order) {
             if ($order->payment_method == 1) {
                 $order->payment_method = '代金引換';
@@ -23,12 +29,23 @@ class PurchaseHistoryController extends Controller
             }
         }
 
-        $user = DB::table('users')->where('id', Auth::id())->first();
+        foreach ($orders as $key => $order) {
+            $zipcode = $order->zipcode;
+            $zip1    = substr($zipcode, 0, 3);
+            $zip2    = substr($zipcode, 3);
+            $zipcode = $zip1 . "-" . $zip2;
+            $order->zipcode = $zipcode;
+        }
+
+        $users = DB::table('users')->get();
         foreach ($orders as $order) {
-            if ($user->id == $order->user_id) {
-                $order->user_id = $user->name;
+            foreach ($users as $user) {
+                if ($user->id == $order->user_id) {
+                    $order->user_id = $user->name;
+                }
             }
         }
+        $user = DB::table('users')->where('id', Auth::id())->first();
 
         $orderItems = DB::table('order_items')->get();
         $items = DB::table('items')->get();
@@ -73,6 +90,14 @@ class PurchaseHistoryController extends Controller
             //DBから商品のレコードを全件配列として取得する。
             $query = Order::query();
             $orders = $query->get()->toArray();
+
+            foreach ($orders as $key => $order) {
+                $zipcode = $order->zipcode;
+                $zip1    = substr($zipcode, 0, 3);
+                $zip2    = substr($zipcode, 3);
+                $zipcode = $zip1 . "-" . $zip2;
+                $order->zipcode = $zipcode;
+            }
 
             // 文字化け回避（第2引数に下記を指定することで、マルチバイト文字が入っていても文字化けがでないように対策）
             stream_filter_prepend($stream, 'convert.iconv.utf-8/cp932//TRANSLIT');

@@ -26,7 +26,7 @@ class ItemsController extends Controller
             }
         }
         
-        $items = $query->orderBy('secondary_category_id', 'ASC')
+        $items = $query->where('is_selling',true)->orderBy('secondary_category_id', 'ASC')
         ->simplePaginate(8)
         ->withQueryString();
 

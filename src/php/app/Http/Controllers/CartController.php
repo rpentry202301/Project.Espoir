@@ -43,7 +43,13 @@ class CartController extends Controller
 
     public function addCartItem(Request $request)
     {
-        // 既にカートに商品が存在しているかどうか判別。
+        //販売休止中の商品は購入できずにリダイレクトされる
+        $check = Item::where('id',$request->id)->first()->is_selling;
+        if($check == false){
+            return redirect()->back()->with('status', 'その商品は販売休止中です');
+        }
+
+        //既にカートに商品が存在しているかどうか判別。
         session_start();
         if (isset($_SESSION['orderItemList'])) {
             $orderItemList = $_SESSION['orderItemList'];

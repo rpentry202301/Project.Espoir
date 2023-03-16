@@ -121,6 +121,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('image_file')->nullable();
+            $table->string('description');
             $table->timestamps();
         });
 

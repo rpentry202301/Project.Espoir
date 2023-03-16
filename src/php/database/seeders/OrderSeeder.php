@@ -39,6 +39,17 @@ class OrderSeeder extends Seeder
                     'address'                   => '東京都新宿区新宿4-3-25 TOKYU REIT新宿ビル8F',
                     'telephone'                 => '0366753638',
                     'payment_method'            => '2'
+                ],
+                [
+                    'id'                        => '3',
+                    'user_id'                   => '3',
+                    'price_include_tax'         => '540',
+                    'order_date'                => '2021-03-11',
+                    'delivery_destination_name' => '職場',
+                    'zipcode'                   => '1600022',
+                    'address'                   => '東京都新宿区新宿4-3-25 TOKYU REIT新宿ビル8F',
+                    'telephone'                 => '0366753638',
+                    'payment_method'            => '1'
                 ]
             ]
         );

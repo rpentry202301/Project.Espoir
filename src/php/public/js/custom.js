@@ -51,8 +51,7 @@ $(".slider-stamp").slick({
     ],
 });
 
-// モーダル
-
+// レコメンド商品のモーダル
 var recommendImgs = document.querySelectorAll(".recommend-img");
 var myModalLabel = document.getElementById("myModalLabel");
 
@@ -82,6 +81,21 @@ recommendImgs.forEach(function (element) {
     });
 });
 
-// $("#my-modal").on("hidden.bs.modal", function (event) {
-//     console.log("動作確認");
-// });
+// スタンプのモーダル
+var stampImg = document.getElementsByClassName("stamp-img");
+
+var stampImgs = document.querySelectorAll(".stamp-img");
+var stampModalLabel = document.getElementById("stampModalLabel");
+
+stampImgs.forEach(function (element) {
+    element.addEventListener("click", function () {
+        console.log("動作確認");
+        var name = element.getAttribute("data-name");
+        var url = element.getAttribute("data-url");
+        var dataText = element.getAttribute("data-text");
+
+        document.getElementById("stampModalLabel").innerText = name;
+        document.getElementById("stamp-modal-text").innerText = dataText;
+        document.getElementById("stamp-url").setAttribute("src", url);
+    });
+});

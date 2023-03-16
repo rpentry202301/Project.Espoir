@@ -21,8 +21,8 @@ class OrderSeeder extends Seeder
                 [
                     'id'                        => '1',
                     'user_id'                   => '1',
-                    'price_include_tax'         => '1000',
-                    'order_date'                =>  Carbon::now(),
+                    'price_include_tax'         => '1188',
+                    'order_date'                =>  '2020-03-09',
                     'delivery_destination_name' => '自宅',
                     'zipcode'                   => '1000001',
                     'address'                   => '東京都千代田区千代田1-1',
@@ -32,8 +32,8 @@ class OrderSeeder extends Seeder
                 [
                     'id'                        => '2',
                     'user_id'                   => '1',
-                    'price_include_tax'         => '500',
-                    'order_date'                => '2020-03-09',
+                    'price_include_tax'         => '540',
+                    'order_date'                => Carbon::now(),
                     'delivery_destination_name' => '職場',
                     'zipcode'                   => '1600022',
                     'address'                   => '東京都新宿区新宿4-3-25 TOKYU REIT新宿ビル8F',

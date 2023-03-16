@@ -83,7 +83,8 @@
                     <input type="hidden" name="item_id" value="{{ $orderItem->item_id }}">
                     <tr>
                         <td>
-                            {{ $orderItem->name }}
+                            <a href="{{ route('item.showDetail', [$orderItem->item_id]) }}"
+                                class="text-primary">{{ $orderItem->name }}</a>
                         </td>
                         <td>
                             <table>
@@ -138,7 +139,7 @@
                 </tr>
             @endforeach
             <tr>
-                <td colspan="5" class="text-right font-weight-bold">合計金額 : <input id="goukei" name="goukei"
+                <td colspan="5" class="text-right font-weight-bold">小計金額 : <input id="goukei" name="goukei"
                         class="text-danger col-1" value="" readonly>円
                 </td>
             </tr>

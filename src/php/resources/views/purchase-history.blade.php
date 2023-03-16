@@ -9,16 +9,12 @@
     <div class="container">
         <div class="row">
             <div class="col-8 mx-auto">
-                <form action="#" class="" method="POST">
-                    <input type="text" class="form-control" placeholder="検索ワードとか期間で表示される履歴を変更">
+                <br>
+                @if (count($orders) == 0)
                     <br>
-                    <button class="btn btn-primary offset-5">検索</button>
-                    <br>
-                    @if (count($orders) == 0)
-                        <br>
-                        <h3 class="text-center py-2 text-danger">購入履歴が存在しません</h3>
-                    @endif
-                    <br>
+                    <h3 class="text-center py-2 text-danger">購入履歴が存在しません</h3>
+                @endif
+                <br>
                 </form>
             </div>
             <br>
@@ -65,22 +61,24 @@
                                         <tbody>
                                             @foreach ($orderItems as $orderItem)
                                                 @if ($user->admin_flag == 1)
-                                                    <tr>
-                                                        <td class="col-1"> <a
-                                                                href="{{ route('item.showDetail', [$orderItem->item_id]) }}"
-                                                                class="text-primary">{{ $orderItem->name }}</a>
-                                                            ×{{ $orderItem->quantity }}</td>
-                                                        <td class="col-1">
-                                                            @foreach ($orderToppings as $orderTopping)
-                                                                @if ($orderTopping->order_item_id == $orderItem->id)
-                                                                    <div> <small
-                                                                            class="text-black-50">{{ $orderTopping->name }}</small>
-                                                                    </div>
-                                                                @endif
-                                                            @endforeach
-                                                        </td>
-                                                    </tr>
-                                                @else
+                                                    @if ($orderItem->order_id == $order->id)
+                                                        <tr>
+                                                            <td class="col-1"> <a
+                                                                    href="{{ route('item.showDetail', [$orderItem->item_id]) }}"
+                                                                    class="text-primary">{{ $orderItem->name }}</a>
+                                                                ×{{ $orderItem->quantity }}</td>
+                                                            <td class="col-1">
+                                                                @foreach ($orderToppings as $orderTopping)
+                                                                    @if ($orderTopping->order_item_id == $orderItem->id)
+                                                                        <div> <small
+                                                                                class="text-black-50">{{ $orderTopping->name }}</small>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                @elseif($user->admin_flag != 1)
                                                     @if ($orderItem->order_id == $order->id)
                                                         <tr>
                                                             <td class="col-1"> <a

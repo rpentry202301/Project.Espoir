@@ -29,7 +29,7 @@ class PurchaseHistoryController extends Controller
             }
         }
 
-        foreach ($orders as $key => $order) {
+        foreach ($orders as $order) {
             $zipcode = $order->zipcode;
             $zip1    = substr($zipcode, 0, 3);
             $zip2    = substr($zipcode, 3);
@@ -90,14 +90,23 @@ class PurchaseHistoryController extends Controller
             //DBから商品のレコードを全件配列として取得する。
             $query = Order::query();
             $orders = $query->get()->toArray();
+            // dd($orders);
 
-            foreach ($orders as $key => $order) {
-                $zipcode = $order->zipcode;
-                $zip1    = substr($zipcode, 0, 3);
-                $zip2    = substr($zipcode, 3);
-                $zipcode = $zip1 . "-" . $zip2;
-                $order->zipcode = $zipcode;
-            }
+            // foreach ($orders as $order) {
+            //     $zipcode = $order->zipcode;
+            //     $zip1    = substr($zipcode, 0, 3);
+            //     $zip2    = substr($zipcode, 3);
+            //     $zipcode = $zip1 . "-" . $zip2;
+            //     $order->zipcode = $zipcode;
+            // }
+
+            // foreach ($orders as $order) {
+            //     if ($order->payment_method == 1) {
+            //         $order->payment_method = '代金引換';
+            //     } else if ($order->payment_method == 2) {
+            //         $order->payment_method = 'クレジットカード';
+            //     }
+            // }
 
             // 文字化け回避（第2引数に下記を指定することで、マルチバイト文字が入っていても文字化けがでないように対策）
             stream_filter_prepend($stream, 'convert.iconv.utf-8/cp932//TRANSLIT');

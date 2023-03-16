@@ -46,12 +46,20 @@ class ToppingSeeder extends Seeder
                 ],
                 [
                     'id'                    => '5',
+                    'name'                  => '紅茶シロップ',
+                    'description'           => '良い香りがします',
+                    'price'                 => '80',
+                    'image_file'            => 'topping_sample5.jpg'
+                ],
+                [
+                    'id'                    => '6',
                     'name'                  => '生クリーム',
                     'description'           => '甘すぎず、滑らかな生クリームです',
                     'price'                 => '100',
                     'image_file'            => 'topping_sample6.jpg'
-                ], [
-                    'id'                    => '6',
+                ],
+                [
+                    'id'                    => '7',
                     'name'                  => 'はちみつ',
                     'description'           => 'どんな飲み物にも合います',
                     'price'                 => '80',

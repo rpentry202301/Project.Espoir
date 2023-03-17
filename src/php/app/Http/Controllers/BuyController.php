@@ -86,7 +86,8 @@ class BuyController extends Controller
     {
         $token = $request->input('card-token');
         $userId = Auth::id();
-        $deliveryDestination = DeliveryDestination::where('id', $request->place)->orwhere('user_id', $userId)->first();
+        $deliveryDestination = DeliveryDestination::where('id', $request->place)->first();
+
         try {
             if ($token == null) {
                 $token = 0;

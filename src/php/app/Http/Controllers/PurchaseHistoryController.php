@@ -27,7 +27,7 @@ class PurchaseHistoryController extends Controller
 
         foreach ($orders as $order) {
             if ($order->payment_method == 1) {
-                $order->payment_method = '代金引換';
+                $order->payment_method = '店頭受け取り';
             } else if ($order->payment_method == 2) {
                 $order->payment_method = 'クレジットカード';
             }
@@ -106,7 +106,7 @@ class PurchaseHistoryController extends Controller
 
             foreach ($orders as $key => $onetime_order) {
                 if ($onetime_order['payment_method'] == 1) {
-                    $orders[$key]['payment_method'] = '代金引換';
+                    $orders[$key]['payment_method'] = '店頭受け取り';
                 } else if ($onetime_order['payment_method'] == 2) {
                     $orders[$key]['payment_method'] = 'クレジットカード';
                 }

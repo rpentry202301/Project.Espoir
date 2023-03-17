@@ -21,31 +21,31 @@ class SecondaryCategorySeeder extends Seeder
                 [
                     'id'                  => '1',
                     'primary_category_id' => '1',
-                    'name'                => 'Sさいず'
+                    'name'                => 'Sサイズ'
                 ], [
                     'id'                  => '2',
                     'primary_category_id' => '1',
-                    'name'                => 'Mさいず'
+                    'name'                => 'Mサイズ'
                 ], [
                     'id'                  => '3',
                     'primary_category_id' => '1',
-                    'name'                => 'Lさいず'
+                    'name'                => 'Lサイズ'
                 ], [
                     'id'                  => '4',
                     'primary_category_id' => '2',
-                    'name'                => 'くっきぃ'
+                    'name'                => 'クッキー'
                 ], [
                     'id'                  => '5',
                     'primary_category_id' => '2',
-                    'name'                => 'けぇき'
+                    'name'                => 'ケーキ'
                 ], [
                     'id'                  => '6',
                     'primary_category_id' => '3',
-                    'name'                => 'さんどいっち'
+                    'name'                => 'サンドイッチ'
                 ], [
                     'id'                  => '7',
                     'primary_category_id' => '3',
-                    'name'                => 'ぴっつぁ'
+                    'name'                => 'ピッツァ'
                 ]
             ]
         );

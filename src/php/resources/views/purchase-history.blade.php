@@ -26,13 +26,33 @@
                 @if ($user->admin_flag == 1)
                     @if (count($orders) != 0)
                         <div class="text-right">
-                            <form action="{{ route('cvs-export') }}" method="POST">
+                            <form action="" method="POST" name="csvExport" id="csvExport">
                                 @csrf
-                                <button class="btn btn-link">CSVダウンロード</button>
+                                <select name="csvExportSelect" id="csvExportSelect" class="form-control col-2 float-right"
+                                    onchange="changeCsvExport()">
+                                    <option hidden>選択してください</option>
+                                    <option value="order">注文履歴</option>
+                                    <option value="item">商品</option>
+                                    <option value="topping">トッピング</option>
+                                </select>
+                                <button type="submit" class="btn btn-link">CSVダウンロード</button>
                             </form>
                         </div>
                     @endif
                 @endif
+                <script>
+                    function changeCsvExport() {
+                        let num = document.csvExport.csvExportSelect.selectedIndex;
+                        let csvExportForm = document.getElementById("csvExport");
+                        if (csvExportSelect.options[num].value == 'order') {
+                            csvExportForm.setAttribute("action", "/purchase-history/csv-export-order");
+                        } else if (csvExportSelect.options[num].value == 'item') {
+                            csvExportForm.setAttribute("action", "/purchase-history/csv-export-item");
+                        } else if (csvExportSelect.options[num].value == 'topping') {
+                            csvExportForm.setAttribute("action", "/purchase-history/csv-export-topping");
+                        }
+                    }
+                </script>
                 <table class="table mx-auto w-100 p-3 table-bordered" style="font-size:5px;">
                     <thead>
                         <tr>

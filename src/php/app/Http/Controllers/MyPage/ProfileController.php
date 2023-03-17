@@ -42,6 +42,14 @@ class ProfileController extends Controller
 
         $deliverydestinations = DeliveryDestination::where('user_id', $user->id)->orderBy('id', 'ASC')->get();
 
+        foreach ($deliverydestinations as $deliveryDestination) {
+            $zipcode = $deliveryDestination->zipcode;
+            $zip1    = substr($zipcode, 0, 3);
+            $zip2    = substr($zipcode, 3);
+            $zipcode = $zip1 . "-" . $zip2;
+            $deliveryDestination->zipcode = $zipcode;
+        }
+
         return view('mypage.destination_list')
             ->with('deliverydestinations', $deliverydestinations);
     }

@@ -20,13 +20,13 @@ class PrimaryCategorySeeder extends Seeder
         DB::table('primary_categories')->insert([
             [
                 'id'   => '1',
-                'name' => 'どりんく'
+                'name' => 'ドリンク'
             ], [
                 'id'   => '2',
-                'name' => 'すいぃつ'
+                'name' => 'スイーツ'
             ], [
                 'id'   => '3',
-                'name' => 'でりか'
+                'name' => 'デリカ'
             ]
         ]);
     }

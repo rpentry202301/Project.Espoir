@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Item;
+use App\Models\OrderTopping;
+use App\Models\Topping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -77,9 +81,10 @@ class PurchaseHistoryController extends Controller
         return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user]);
     }
 
-    public function cvsExport()
+    public function csvExportOrder()
     {
         $date = Carbon::now(); // 現在時刻
+        dd('order');
 
         $response = new StreamedResponse(function () {
 
@@ -90,23 +95,23 @@ class PurchaseHistoryController extends Controller
             //DBから商品のレコードを全件配列として取得する。
             $query = Order::query();
             $orders = $query->get()->toArray();
-            // dd($orders);
 
-            // foreach ($orders as $order) {
-            //     $zipcode = $order->zipcode;
-            //     $zip1    = substr($zipcode, 0, 3);
-            //     $zip2    = substr($zipcode, 3);
-            //     $zipcode = $zip1 . "-" . $zip2;
-            //     $order->zipcode = $zipcode;
-            // }
 
-            // foreach ($orders as $order) {
-            //     if ($order->payment_method == 1) {
-            //         $order->payment_method = '代金引換';
-            //     } else if ($order->payment_method == 2) {
-            //         $order->payment_method = 'クレジットカード';
-            //     }
-            // }
+            foreach ($orders as $key => $onetime_order) {
+                $zipcode = $onetime_order['zipcode'];
+                $zip1    = substr($zipcode, 0, 3);
+                $zip2    = substr($zipcode, 3);
+                $zipcode = $zip1 . "-" . $zip2;
+                $orders[$key]['zipcode'] = $zipcode;
+            }
+
+            foreach ($orders as $key => $onetime_order) {
+                if ($onetime_order['payment_method'] == 1) {
+                    $orders[$key]['payment_method'] = '代金引換';
+                } else if ($onetime_order['payment_method'] == 2) {
+                    $orders[$key]['payment_method'] = 'クレジットカード';
+                }
+            }
 
             // 文字化け回避（第2引数に下記を指定することで、マルチバイト文字が入っていても文字化けがでないように対策）
             stream_filter_prepend($stream, 'convert.iconv.utf-8/cp932//TRANSLIT');
@@ -135,6 +140,112 @@ class PurchaseHistoryController extends Controller
 
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('content-disposition', 'attachment; filename=' . $date .  '購入履歴一覧.csv');
+        return $response;
+    }
+
+    public function csvExportItem()
+    {
+        $date = Carbon::now(); // 現在時刻
+
+        $response = new StreamedResponse(function () {
+
+            //orderクラスのcsvHeaderメソッドを使用するためにインスタンス化
+            $orderItem = new OrderItem();
+            //ファイルに書き込みできるようにする
+            $stream = fopen('php://output', 'w');
+            //DBから商品のレコードを全件配列として取得する。
+            $query = OrderItem::query();
+            $orderItems = $query->get()->toArray();
+            $items = Item::query()->get();
+            foreach ($orderItems as $key => $onetime_orderItem) {
+                foreach ($items as $item) {
+                    if ($item->id == $onetime_orderItem['item_id']) {
+                        $orderItems[$key]['item_id'] = $item->name;
+                        $orderItems[$key]['price'] = $item->price;
+                    }
+                }
+            }
+
+            // 文字化け回避（第2引数に下記を指定することで、マルチバイト文字が入っていても文字化けがでないように対策）
+            stream_filter_prepend($stream, 'convert.iconv.utf-8/cp932//TRANSLIT');
+
+            // ヘッダー行を追加
+            fputcsv($stream, $orderItem->csvHeader());
+
+            foreach ($orderItems as $orderItem) {
+                fputcsv($stream, $orderItem);
+            }
+            fclose($stream);
+
+            //期間を指定するために必要。
+            // $results = $orders->getCsvData($post['start_date'], $post['end_date']);
+            // if (empty($results[0])) {
+            //     fputcsv($stream, [
+            //         'データが存在しませんでした。',
+            //     ]);
+            // } else {
+            //     foreach ($results as $row) {
+            //         fputcsv($stream, $orders->csvRow($row));
+            //     }
+            // }
+            // fclose($stream);
+        });
+
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('content-disposition', 'attachment; filename=' . $date .  '購入商品一覧.csv');
+        return $response;
+    }
+
+    public function csvExportTopping()
+    {
+        $date = Carbon::now(); // 現在時刻
+
+        $response = new StreamedResponse(function () {
+
+            //orderクラスのcsvHeaderメソッドを使用するためにインスタンス化
+            $orderTopping = new OrderTopping();
+            //ファイルに書き込みできるようにする
+            $stream = fopen('php://output', 'w');
+            //DBから商品のレコードを全件配列として取得する。
+            $query = OrderTopping::query();
+            $orderToppings = $query->get()->toArray();
+            $toppings = Topping::query()->get();
+            foreach ($orderToppings as $key => $onetime_orderTopping) {
+                foreach ($toppings as $topping) {
+                    if ($topping->id == $onetime_orderTopping['topping_id']) {
+                        $orderToppings[$key]['topping_id'] = $topping->name;
+                        $orderToppings[$key]['price'] = $topping->price;
+                    }
+                }
+            }
+
+            // 文字化け回避（第2引数に下記を指定することで、マルチバイト文字が入っていても文字化けがでないように対策）
+            stream_filter_prepend($stream, 'convert.iconv.utf-8/cp932//TRANSLIT');
+
+            // ヘッダー行を追加
+            fputcsv($stream, $orderTopping->csvHeader());
+
+            foreach ($orderToppings as $orderTopping) {
+                fputcsv($stream, $orderTopping);
+            }
+            fclose($stream);
+
+            //期間を指定するために必要。
+            // $results = $orders->getCsvData($post['start_date'], $post['end_date']);
+            // if (empty($results[0])) {
+            //     fputcsv($stream, [
+            //         'データが存在しませんでした。',
+            //     ]);
+            // } else {
+            //     foreach ($results as $row) {
+            //         fputcsv($stream, $orders->csvRow($row));
+            //     }
+            // }
+            // fclose($stream);
+        });
+
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('content-disposition', 'attachment; filename=' . $date .  '購入トッピング一覧.csv');
         return $response;
     }
 

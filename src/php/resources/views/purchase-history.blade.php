@@ -26,11 +26,10 @@
                 @if ($user->admin_flag == 1)
                     @if (count($orders) != 0)
                         <div class="text-right">
-                            <form action="" method="POST" name="csvExport" id="csvExport">
+                            <form action="/purchase-history/csv-export-order" method="POST" name="csvExport" id="csvExport">
                                 @csrf
                                 <select name="csvExportSelect" id="csvExportSelect" class="form-control col-2 float-right"
                                     onchange="changeCsvExport()">
-                                    <option hidden>選択してください</option>
                                     <option value="order">注文履歴</option>
                                     <option value="item">商品</option>
                                     <option value="topping">トッピング</option>

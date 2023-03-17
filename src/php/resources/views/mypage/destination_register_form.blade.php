@@ -24,19 +24,23 @@
                     お届け先を登録する
                 </div>
 
-                <form method="POST" action="{{ route('mypage.register-destination') }}" class="p-5" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('mypage.register-destination') }}" class="p-5"
+                    enctype="multipart/form-data">
                     @csrf
 
                     <input id="this_url" type="hidden" class="form-control" name="this_url" value="{{ $this_url }}">
 
                     <div id="registerForm">
-                        
+
                         {{-- お届け先名 --}}
                         <div class="form-group mt-3">
                             <label for="delivery_destination_name">
                                 お届け先名
                             </label>
-                            <input id="delivery_destination_name" type="text" class="form-control @error('delivery_destination_name') is-invalid @enderror" name="delivery_destination_name" value="{{ old('delivery_destination_name') }}" required autocomplete="delivery_destination_name" autofocus >
+                            <input id="delivery_destination_name" type="text"
+                                class="form-control @error('delivery_destination_name') is-invalid @enderror"
+                                name="delivery_destination_name" value="{{ old('delivery_destination_name') }}" required
+                                autocomplete="delivery_destination_name" autofocus>
                             @error('delivery_destination_name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>
@@ -51,7 +55,8 @@
                             <label for="zipcode">
                                 郵便番号
                             </label>
-                            <input id="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}" required autocomplete="zipcode" autofocus >
+                            <input id="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror"
+                                name="zipcode" value="{{ old('zipcode') }}" required autocomplete="zipcode" autofocus>
                             @error('zipcode')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>
@@ -66,7 +71,8 @@
                             <label for="address">
                                 住所
                             </label>
-                            <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required autocomplete="address" autofocus >
+                            <input id="address" type="text" class="form-control @error('address') is-invalid @enderror"
+                                name="address" value="{{ old('address') }}" required autocomplete="address" autofocus>
                             @error('address')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>
@@ -75,13 +81,15 @@
                                 </span>
                             @enderror
                         </div>
-                        
+
                         {{-- 電話番号 --}}
                         <div class="form-group mt-3">
                             <label for="telephone">
                                 電話番号
                             </label>
-                            <input id="telephone" type="text" class="form-control @error('telephone') is-invalid @enderror" name="telephone" value="{{ old('telephone') }}" required autocomplete="telephone" autofocus >
+                            <input id="telephone" type="text"
+                                class="form-control @error('telephone') is-invalid @enderror" name="telephone"
+                                value="{{ old('telephone') }}" required autocomplete="telephone" autofocus>
                             @error('telephone')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>
@@ -89,7 +97,7 @@
                                     </strong>
                                 </span>
                             @enderror
-                        </div>                    
+                        </div>
                     </div>
 
                     {{-- 登録する --}}

@@ -84,7 +84,6 @@ class PurchaseHistoryController extends Controller
     public function csvExportOrder()
     {
         $date = Carbon::now(); // 現在時刻
-        dd('order');
 
         $response = new StreamedResponse(function () {
 

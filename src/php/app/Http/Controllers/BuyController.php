@@ -185,7 +185,7 @@ class BuyController extends Controller
         $address = $deliveryDestination->address;
         $payment_method = '';
         if ($request->payment_method == 1) {
-            $payment_method = '代金引換';
+            $payment_method = '店頭受け取り';
         } else if ($request->payment_method == 2) {
             $payment_method = 'クレジットカード';
         }

@@ -137,42 +137,18 @@
         </div>
         <br>
         <br>
-
         @if ($recommendItemCollection != null)
-            <h2>あなたへのおすすめ</h2>
-            <div class="text-center">
+            <div class="mx-auto text-center">
+                <h2>あなたへのおすすめ</h2>
 
-                @foreach ($recommendItemCollection as $recommendItem)
-                    <img src="/storage/item-images/{{ $recommendItem->image_file }}" alt="商品画像">
-                @endforeach
-            </div>
-        @endif
-
-        {{-- @if ($recommendItemCollection != null)
-            <div class="text-center">
-                <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="1000">
-                    <ol class="carousel-indicators">
-                        <li data-target="#carousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#carousel" data-slide-to="1"></li>
-                        <li data-target="#carousel" data-slide-to="2"></li>
-                    </ol>
-                    <div class="carousel-inner">
-                        @foreach ($recommendItemCollection as $recommendItem)
-                            <div class="carousel-item">
-                                <img src="/storage/item-images/{{ $recommendItem->image_file }}" alt="商品画像">
-                            </div>
-                        @endforeach
-                    </div>
-                    <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">前へ</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">次へ</span>
-                    </a>
+                <div class="slider">
+                    @foreach ($recommendItemCollection as $recommendItem)
+                        <div class="">
+                            <img src="/storage/item-images/{{ $recommendItem->image_file }}" alt="商品画像"
+                                style="height: 250px;object-fit: cover;">
+                        </div>
+                    @endforeach
                 </div>
-            </div>
-        @endif --}}
+        @endif
     </div>
 @endsection

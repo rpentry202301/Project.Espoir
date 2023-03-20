@@ -19,6 +19,8 @@ class PurchaseHistoryController extends Controller
     public function showPurchaseHistory()
     {
 
+        $recommendItemList = $this->recommendItem();
+
         if (Auth::id() == 1) {
             $orders = DB::table('orders')->orderBy('id')->get();
         } else {
@@ -78,7 +80,7 @@ class PurchaseHistoryController extends Controller
             }
         }
 
-        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user]);
+        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user, 'recommendItemList' => $recommendItemList]);
     }
 
     public function csvExportOrder()
@@ -248,8 +250,11 @@ class PurchaseHistoryController extends Controller
         return $response;
     }
 
-    public function recommendItem(Request $request)
+    public function recommendItem()
     {
+        //仮置き
+        $id = 2;
+
         //リクエストでitemのidを取得してくる
         //レコメンドの条件 同時に買われていること＝同じOrderのidであること。
         $recommendItemList = array();
@@ -259,14 +264,20 @@ class PurchaseHistoryController extends Controller
             foreach ($items as $item) {
                 if ($orderItem->item_id == $item->id) {
                     $orderItem->name = $item->name;
-                    $orderItem->name = $item->image_file;
+                    $orderItem->image_file = $item->image_file;
                 }
             }
 
-            if ($orderItem->id == $request->id) {
+            if ($orderItem->id == $id) {
                 $recommendItemList[] = $orderItem;
             }
         }
         return $recommendItemList;
+    }
+
+    public function modalTest(Request $request)
+    {
+
+        return redirect()->back()->with('', '');
     }
 }

@@ -140,9 +140,13 @@
 
         <h2>あなたへのおすすめ</h2>
         <div class="text-center">
-            <img src="/storage/item-images/ONE_PIECE/onepiece01_luffy.png" alt="商品画像">
-            <img src="/storage/item-images/ONE_PIECE/onepiece02_zoro_bandana.png" alt="商品画像">
-            <img src="/storage/item-images/ONE_PIECE/onepiece03_nami.png" alt="商品画像">
+            <form action="{{ route('modal-test') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-link">モーダルテスト</button>
+            </form>
+            @foreach ($recommendItemList as $recommendItem)
+                <img src="/storage/item-images/{{ $recommendItem->image_file }}" alt="商品画像">
+            @endforeach
         </div>
     </div>
 @endsection

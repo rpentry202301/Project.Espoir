@@ -137,7 +137,7 @@
         </div>
         <br>
         <br>
-        @if ($recommendItemCollection != null)
+        {{-- @if ($recommendItemCollection != null)
             <div class="mx-auto text-center">
                 <h2>あなたへのおすすめ</h2>
 
@@ -149,6 +149,6 @@
                         </div>
                     @endforeach
                 </div>
-        @endif
+        @endif --}}
     </div>
 @endsection

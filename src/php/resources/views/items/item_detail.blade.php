@@ -44,6 +44,21 @@
             </div>
         </div>
     </div>
+    <br>
+    @if (count($recommendItemCollection) != 0)
+        <br>
+        <div class="mx-auto text-center">
+            <h3>この商品を買った人はこんな商品も買っています</h3>
+            <br>
+            <div class="slider">
+                @foreach ($recommendItemCollection as $recommendItem)
+                    <div class="">
+                        <img src="/storage/item-images/{{ $recommendItem->image_file }}" alt="商品画像"
+                            style="height: 250px;object-fit: cover;">
+                    </div>
+                @endforeach
+            </div>
+    @endif
 
     @if (Auth::check())
         @if ($user->admin_flag === 1)

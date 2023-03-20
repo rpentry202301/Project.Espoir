@@ -18,10 +18,6 @@ class PurchaseHistoryController extends Controller
     //
     public function showPurchaseHistory()
     {
-        //コーヒー（M）と同時に購入されている商品を持ってくる
-        $id = 2;
-        $recommendItemCollection = $this->recommendItem($id);
-
         if (Auth::id() == 1) {
             $orders = DB::table('orders')->orderBy('id')->get();
         } else {
@@ -81,7 +77,7 @@ class PurchaseHistoryController extends Controller
             }
         }
 
-        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user, 'recommendItemCollection' => $recommendItemCollection]);
+        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user]);
     }
 
     public function csvExportOrder()
@@ -225,7 +221,7 @@ class PurchaseHistoryController extends Controller
         return $response;
     }
 
-    public function recommendItem(int $itemId)
+    public static function recommendItem(int $itemId)
     {
         //該当の商品が購入されているorderItemを取得する
         $originItemList = DB::table('order_items')->where('item_id', $itemId)->get();

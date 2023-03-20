@@ -18,8 +18,9 @@ class PurchaseHistoryController extends Controller
     //
     public function showPurchaseHistory()
     {
-
-        $recommendItemList = $this->recommendItem();
+        //コーヒー（M）と同時に購入されている商品を持ってくる
+        $id = 2;
+        $recommendItemList = $this->recommendItem($id);
 
         if (Auth::id() == 1) {
             $orders = DB::table('orders')->orderBy('id')->get();
@@ -250,17 +251,15 @@ class PurchaseHistoryController extends Controller
         return $response;
     }
 
-    public function recommendItem()
+    public function recommendItem(int $itemId)
     {
-        //仮置き
-        $id = 2;
-
-        //リクエストでitemのidを取得してくる
-        //レコメンドの条件 同時に買われていること＝同じOrderのidであること。
+        //該当の商品が購入されているorderItemを取得する
+        $originItemList = DB::table('order_items')->where('item_id', $itemId)->get();
         $recommendItemList = array();
         $orderItems = DB::table('order_items')->get();
         $items = DB::table('items')->get();
         foreach ($orderItems as $orderItem) {
+            //注文商品に商品名と画像データを入れるためのループ
             foreach ($items as $item) {
                 if ($orderItem->item_id == $item->id) {
                     $orderItem->name = $item->name;
@@ -268,16 +267,13 @@ class PurchaseHistoryController extends Controller
                 }
             }
 
-            if ($orderItem->id == $id) {
-                $recommendItemList[] = $orderItem;
+            //同時に買われていること＝同じOrderのidであるかどうか判別するループ
+            foreach ($originItemList as $originItem) {
+                if ($orderItem->order_id == $originItem->order_id && $orderItem->item_id != $originItem->item_id) {
+                    $recommendItemList[] = $orderItem;
+                }
             }
         }
         return $recommendItemList;
-    }
-
-    public function modalTest(Request $request)
-    {
-
-        return redirect()->back()->with('', '');
     }
 }

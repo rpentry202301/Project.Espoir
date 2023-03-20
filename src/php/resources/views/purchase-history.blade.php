@@ -138,15 +138,32 @@
         <br>
         <br>
 
-        <h2>あなたへのおすすめ</h2>
-        <div class="text-center">
-            <form action="{{ route('modal-test') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-link">モーダルテスト</button>
-            </form>
-            @foreach ($recommendItemList as $recommendItem)
-                <img src="/storage/item-images/{{ $recommendItem->image_file }}" alt="商品画像">
-            @endforeach
-        </div>
+        @if ($recommendItemList != null)
+            <h2>あなたへのおすすめ</h2>
+            <div class="text-center">
+                <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="1000">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel" data-slide-to="1"></li>
+                        <li data-target="#carousel" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        @foreach ($recommendItemList as $recommendItem)
+                            <div class="carousel-item active">
+                                <img src="/storage/item-images/{{ $recommendItem->image_file }}" alt="商品画像">
+                            </div>
+                        @endforeach
+                    </div>
+                    <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">前へ</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">次へ</span>
+                    </a>
+                </div>
+            </div>
+        @endif
     </div>
 @endsection

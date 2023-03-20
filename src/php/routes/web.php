@@ -74,7 +74,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/purchase-history/csv-export-order', [App\Http\Controllers\PurchaseHistoryController::class, 'csvExportOrder']);
     Route::post('/purchase-history/csv-export-item', [App\Http\Controllers\PurchaseHistoryController::class, 'csvExportItem']);
     Route::post('/purchase-history/csv-export-topping', [App\Http\Controllers\PurchaseHistoryController::class, 'csvExportTopping']);
-    Route::post('/purchase-history/modal-test', [App\Http\Controllers\PurchaseHistoryController::class, 'modalTest'])->name('modal-test');
 });
 
 // Route::get('/mail/send', [App\Http\Controllers\MailController::class, 'send'])->name('mail.send');

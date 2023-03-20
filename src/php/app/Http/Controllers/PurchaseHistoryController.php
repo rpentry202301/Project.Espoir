@@ -261,10 +261,21 @@ class PurchaseHistoryController extends Controller
 
     public function searchPurchaseHistory(Request $request)
     {
+
+        $from = $request->input('from');
+        $until = $request->input('until');
+
+        $q = Order::query();
+
+        // 日付検索
+        if (isset($from) && isset($until)) {
+            $query = $q->whereBetween("order_date", [$from, $until]);
+        }
+
         if (Auth::id() == 1) {
-            $orders = DB::table('orders')->orderBy('id')->get();
+            $orders = $query->orderBy('id')->get();
         } else {
-            $orders = DB::table('orders')->where('user_id', Auth::id())->orderBy('id')->get();
+            $orders = $query->where('user_id', Auth::id())->orderBy('id')->get();
         }
 
         foreach ($orders as $order) {
@@ -320,8 +331,6 @@ class PurchaseHistoryController extends Controller
             }
         }
 
-        $orders = $orders->paginate(3);
-
-        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user]);
+        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user, 'from' => $from, 'until' => $until]);
     }
 }

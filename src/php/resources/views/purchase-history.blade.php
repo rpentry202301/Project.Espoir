@@ -10,7 +10,7 @@
         <div class="row">
             <br>
             <div class="col-8 mx-auto">
-                <form action="{{ route('purchase-history') }}" class="" method="GET">
+                <form action="{{ route('purchase-history-search') }}" class="" method="GET">
                     <div class="">
                         <div class="form-inline">
                             <input type="date" name="from" class="form-control col-4 mx-auto" placeholder="from_date"

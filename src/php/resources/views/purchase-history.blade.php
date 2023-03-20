@@ -138,8 +138,17 @@
         <br>
         <br>
 
-        @if ($recommendItemList != null)
+        @if ($recommendItemCollection != null)
             <h2>あなたへのおすすめ</h2>
+            <div class="text-center">
+
+                @foreach ($recommendItemCollection as $recommendItem)
+                    <img src="/storage/item-images/{{ $recommendItem->image_file }}" alt="商品画像">
+                @endforeach
+            </div>
+        @endif
+
+        {{-- @if ($recommendItemCollection != null)
             <div class="text-center">
                 <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="1000">
                     <ol class="carousel-indicators">
@@ -148,8 +157,8 @@
                         <li data-target="#carousel" data-slide-to="2"></li>
                     </ol>
                     <div class="carousel-inner">
-                        @foreach ($recommendItemList as $recommendItem)
-                            <div class="carousel-item active">
+                        @foreach ($recommendItemCollection as $recommendItem)
+                            <div class="carousel-item">
                                 <img src="/storage/item-images/{{ $recommendItem->image_file }}" alt="商品画像">
                             </div>
                         @endforeach
@@ -164,6 +173,6 @@
                     </a>
                 </div>
             </div>
-        @endif
+        @endif --}}
     </div>
 @endsection

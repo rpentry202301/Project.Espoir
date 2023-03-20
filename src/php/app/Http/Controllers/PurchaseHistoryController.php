@@ -20,7 +20,7 @@ class PurchaseHistoryController extends Controller
     {
         //コーヒー（M）と同時に購入されている商品を持ってくる
         $id = 2;
-        $recommendItemList = $this->recommendItem($id);
+        $recommendItemCollection = $this->recommendItem($id);
 
         if (Auth::id() == 1) {
             $orders = DB::table('orders')->orderBy('id')->get();
@@ -81,7 +81,7 @@ class PurchaseHistoryController extends Controller
             }
         }
 
-        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user, 'recommendItemList' => $recommendItemList]);
+        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user, 'recommendItemCollection' => $recommendItemCollection]);
     }
 
     public function csvExportOrder()
@@ -178,19 +178,6 @@ class PurchaseHistoryController extends Controller
                 fputcsv($stream, $orderItem);
             }
             fclose($stream);
-
-            //期間を指定するために必要。
-            // $results = $orders->getCsvData($post['start_date'], $post['end_date']);
-            // if (empty($results[0])) {
-            //     fputcsv($stream, [
-            //         'データが存在しませんでした。',
-            //     ]);
-            // } else {
-            //     foreach ($results as $row) {
-            //         fputcsv($stream, $orders->csvRow($row));
-            //     }
-            // }
-            // fclose($stream);
         });
 
         $response->headers->set('Content-Type', 'application/octet-stream');
@@ -231,19 +218,6 @@ class PurchaseHistoryController extends Controller
                 fputcsv($stream, $orderTopping);
             }
             fclose($stream);
-
-            //期間を指定するために必要。
-            // $results = $orders->getCsvData($post['start_date'], $post['end_date']);
-            // if (empty($results[0])) {
-            //     fputcsv($stream, [
-            //         'データが存在しませんでした。',
-            //     ]);
-            // } else {
-            //     foreach ($results as $row) {
-            //         fputcsv($stream, $orders->csvRow($row));
-            //     }
-            // }
-            // fclose($stream);
         });
 
         $response->headers->set('Content-Type', 'application/octet-stream');
@@ -256,6 +230,7 @@ class PurchaseHistoryController extends Controller
         //該当の商品が購入されているorderItemを取得する
         $originItemList = DB::table('order_items')->where('item_id', $itemId)->get();
         $recommendItemList = array();
+
         $orderItems = DB::table('order_items')->get();
         $items = DB::table('items')->get();
         foreach ($orderItems as $orderItem) {
@@ -269,11 +244,19 @@ class PurchaseHistoryController extends Controller
 
             //同時に買われていること＝同じOrderのidであるかどうか判別するループ
             foreach ($originItemList as $originItem) {
-                if ($orderItem->order_id == $originItem->order_id && $orderItem->item_id != $originItem->item_id) {
+                //リコメンド商品と同様の商品は省く処理
+                if ($orderItem->item_id == $originItem->item_id) {
+                    continue;
+                }
+
+                if ($orderItem->order_id == $originItem->order_id) {
                     $recommendItemList[] = $orderItem;
                 }
             }
         }
-        return $recommendItemList;
+        //重複しているリコメンド商品を削除する
+        $recommendItemCollection = collect($recommendItemList);
+        $recommendItemCollection = $recommendItemCollection->unique('item_id');
+        return $recommendItemCollection;
     }
 }

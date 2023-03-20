@@ -40,9 +40,12 @@ class LoginController extends Controller
 
     public function loggedout()
     {
-        session_start();
-        unset($_SESSION["orderItemList"]);
-        unset($_SESSION["orderToppingList"]);
+        // session_start();
+        if(!isset($_SESSION)){
+            session_start();
+            unset($_SESSION["orderItemList"]);
+            unset($_SESSION["orderToppingList"]);
+        }
         return redirect()->back();
     }
 }

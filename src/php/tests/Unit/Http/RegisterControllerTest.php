@@ -123,5 +123,29 @@ class RegisterControllerTest extends TestCase
         $errorMessage = 'パスワードは、必ず指定してください';
         $this->get(route('register'))->assertSee($errorMessage);
     }
+    /**
+     * パスワードが8文字未満のエラーを確認
+     */
+    public function test_パスワード8文字未満で登録しようとするとエラーメッセージが表示される(){
+        $response = $this->post(route('register'),[
+            'name' => 'testUser',
+            'email' => 'test@example.com',
+            'password' => '1234567'
+        ]);
+        $errorMessage = 'パスワードは、8文字以上にしてください';
+        $this->get(route('register'))->assertSee($errorMessage);
+    }
+    /**
+     * パスワードが65文字以上のエラーを確認
+     */
+    public function test_パスワードが65文字以上で登録しようとするとエラーメッセージが表示される(){
+        $response = $this->post(route('register'),[
+            'name' => 'testUser',
+            'email' => 'test@example.com',
+            'password' => $this->faker()->realText(65)
+        ]);
+        $errorMessage = 'パスワードは、64文字以下にしてください';
+        $this->get(route('register'))->assertSee($errorMessage);
+    }
     
 }

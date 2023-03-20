@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,8 +9,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class DeliveryDestinationFactory extends Factory
 {
-    use RefreshDatabase;
-
     /**
      * Define the model's default state.
      *
@@ -20,12 +17,11 @@ class DeliveryDestinationFactory extends Factory
     public function definition()
     {
         return [
-            'id' => 1,
             'user_id' => 1,
-            'delivery_destination_name' => '自宅',
-            'zipcode' => 1234567,
-            'address' => fake()->address(),
-            'telephone' => 0441234567
+            'delivery_destination_name' => $faker->word(),
+            'zipcode' => $faker->postcode(),
+            'address' => $faker->address(),
+            'telephone' => $faker->phoneNumber()
         ];
     }
 }

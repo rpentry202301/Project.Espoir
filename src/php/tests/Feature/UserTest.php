@@ -6,14 +6,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class SampleTest extends TestCase
+class UserTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic feature test example.
      *
      * @return void
      */
-    public function testBasicTest()
+    public function test_example()
     {
         $response = $this->get('/');
 

@@ -136,5 +136,13 @@
             </div>
         </div>
         <br>
+        <br>
+
+        <h2>あなたへのおすすめ</h2>
+        <div class="text-center">
+            <img src="/storage/item-images/ONE_PIECE/onepiece01_luffy.png" alt="商品画像">
+            <img src="/storage/item-images/ONE_PIECE/onepiece02_zoro_bandana.png" alt="商品画像">
+            <img src="/storage/item-images/ONE_PIECE/onepiece03_nami.png" alt="商品画像">
+        </div>
     </div>
 @endsection

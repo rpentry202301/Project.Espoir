@@ -11,6 +11,8 @@ use App\Models\DeliveryDestination;
 class ProfileControllerTest extends TestCase
 {
     use RefreshDatabase,WithFaker;
+
+    // ユーザー情報編集
     public function test_ログインしていればURLにアクセスできる()
     {
         $user = User::factory()->create();
@@ -114,4 +116,19 @@ class ProfileControllerTest extends TestCase
         $errorMessage = 'メールアドレスは、必ず指定してください。';
         $this->get(route('mypage.edit-profile'))->assertSee($errorMessage);
     }
+
+    // 住所情報編集（途中。ログイン状態でURLをベタ打ちすると、他のユーザーの住所情報が見れてしまうため、要確認）
+    // public function test_URLへアクセスするとお届け先編集画面が表示される(){
+    //     $user = User::factory()->createOne([
+    //         'name' => 'testUser',
+    //         'email' => 'testUser@example.com'
+    //     ]);
+    //     $this->actingAs($user);
+    //     $response = $this->from('/mypage/edit-profile')->post(route('mypage.edit-profile'),[
+    //         'name' => $user->name,
+    //         'email' => ''
+    //     ]);
+    //     $errorMessage = 'メールアドレスは、必ず指定してください。';
+    //     $this->get(route('mypage.edit-profile'))->assertSee($errorMessage);
+    // }
 }

@@ -99,3 +99,16 @@ stampImgs.forEach(function (element) {
         document.getElementById("stamp-url").setAttribute("src", url);
     });
 });
+
+// 出品フォームで画像を選択した際のプレビュー表示
+$("#image_file").on("change", function (e) {
+    var reader = new FileReader();
+    var fileName = e.target.files[0].name;
+    reader.onload = function (e) {
+        $("#icon_img_prv")
+            .attr("src", e.target.result)
+            .css("width", "150px")
+            .css("height", "150px");
+    };
+    reader.readAsDataURL(this.files[0]);
+});

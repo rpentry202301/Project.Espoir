@@ -1,10 +1,11 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Http;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 use Tests\TestCase;
 
 class RegisterControllerTest extends TestCase
@@ -96,14 +97,14 @@ class RegisterControllerTest extends TestCase
      * メールアドレスの重複エラーを確認
      */
     public function test_メールアドレスがすでに登録されていると、エラーメッセージが表示される(){
-        $user = factory(User::class)->create([
+        $user = User::factory()->createOne([
             'email'=>'pass@example.com',
             'password'=>'password123'
         ]);
 
         $response = $this->post(route('register'),[
             'name' => 'testUser',
-            'email' => '12345',
+            'email' => 'pass@example.com',
             'password' => 'password123'
         ]);
         $errorMessage = '指定のメールアドレスは既に使用されています。';

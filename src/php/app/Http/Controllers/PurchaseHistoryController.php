@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PurchaseHistoryController extends Controller
 {
-    //
-    public function showPurchaseHistory()
+
+    public function showPurchaseHistory(Request $request)
     {
         if (Auth::id() == 1) {
             $orders = DB::table('orders')->orderBy('id')->get();
@@ -77,7 +77,10 @@ class PurchaseHistoryController extends Controller
             }
         }
 
-        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user]);
+        $from = $request->input('from');
+        $until = $request->input('until');
+
+        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user, 'from' => $from, 'until' => $until]);
     }
 
     public function csvExportOrder()
@@ -254,5 +257,71 @@ class PurchaseHistoryController extends Controller
         $recommendItemCollection = collect($recommendItemList);
         $recommendItemCollection = $recommendItemCollection->unique('item_id');
         return $recommendItemCollection;
+    }
+
+    public function searchPurchaseHistory(Request $request)
+    {
+        if (Auth::id() == 1) {
+            $orders = DB::table('orders')->orderBy('id')->get();
+        } else {
+            $orders = DB::table('orders')->where('user_id', Auth::id())->orderBy('id')->get();
+        }
+
+        foreach ($orders as $order) {
+            if ($order->payment_method == 1) {
+                $order->payment_method = '店頭受け取り';
+            } else if ($order->payment_method == 2) {
+                $order->payment_method = 'クレジットカード';
+            }
+        }
+
+        foreach ($orders as $order) {
+            $zipcode = $order->zipcode;
+            $zip1    = substr($zipcode, 0, 3);
+            $zip2    = substr($zipcode, 3);
+            $zipcode = $zip1 . "-" . $zip2;
+            $order->zipcode = $zipcode;
+        }
+
+        $users = DB::table('users')->get();
+        foreach ($orders as $order) {
+            foreach ($users as $user) {
+                if ($user->id == $order->user_id) {
+                    $order->user_id = $user->name;
+                }
+            }
+        }
+        $user = DB::table('users')->where('id', Auth::id())->first();
+
+        $orderItems = DB::table('order_items')->get();
+        $items = DB::table('items')->get();
+        foreach ($orderItems as $orderItem) {
+            foreach ($items as $item) {
+                if ($orderItem->item_id == $item->id) {
+                    $orderItem->name = $item->name;
+                }
+            }
+        }
+
+        $orderToppings = DB::table('order_toppings')->get();
+        $toppings = DB::table('toppings')->get();
+        foreach ($orderToppings as $orderTopping) {
+            foreach ($toppings as $topping) {
+                if ($orderTopping->topping_id == $topping->id) {
+                    $orderTopping->name = $topping->name;
+                }
+            }
+        }
+
+        foreach ($orderItems as $orderItem) {
+            foreach ($orderToppings as $orderTopping) {
+                if ($orderItem->id == $orderTopping->order_item_id) {
+                }
+            }
+        }
+
+        $orders = $orders->paginate(3);
+
+        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user]);
     }
 }

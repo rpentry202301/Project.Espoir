@@ -8,13 +8,28 @@
     <br>
     <div class="container">
         <div class="row">
+            <br>
             <div class="col-8 mx-auto">
-                <br>
-                @if (count($orders) == 0)
+                <form action="{{ route('purchase-history') }}" class="" method="GET">
+                    <div class="">
+                        <div class="form-inline">
+                            <input type="date" name="from" class="form-control col-4 mx-auto" placeholder="from_date"
+                                value="{{ $from }}">
+                            <span class="mx-3">～</span>
+                            <input type="date" name="until" class="form-control col-4 mx-auto" placeholder="until_date"
+                                value="{{ $until }}">
+                        </div>
+                    </div>
                     <br>
-                    <h3 class="text-center py-2 text-danger">購入履歴が存在しません</h3>
-                @endif
-                <br>
+                    <div class="text-center">
+                        <button class="btn btn-primary">検索</button>
+                    </div>
+                    <br>
+                    @if (count($orders) == 0)
+                        <br>
+                        <h3 class="text-center py-2 text-danger">購入履歴が存在しません</h3>
+                    @endif
+                    <br>
                 </form>
             </div>
             <br>
@@ -26,7 +41,8 @@
                 @if ($user->admin_flag == 1)
                     @if (count($orders) != 0)
                         <div class="text-right">
-                            <form action="/purchase-history/csv-export-order" method="POST" name="csvExport" id="csvExport">
+                            <form action="/purchase-history/csv-export-order" method="POST" name="csvExport"
+                                id="csvExport">
                                 @csrf
                                 <select name="csvExportSelect" id="csvExportSelect" class="form-control col-2 float-right"
                                     onchange="changeCsvExport()">
@@ -134,21 +150,8 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <br>
-        <br>
-        {{-- @if ($recommendItemCollection != null)
-            <div class="mx-auto text-center">
-                <h2>あなたへのおすすめ</h2>
 
-                <div class="slider">
-                    @foreach ($recommendItemCollection as $recommendItem)
-                        <div class="">
-                            <img src="/storage/item-images/{{ $recommendItem->image_file }}" alt="商品画像"
-                                style="height: 250px;object-fit: cover;">
-                        </div>
-                    @endforeach
-                </div>
-        @endif --}}
-    </div>
-@endsection
+            <br>
+            <br>
+        </div>
+    @endsection

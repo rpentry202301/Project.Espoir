@@ -15,10 +15,9 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PurchaseHistoryController extends Controller
 {
-    //
-    public function showPurchaseHistory()
-    {
 
+    public function showPurchaseHistory(Request $request)
+    {
         if (Auth::id() == 1) {
             $orders = DB::table('orders')->orderBy('id')->get();
         } else {
@@ -27,7 +26,7 @@ class PurchaseHistoryController extends Controller
 
         foreach ($orders as $order) {
             if ($order->payment_method == 1) {
-                $order->payment_method = '代金引換';
+                $order->payment_method = '店頭受け取り';
             } else if ($order->payment_method == 2) {
                 $order->payment_method = 'クレジットカード';
             }
@@ -78,13 +77,15 @@ class PurchaseHistoryController extends Controller
             }
         }
 
-        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user]);
+        $from = $request->input('from');
+        $until = $request->input('until');
+
+        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user, 'from' => $from, 'until' => $until]);
     }
 
     public function csvExportOrder()
     {
         $date = Carbon::now(); // 現在時刻
-        dd('order');
 
         $response = new StreamedResponse(function () {
 
@@ -107,7 +108,7 @@ class PurchaseHistoryController extends Controller
 
             foreach ($orders as $key => $onetime_order) {
                 if ($onetime_order['payment_method'] == 1) {
-                    $orders[$key]['payment_method'] = '代金引換';
+                    $orders[$key]['payment_method'] = '店頭受け取り';
                 } else if ($onetime_order['payment_method'] == 2) {
                     $orders[$key]['payment_method'] = 'クレジットカード';
                 }
@@ -176,19 +177,6 @@ class PurchaseHistoryController extends Controller
                 fputcsv($stream, $orderItem);
             }
             fclose($stream);
-
-            //期間を指定するために必要。
-            // $results = $orders->getCsvData($post['start_date'], $post['end_date']);
-            // if (empty($results[0])) {
-            //     fputcsv($stream, [
-            //         'データが存在しませんでした。',
-            //     ]);
-            // } else {
-            //     foreach ($results as $row) {
-            //         fputcsv($stream, $orders->csvRow($row));
-            //     }
-            // }
-            // fclose($stream);
         });
 
         $response->headers->set('Content-Type', 'application/octet-stream');
@@ -229,19 +217,6 @@ class PurchaseHistoryController extends Controller
                 fputcsv($stream, $orderTopping);
             }
             fclose($stream);
-
-            //期間を指定するために必要。
-            // $results = $orders->getCsvData($post['start_date'], $post['end_date']);
-            // if (empty($results[0])) {
-            //     fputcsv($stream, [
-            //         'データが存在しませんでした。',
-            //     ]);
-            // } else {
-            //     foreach ($results as $row) {
-            //         fputcsv($stream, $orders->csvRow($row));
-            //     }
-            // }
-            // fclose($stream);
         });
 
         $response->headers->set('Content-Type', 'application/octet-stream');
@@ -249,25 +224,115 @@ class PurchaseHistoryController extends Controller
         return $response;
     }
 
-    public function recommendItem(Request $request)
+    public static function recommendItem(int $itemId)
     {
-        //リクエストでitemのidを取得してくる
-        //レコメンドの条件 同時に買われていること＝同じOrderのidであること。
+        //該当の商品が購入されているorderItemを取得する
+        $originItemList = DB::table('order_items')->where('item_id', $itemId)->get();
         $recommendItemList = array();
+
+        $orderItems = DB::table('order_items')->get();
+        $items = DB::table('items')->get();
+        foreach ($orderItems as $orderItem) {
+            //注文商品に商品名と画像データを入れるためのループ
+            foreach ($items as $item) {
+                if ($orderItem->item_id == $item->id) {
+                    $orderItem->name = $item->name;
+                    $orderItem->image_file = $item->image_file;
+                }
+            }
+
+            //同時に買われていること＝同じOrderのidであるかどうか判別するループ
+            foreach ($originItemList as $originItem) {
+                //リコメンド商品と同様の商品は省く処理
+                if ($orderItem->item_id == $originItem->item_id) {
+                    continue;
+                }
+
+                if ($orderItem->order_id == $originItem->order_id) {
+                    $recommendItemList[] = $orderItem;
+                }
+            }
+        }
+        //重複しているリコメンド商品を削除する
+        $recommendItemCollection = collect($recommendItemList);
+        $recommendItemCollection = $recommendItemCollection->unique('item_id');
+        return $recommendItemCollection;
+    }
+
+    public function searchPurchaseHistory(Request $request)
+    {
+
+        $from = $request->input('from');
+        $until = $request->input('until');
+
+        $q = Order::query();
+
+        // 日付検索
+        if (isset($from) && isset($until)) {
+            $query = $q->whereBetween("order_date", [$from, $until]);
+        } else {
+            $query = $q;
+        }
+
+        if (Auth::id() == 1) {
+            $orders = $query->orderBy('id')->get();
+        } else {
+            $orders = $query->where('user_id', Auth::id())->orderBy('id')->get();
+        }
+
+        foreach ($orders as $order) {
+            if ($order->payment_method == 1) {
+                $order->payment_method = '店頭受け取り';
+            } else if ($order->payment_method == 2) {
+                $order->payment_method = 'クレジットカード';
+            }
+        }
+
+        foreach ($orders as $order) {
+            $zipcode = $order->zipcode;
+            $zip1    = substr($zipcode, 0, 3);
+            $zip2    = substr($zipcode, 3);
+            $zipcode = $zip1 . "-" . $zip2;
+            $order->zipcode = $zipcode;
+        }
+
+        $users = DB::table('users')->get();
+        foreach ($orders as $order) {
+            foreach ($users as $user) {
+                if ($user->id == $order->user_id) {
+                    $order->user_id = $user->name;
+                }
+            }
+        }
+        $user = DB::table('users')->where('id', Auth::id())->first();
+
         $orderItems = DB::table('order_items')->get();
         $items = DB::table('items')->get();
         foreach ($orderItems as $orderItem) {
             foreach ($items as $item) {
                 if ($orderItem->item_id == $item->id) {
                     $orderItem->name = $item->name;
-                    $orderItem->name = $item->image_file;
                 }
             }
+        }
 
-            if ($orderItem->id == $request->id) {
-                $recommendItemList[] = $orderItem;
+        $orderToppings = DB::table('order_toppings')->get();
+        $toppings = DB::table('toppings')->get();
+        foreach ($orderToppings as $orderTopping) {
+            foreach ($toppings as $topping) {
+                if ($orderTopping->topping_id == $topping->id) {
+                    $orderTopping->name = $topping->name;
+                }
             }
         }
-        return $recommendItemList;
+
+        foreach ($orderItems as $orderItem) {
+            foreach ($orderToppings as $orderTopping) {
+                if ($orderItem->id == $orderTopping->order_item_id) {
+                }
+            }
+        }
+
+        return view('purchase-history')->with(['orders' => $orders, 'orderItems' => $orderItems, 'orderToppings' => $orderToppings, 'user' => $user, 'from' => $from, 'until' => $until]);
     }
 }

@@ -51,6 +51,41 @@ class OrderItemSeeder extends Seeder
                     'order_id'       => '3',
                     'customed_price' => '300',
                     'quantity'       => '1'
+                ],
+                [
+                    'id'             => '6',
+                    'item_id'        => '2',
+                    'order_id'       => '4',
+                    'customed_price' => '300',
+                    'quantity'       => '1'
+                ],
+                [
+                    'id'             => '7',
+                    'item_id'        => '4',
+                    'order_id'       => '4',
+                    'customed_price' => '200',
+                    'quantity'       => '1'
+                ],
+                [
+                    'id'             => '8',
+                    'item_id'        => '2',
+                    'order_id'       => '5',
+                    'customed_price' => '300',
+                    'quantity'       => '1'
+                ],
+                [
+                    'id'             => '9',
+                    'item_id'        => '4',
+                    'order_id'       => '5',
+                    'customed_price' => '200',
+                    'quantity'       => '1'
+                ],
+                [
+                    'id'             => '10',
+                    'item_id'        => '5',
+                    'order_id'       => '5',
+                    'customed_price' => '450',
+                    'quantity'       => '1'
                 ]
             ]
         );

@@ -22,7 +22,7 @@ class DeliveryDestinationSeeder extends Seeder
                     'delivery_destination_name' => '自宅',
                     'zipcode'                   => '1111111',
                     'address'                   => '東京都新宿区新宿1-1-1',
-                    'telephone'                 => '090111111'
+                    'telephone'                 => '0901111111'
                 ],
                 [
                     'id'                        => '2',
@@ -38,7 +38,7 @@ class DeliveryDestinationSeeder extends Seeder
                     'delivery_destination_name' => '実家',
                     'zipcode'                   => '3333333',
                     'address'                   => '東京都新宿区新宿3-3-3',
-                    'telephone'                 => '090333333'
+                    'telephone'                 => '0903333333'
                 ],
                 [
                     'id'                        => '4',
@@ -46,7 +46,7 @@ class DeliveryDestinationSeeder extends Seeder
                     'delivery_destination_name' => '管理室',
                     'zipcode'                   => '4444444',
                     'address'                   => '東京都新宿区新宿4-4-4',
-                    'telephone'                 => '090444444'
+                    'telephone'                 => '0904444444'
                 ]
             ]
         );

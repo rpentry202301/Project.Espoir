@@ -115,7 +115,6 @@ class BuyController extends Controller
             //orderをテーブルにinsert
             $order = new Order();
             $order->user_id = Auth::id();
-            // $order->delivery_destination_id; #TODO delivery_destinationsのidをもってくる。もしformで選択されていなかったらnullが入るようにする。
             $order->price_include_tax = $request->price_include_tax;
             $order->order_date = Carbon::now();
             $order->delivery_destination_name = $deliveryDestination->delivery_destination_name;

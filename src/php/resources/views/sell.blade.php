@@ -24,14 +24,18 @@
                 <form method="POST" action="{{ route('sell') }}" class="p-5" enctype="multipart/form-data">
                     @csrf
     
+                    {{-- 商品画像プレビュー表示 --}}
+                    <div class="text-center">
+                        <img id="icon_img_prv" class="img-thumbnail h-50 w-50 mb-3" src="{{ asset('images/item-image-default.png')}}" alt="">
+                    </div>
                     {{-- 商品画像 --}}
-                    <div>商品画像</div>
+                    <div class="text-center">商品画像
                     <span class="item-image-form image-picker">
-                        <input type="file" name="item-image" class="d-none" accept="image/png,image/jpeg,image/gif" id="image_file" />
                         <label for="image_file" class="d-inline-block" role="button">
-                            <img src="{{ asset('images/item-image-default.png') }}" style="object-fit: cover; width: 300px; height: 300px;">
+                            <input id="image_file" type="file" name="item-image" class="form-control" accept="image/png,image/jpeg,image/gif" />
                         </label>
                     </span>
+                    </div>
                     @error('item-image')
                         <div style="color: #E4342E;" role="alert">
                             <strong>{{ $message }}</strong>

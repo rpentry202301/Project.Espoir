@@ -44,8 +44,8 @@ class ProfileController extends Controller
 
         foreach ($deliverydestinations as $deliveryDestination) {
             $zipcode = $deliveryDestination->zipcode;
-            $zip1    = substr($zipcode, 0, 3);
-            $zip2    = substr($zipcode, 3);
+            $zip1 = substr($zipcode, 0, 3);
+            $zip2 = substr($zipcode, 3);
             $zipcode = $zip1 . "-" . $zip2;
             $deliveryDestination->zipcode = $zipcode;
         }
@@ -70,7 +70,7 @@ class ProfileController extends Controller
         $deliverydestination->user_id = Auth::id();
         $deliverydestination->delivery_destination_name = $request->input('delivery_destination_name');
         $deliverydestination->zipcode = $request->input('zipcode');
-        $deliverydestination->address = $request->input('address');
+        $deliverydestination->address = $request->input('addr11');
         $deliverydestination->telephone = $request->input('telephone');
 
         $deliverydestination->save();
@@ -97,7 +97,7 @@ class ProfileController extends Controller
         $deliverydestination->user_id = Auth::id();
         $deliverydestination->delivery_destination_name = $request->input('delivery_destination_name');
         $deliverydestination->zipcode = $request->input('zipcode');
-        $deliverydestination->address = $request->input('address');
+        $deliverydestination->address = $request->input('addr11');
         $deliverydestination->telephone = $request->input('telephone');
 
         $deliverydestination->save();

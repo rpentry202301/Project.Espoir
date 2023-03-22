@@ -270,6 +270,8 @@ class PurchaseHistoryController extends Controller
         // 日付検索
         if (isset($from) && isset($until)) {
             $query = $q->whereBetween("order_date", [$from, $until]);
+        } else {
+            $query = $q;
         }
 
         if (Auth::id() == 1) {
